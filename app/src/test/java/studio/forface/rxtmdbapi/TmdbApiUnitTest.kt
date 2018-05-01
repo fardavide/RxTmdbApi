@@ -40,8 +40,36 @@ class TmdbApiUnitTest {
         println( movie.allPeople.joinToString { it.name } )
     }
 
+    @Test fun getLatestMovie() {
+        val movie = tmdbMovies.getLatest()
+                .blockingGet()
+
+        println( movie )
+    }
+
+    @Test fun getPopularMovies() {
+        val page = tmdbMovies.getPopular( page = 3, language = "it", region = "IT" )
+                .blockingGet()
+
+        println( page.results.joinToString { it.name } )
+    }
+
+    @Test fun getTopRatedMovies() {
+        val page = tmdbMovies.getTopRated()
+                .blockingGet()
+
+        println( page.results.joinToString { it.name } )
+    }
+
     @Test fun getUpcomingMovies() {
         val page = tmdbMovies.getUpcoming()
+                .blockingGet()
+
+        println( page.results.joinToString { it.name } )
+    }
+
+    @Test fun getSomething() {
+        val page = tmdbMovies.getNowPlaying()
                 .blockingGet()
 
         println( page.results.joinToString { it.name } )
