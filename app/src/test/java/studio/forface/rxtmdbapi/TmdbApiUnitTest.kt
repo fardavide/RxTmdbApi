@@ -1,27 +1,51 @@
 package studio.forface.rxtmdbapi
 
-import org.junit.Assert.assertNotNull
 import org.junit.Test
+import studio.forface.rxtmdbapi.tmdb.TMDB_API_KEY
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 import studio.forface.rxtmdbapi.tmdb.models.Extra.*
 import studio.forface.rxtmdbapi.tmdb.models.Extras
 import java.util.*
 
 
+private const val SESSION_ID = "<< STORE HERE A SESSION ID >>"
+private const val USERNAME = "4face"
+private const val PASSWORD = "<< USER PASSWORD >>"
+
 class TmdbApiUnitTest {
 
-    private val tmdbApi     get() = TmdbApi()
+    private val tmdbApi by lazy {
+        TmdbApi( TMDB_API_KEY, SESSION_ID )
+    }
+
     private val tmdbAuth    get() = tmdbApi.auth
+    private val tmdbAccount get() = tmdbApi.account
     private val tmdbConfig  get() = tmdbApi.config
     private val tmdbMovies  get() = tmdbApi.movies
     private val tmdbSearch  get() = tmdbApi.search
 
+
     // Auth.
-    @Test fun getToken() {
-        val token = tmdbAuth.getToken()
+    @Test fun createSession() {
+        tmdbAuth.run {
+            preloadToken().blockingAwait()
+
+            //val guestSession = createGuessSession().blockingGet()
+            val userSession = createUserSessionWithLogin( USERNAME, PASSWORD )
+                    .blockingGet()
+
+            println( userSession )
+        }
+    }
+
+    // Account.
+    @Test fun getAccountDetails() {
+        //tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
+
+        val account = tmdbAccount.getDetails()
                 .blockingGet()
 
-        assertNotNull(token)
+        println( account )
     }
 
     // Config.

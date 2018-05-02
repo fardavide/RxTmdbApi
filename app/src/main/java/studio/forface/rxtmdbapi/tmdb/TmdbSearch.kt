@@ -8,10 +8,14 @@ import studio.forface.rxtmdbapi.tmdb.models.Person
 import studio.forface.rxtmdbapi.tmdb.models.ResultPage
 import studio.forface.rxtmdbapi.tmdb.models.Tv
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 
+private const val BASE_PATH = "search"
 interface TmdbSearch {
 
-    @GET("search/movie?")
+    @GET("$BASE_PATH/movie?")
     fun searchMovie(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
@@ -20,7 +24,7 @@ interface TmdbSearch {
             @Query("year")                  year: Int? = null
     ): Single<ResultPage<Movie>>
 
-    @GET("search/person?")
+    @GET("$BASE_PATH/person?")
     fun searchPeople(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
@@ -28,7 +32,7 @@ interface TmdbSearch {
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults
     ): Single<ResultPage<Person>>
 
-    @GET("search/tv")
+    @GET("$BASE_PATH/tv")
     fun searchTv(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package studio.forface.rxtmdbapi.tmdb
 
 import com.google.gson.GsonBuilder
@@ -8,25 +10,35 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+
+// TODO: For test purpose only! To remove in production!
+const val TMDB_API_KEY = "6328c07c1c982565d446d22aaa27a945"
+const val TMDB_READ_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzI4YzA3YzFjOTgyNTY1ZDQ0NmQyMmFhYTI3YTk0NSIsInN1YiI6IjU5MzFjZGIzYzNhMzY4NGYwMTAwMjRkOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.c3eoSAnqXxHv8604RVjPvcekdLN0IDPCzxMVyd-dznM"
+// TODO
 
 private const val TMDB_API_URL = "https://api.themoviedb.org/"
-
 private const val TMDB_API_URL_V3 = "${TMDB_API_URL}3/"
 private const val TMDB_API_URL_V4 = "${TMDB_API_URL}4/"
 
-private const val TMDB_API_KEY = "6328c07c1c982565d446d22aaa27a945"
-private const val TMDB_READ_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzI4YzA3YzFjOTgyNTY1ZDQ0NmQyMmFhYTI3YTk0NSIsInN1YiI6IjU5MzFjZGIzYzNhMzY4NGYwMTAwMjRkOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.c3eoSAnqXxHv8604RVjPvcekdLN0IDPCzxMVyd-dznM"
+private const val PARAM_API_KEY = "api_key"
+private const val PARAM_SESSION_ID = "session_id"
 
+class TmdbApi(
+        apiKey: String,
+        sessionId: String? = null
+) {
 
-class TmdbApi {
-
-    private val interceptor = QueryInterceptor( mutableMapOf( "api_key" to TMDB_API_KEY ) )
+    private val interceptor = QueryInterceptor( mutableMapOf( PARAM_API_KEY to apiKey ) ).apply {
+        sessionId?.let { addQueryParams( PARAM_SESSION_ID to it ) }
+    }
 
     private val httpClientBuilder = OkHttpClient.Builder()
             .addInterceptor( interceptor )
 
     private val gson get() = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd")
             .create()
 
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
@@ -34,27 +46,38 @@ class TmdbApi {
             .addCallAdapterFactory( RxJava2CallAdapterFactory.createAsync() )
             .addConverterFactory( GsonConverterFactory.create(gson) )
 
-
     private inline fun <reified S> getService(): S = retrofitBuilder
             .client( httpClientBuilder.build() )
             .build()
             .create( S::class.java )
 
+    val auth    by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
+    val account by lazy { getService<TmdbAccount>() }
+    val config  by lazy { getService<TmdbConfig>() }
+    val movies  by lazy { getService<TmdbMovies>() }
+    val search  by lazy { getService<TmdbSearch>() }
 
-    val auth    get() = getService<TmdbAuth>()
-    val config  get() = getService<TmdbConfig>()
-    val movies  get() = getService<TmdbMovies>()
-    val search  get() = getService<TmdbSearch>()
+
+    private fun setSession( session: Session ) {
+        if (session.success) {
+            interceptor.addQueryParams(PARAM_SESSION_ID to session.id)
+        } else {
+            interceptor.removeQueryParams( PARAM_SESSION_ID )
+        }
+    }
 
 }
 
 
-private class QueryInterceptor(val params: MutableMap<String, String>) : Interceptor {
+private class QueryInterceptor(private val params: MutableMap<String, String>) : Interceptor {
 
-    internal fun addQueryParams(queryParams: Map<String, String>) {
+    internal fun addQueryParams(vararg queryParams: Pair<String, String>) {
         params.putAll(queryParams)
     }
 
+    internal fun removeQueryParams( vararg keys: String) {
+        keys.forEach { params.remove(it) }
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
