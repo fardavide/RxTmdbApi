@@ -3,7 +3,7 @@ package studio.forface.rxtmdbapi.tmdb.models
 import com.google.gson.annotations.SerializedName
 
 
-data class Episode(
+data class TvEpisode(
 
     @SerializedName("air_date")         val airDate: String,
     @SerializedName("crew")             val crew: List<Crew>,
@@ -18,4 +18,4 @@ data class Episode(
     @SerializedName("vote_average")     val voteAverage: Double,
     @SerializedName("vote_count")       val voteCount: Int
 
-) : NamedIdElement
+) : NamedIdElement, Pageable

@@ -2,7 +2,7 @@ package studio.forface.rxtmdbapi.tmdb.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Tv(
+data class TvShow(
 
         @SerializedName("backdrop_path")        val backdropPath: String,
         //@SerializedName("created_by")           val createdBy: List<CreatedBy>,

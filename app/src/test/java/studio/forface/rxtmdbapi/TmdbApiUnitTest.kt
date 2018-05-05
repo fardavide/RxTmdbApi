@@ -4,6 +4,7 @@ import org.junit.Test
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 import studio.forface.rxtmdbapi.tmdb.models.Extra.*
 import studio.forface.rxtmdbapi.tmdb.models.Extras
+import studio.forface.rxtmdbapi.utils.Sorting
 import java.util.*
 
 
@@ -40,6 +41,27 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println( account )
+    }
+
+    @Test fun getCreatedLists() {
+        val page = tmdbAccount.getCreatedLists()
+                .blockingGet()
+
+        println( page )
+    }
+
+    @Test fun getFavorite() {
+        val page = tmdbAccount.getFavoriteTvShows( sortBy = Sorting.CreationDate.ASCENDING )
+                .blockingGet()
+
+        println( page )
+    }
+
+    @Test fun getRated() {
+        val page = tmdbAccount.getRatedTvEpisodes( sortBy = Sorting.CreationDate.DESCENDING )
+                .blockingGet()
+
+        println( page )
     }
 
     // Config.
@@ -87,10 +109,10 @@ class TmdbApiUnitTest {
     }
 
     @Test fun getSomething() {
-        val page = tmdbMovies.getNowPlaying()
+        val item = tmdbMovies.getRecommendations(335984)
                 .blockingGet()
 
-        println( page.results.joinToString { it.name } )
+        println( item )
     }
 
     // Search.

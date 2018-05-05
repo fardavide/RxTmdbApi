@@ -21,6 +21,10 @@ class TimesUnitTest {
         print(input, output)
     }
 
+    @Test fun releaseDateToTimeInMillis() {
+        print( "", mockedReleaseDate.date.toCalendar() )
+    }
+
 
     private fun print(input: String, output: Calendar) {
         println()

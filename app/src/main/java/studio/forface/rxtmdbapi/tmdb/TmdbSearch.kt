@@ -6,7 +6,7 @@ import retrofit2.http.Query
 import studio.forface.rxtmdbapi.tmdb.models.Movie
 import studio.forface.rxtmdbapi.tmdb.models.Person
 import studio.forface.rxtmdbapi.tmdb.models.ResultPage
-import studio.forface.rxtmdbapi.tmdb.models.Tv
+import studio.forface.rxtmdbapi.tmdb.models.TvShow
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -38,6 +38,6 @@ interface TmdbSearch {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("first_air_date_year")   startYear: Int? = null
-    ): Single<ResultPage<Tv>>
+    ): Single<ResultPage<TvShow>>
 
 }
