@@ -34,10 +34,16 @@ data class Movie(
         @SerializedName("vote_count")               val voteCount: Int,
         @SerializedName("dates")                    val expectedRelease: Dates,
 
+        @SerializedName("changes") private          val _changes: ChangeList?,
         @SerializedName("credits") private          val _credits: Credits?,
+        @SerializedName("external_ids")             val externalIds: ExternalIds?,
         @SerializedName("images") private           val _images: Images?,
         @SerializedName("keywords") private         val _keywords: Keywords?,
+        @SerializedName("lists")                    val lists: ResultPage<MovieList>?,
+        @SerializedName("recommendations")          val recommendations: ResultPage<Movie>?,
         @SerializedName("reviews")                  val reviews: ResultPage<Review>?,
+        @SerializedName("similar")                  val similar: ResultPage<Movie>?,
+        @SerializedName("translations") private     val _translations: Translations?,
         @SerializedName("videos") private           val _videos: Videos?
 
 ) : NamedIdElement, Pageable {
@@ -45,12 +51,14 @@ data class Movie(
     override val name: String get() = title
     val releaseDate get() = _releaseDate.timeInMillis
 
-    val cast        get() = _credits?.cast
-    val crew        get() = _credits?.crew
-    val allPeople   get() = cast + crew
-    val backdrops   get() = _images?.backdrops
-    val posters     get() = _images?.posters
-    val keywords    get() = _keywords?.keywords
-    val videos      get() = _videos?.results
+    val changes         get() = _changes?.changes
+    val cast            get() = _credits?.cast
+    val crew            get() = _credits?.crew
+    val allPeople       get() =  cast + crew
+    val backdrops       get() = _images?.backdrops
+    val posters         get() = _images?.posters
+    val keywords        get() = _keywords?.keywords
+    val translations    get() = _translations?.translations
+    val videos          get() = _videos?.results
 
 }
