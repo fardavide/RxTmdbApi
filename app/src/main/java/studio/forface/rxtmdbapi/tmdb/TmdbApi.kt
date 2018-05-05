@@ -14,11 +14,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
-// TODO: For test purpose only! To remove in production!
-const val TMDB_API_KEY = "6328c07c1c982565d446d22aaa27a945"
-const val TMDB_READ_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzI4YzA3YzFjOTgyNTY1ZDQ0NmQyMmFhYTI3YTk0NSIsInN1YiI6IjU5MzFjZGIzYzNhMzY4NGYwMTAwMjRkOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.c3eoSAnqXxHv8604RVjPvcekdLN0IDPCzxMVyd-dznM"
-// TODO
-
 private const val TMDB_API_URL = "https://api.themoviedb.org/"
 private const val TMDB_API_URL_V3 = "${TMDB_API_URL}3/"
 private const val TMDB_API_URL_V4 = "${TMDB_API_URL}4/"

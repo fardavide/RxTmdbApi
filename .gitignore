@@ -1,3 +1,6 @@
+# Private constants (passwords & Co.)
+MyData.kt
+
 # Built application files
 *.apk
 *.ap_

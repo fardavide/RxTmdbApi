@@ -1,18 +1,11 @@
 package studio.forface.rxtmdbapi
 
 import org.junit.Test
-import studio.forface.rxtmdbapi.tmdb.TMDB_API_KEY
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 import studio.forface.rxtmdbapi.tmdb.models.Extra.*
 import studio.forface.rxtmdbapi.tmdb.models.Extras
 import java.util.*
 
-
-//private const val SESSION_ID = "<< STORE HERE A SESSION ID >>"
-private const val SESSION_ID = "4986174fb1a28c078e1e9ad9a7d7fd16a5fce18b"
-private const val USERNAME = "4face"
-//private const val PASSWORD = "<< USER PASSWORD >>"
-private const val PASSWORD = "Z15k20"
 
 class TmdbApiUnitTest {
 
