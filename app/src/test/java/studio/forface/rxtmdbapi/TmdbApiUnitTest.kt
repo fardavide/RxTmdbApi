@@ -4,6 +4,8 @@ import org.junit.Test
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 import studio.forface.rxtmdbapi.tmdb.models.Extra.*
 import studio.forface.rxtmdbapi.tmdb.models.Extras
+import studio.forface.rxtmdbapi.tmdb.removeMovieFromFavorite
+import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
 import studio.forface.rxtmdbapi.utils.Sorting
 import java.util.*
 
@@ -62,6 +64,27 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println( page )
+    }
+
+    @Test fun getWatchlist() {
+        val page = tmdbAccount.getMoviesWatchlist()
+                .blockingGet()
+
+        println( page )
+    }
+
+    @Test fun manageWatchlist() {
+        val response = tmdbAccount.removeMovieFromWatchlist(335984)
+                .blockingGet()
+
+        println( "completed ${response.string()}" )
+    }
+
+    @Test fun manageFavorite() {
+        val response = tmdbAccount.removeMovieFromFavorite(335984)
+                .blockingGet()
+
+        println( "completed ${response.string()}" )
     }
 
     // Config.

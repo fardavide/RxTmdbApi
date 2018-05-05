@@ -21,6 +21,8 @@ private const val TMDB_API_URL_V4 = "${TMDB_API_URL}4/"
 private const val PARAM_API_KEY = "api_key"
 private const val PARAM_SESSION_ID = "session_id"
 
+internal const val HEADER_JSON = "Content-Type: application/json;charset=utf-8"
+
 class TmdbApi(
         apiKey: String,
         sessionId: String? = null
