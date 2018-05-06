@@ -45,7 +45,7 @@ data class Movie(
         @SerializedName("release_dates")                val releaseDates: ReleaseDates?,
         @SerializedName("reviews")                      val reviews: ResultPage<Review>?,
         @SerializedName("similar")                      val similar: ResultPage<Movie>?,
-        @SerializedName("translations") private         val _translations: Translations?,
+        @SerializedName("translations") private         val _translations: Translations<Movie>?,
         @SerializedName("videos") private               val _videos: Videos?
 
 ) : NamedIdElement, Pageable {

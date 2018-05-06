@@ -128,12 +128,12 @@ interface TmdbMovies {
 
     /**
      * Get a list of translations that have been created for a movie.
-     * @return a [Single] of [Translations].
+     * @return a [Single] of [Translations] of [Movie].
      */
     @GET("$BASE_PATH/{$MOVIE_ID}/translations")
     fun getTranslations(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<Translations>
+    ) : Single<Translations<Movie>>
 
     /**
      * Get a list of recommended movies for a movie.
@@ -174,7 +174,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
-    ) : Single<Movie>
+    ) : Single<ResultPage<Review>>
 
     /**
      * Get a list of lists that this movie belongs to.
