@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import studio.forface.rxtmdbapi.tmdb.models.*
+import studio.forface.rxtmdbapi.utils.DateQuery
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -47,16 +48,16 @@ interface TmdbMovies {
      * You can query up to 14 days in a single query by using the start_date and end_date
      * query parameters.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * TODO: startDate.
-     * TODO: endDate.
+     * @param startDate use [DateQuery] for build a formatted String.
+     * @param endDate use [DateQuery] for build a formatted String.
      * @return a [Single] of [ChangeList].
      */
     @GET("$BASE_PATH/{$MOVIE_ID}/changes")
     fun getChanges(
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("start_date")            startDate: String? = null,
-            @Query("end_date")              endDate: String? = null
+            @Query("start_date")            startDate: DateQuery? = null,
+            @Query("end_date")              endDate: DateQuery? = null
     ) : Single<ChangeList>
 
     /**

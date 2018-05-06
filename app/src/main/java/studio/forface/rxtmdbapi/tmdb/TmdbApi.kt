@@ -50,6 +50,7 @@ class TmdbApi(
 
     val auth    by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
     val account by lazy { getService<TmdbAccount>() }
+    val changes by lazy { getService<TmdbChanges>() }
     val config  by lazy { getService<TmdbConfig>() }
     val movies  by lazy { getService<TmdbMovies>() }
     val search  by lazy { getService<TmdbSearch>() }

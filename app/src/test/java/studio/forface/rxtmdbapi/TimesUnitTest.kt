@@ -1,6 +1,7 @@
 package studio.forface.rxtmdbapi
 
 import org.junit.Test
+import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.timeInMillis
 import java.util.*
 
@@ -23,6 +24,10 @@ class TimesUnitTest {
 
     @Test fun releaseDateToTimeInMillis() {
         print( "", mockedReleaseDate.date.toCalendar() )
+    }
+
+    @Test fun dateQueryTest() {
+        println( DateQuery(2018, 10, 5) )
     }
 
 

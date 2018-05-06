@@ -21,15 +21,23 @@ data class Changes(
 
 data class Item (
 
-        @SerializedName("id")               val id: String,
-        @SerializedName("action")           val action: String,
-        @SerializedName("time") private     val _time: String,
-        @SerializedName("iso_639_1")        val iso6391: String,
-        @SerializedName("value")            val value: String,
-        @SerializedName("original_value")   val originalValue: String
+    @SerializedName("id") override      val id: String,
+    @SerializedName("action")           val action: String,
+    @SerializedName("time") private     val _time: String,
+    @SerializedName("iso_639_1")        val iso6391: String,
+    @SerializedName("value")            val value: String,
+    @SerializedName("original_value")   val originalValue: String
 
-) {
+) : StringIdElement {
 
     val time get() = _time.timeInMillis
 
 }
+
+
+data class Change (
+
+    @SerializedName("id") override      val id: Int,
+    @SerializedName("adult")            val adult: Boolean?
+
+) : IdElement, Pageable

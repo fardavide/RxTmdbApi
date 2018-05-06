@@ -5,8 +5,8 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import studio.forface.rxtmdbapi.requests.FavoriteRequest
-import studio.forface.rxtmdbapi.requests.WatchlistRequest
+import studio.forface.rxtmdbapi.FavoriteRequest
+import studio.forface.rxtmdbapi.WatchlistRequest
 import studio.forface.rxtmdbapi.tmdb.models.*
 import studio.forface.rxtmdbapi.utils.Sorting
 
@@ -141,7 +141,7 @@ interface TmdbAccount {
     ) : Single<ResultPage<TvShow>>
 
     @POST("$BASE_PATH/$DEF_ACCOUNT/favorite")
-    fun manageFavorite( @Body request: FavoriteRequest ) : Single<ResponseBody>
+    fun manageFavorite( @Body request: FavoriteRequest) : Single<ResponseBody>
 
     @POST("$BASE_PATH/$DEF_ACCOUNT/watchlist")
     fun manageWatchlist( @Body request: WatchlistRequest) : Single<ResponseBody>
@@ -149,11 +149,11 @@ interface TmdbAccount {
 }
 
 fun TmdbAccount.addMovieToFavorite( id: Int ) =
-        manageFavorite( FavoriteRequest("movie", id, true) )
+        manageFavorite(FavoriteRequest("movie", id, true))
 fun TmdbAccount.removeMovieFromFavorite(id: Int ) =
-        manageFavorite( FavoriteRequest("movie", id, false) )
+        manageFavorite(FavoriteRequest("movie", id, false))
 
 fun TmdbAccount.addMovieToWatchlist( id: Int ) =
-        manageWatchlist( WatchlistRequest("movie", id, true) )
+        manageWatchlist(WatchlistRequest("movie", id, true))
 fun TmdbAccount.removeMovieFromWatchlist( id: Int ) =
-        manageWatchlist( WatchlistRequest("movie", id, false) )
+        manageWatchlist(WatchlistRequest("movie", id, false))

@@ -6,6 +6,7 @@ import studio.forface.rxtmdbapi.tmdb.models.Extra.*
 import studio.forface.rxtmdbapi.tmdb.models.Extras
 import studio.forface.rxtmdbapi.tmdb.removeMovieFromFavorite
 import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
+import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
 import java.util.*
 
@@ -18,6 +19,7 @@ class TmdbApiUnitTest {
 
     private val tmdbAuth    get() = tmdbApi.auth
     private val tmdbAccount get() = tmdbApi.account
+    private val tmdbChanges get() = tmdbApi.changes
     private val tmdbConfig  get() = tmdbApi.config
     private val tmdbMovies  get() = tmdbApi.movies
     private val tmdbSearch  get() = tmdbApi.search
@@ -85,6 +87,15 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println( "completed ${response.string()}" )
+    }
+
+    // Changes.
+    @Test fun getChanges() {
+        val page = tmdbChanges.getMovieChanges(
+                startDate = DateQuery( 2018, 5, 6 )
+        ).blockingGet()
+
+        println( page.resultsCount )
     }
 
     // Config.
