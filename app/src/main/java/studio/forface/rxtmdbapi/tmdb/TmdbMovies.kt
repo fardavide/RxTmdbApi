@@ -3,9 +3,8 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.ResponseBody
+import retrofit2.http.*
 import studio.forface.rxtmdbapi.tmdb.models.*
 import studio.forface.rxtmdbapi.utils.DateQuery
 
@@ -259,5 +258,31 @@ interface TmdbMovies {
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
     ) : Single<ResultPage<Movie>>
+
+    /**
+     * Rate a movie.
+     * A valid session or guest session ID is required. You can read more about how this works here:
+     * https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id .
+     * @param value the value of the rating you want to submit.
+     * The value is expected to be between 0.5 and 10.0 and the decimal should be 0 or 5.
+     * @return a [Single] of [ResponseBody].
+     */
+    @POST("$BASE_PATH/{$MOVIE_ID}/rating")
+    @FormUrlEncoded
+    fun rateMovie(
+            @Path(MOVIE_ID)                      id: Int,
+            @Field("value")                 value: Number
+    ) : Single<ResponseBody>
+
+    /**
+     * Remove your rating for a movie.
+     * A valid session or guest session ID is required. You can read more about how this works here:
+     * https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id .
+     * @return a [Single] of [ResponseBody].
+     */
+    @DELETE("$BASE_PATH/{$MOVIE_ID}/rating")
+    fun removeMovieRating(
+            @Path(MOVIE_ID)                      id: Int
+    ) : Single<ResponseBody>
 
 }

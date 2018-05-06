@@ -20,7 +20,7 @@ data class Movie(
         @SerializedName("overview")                     val overview: String,
         @SerializedName("popularity")                   val popularity: Double,
         @SerializedName("poster_path")                  val posterPath: String,
-        @SerializedName("production_companies")         val productionCompanies: List<ProductionCompany>,
+        @SerializedName("production_companies")         val productionCompanies: List<Company>,
         @SerializedName("production_countries")         val productionCountries: List<ProductionCountry>,
         @SerializedName("release_date") private         val _releaseDate: String,
         @SerializedName("revenue")                      val revenue: Int,

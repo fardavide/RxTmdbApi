@@ -20,6 +20,7 @@ private const val TMDB_API_URL_V4 = "${TMDB_API_URL}4/"
 
 private const val PARAM_API_KEY = "api_key"
 private const val PARAM_SESSION_ID = "session_id"
+private const val PARAM_GUEST_SESSION_ID = "guest_session_id"
 
 internal const val HEADER_JSON = "Content-Type: application/json;charset=utf-8"
 
@@ -48,19 +49,25 @@ class TmdbApi(
             .build()
             .create( S::class.java )
 
-    val auth    by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
-    val account by lazy { getService<TmdbAccount>() }
-    val changes by lazy { getService<TmdbChanges>() }
-    val config  by lazy { getService<TmdbConfig>() }
-    val movies  by lazy { getService<TmdbMovies>() }
-    val search  by lazy { getService<TmdbSearch>() }
+    val auth        by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
+    val account     by lazy { getService<TmdbAccount>() }
+    val changes     by lazy { getService<TmdbChanges>() }
+    val collections by lazy { getService<TmdbCollections>() }
+    val config      by lazy { getService<TmdbConfig>() }
+    val movies      by lazy { getService<TmdbMovies>() }
+    val search      by lazy { getService<TmdbSearch>() }
 
 
     private fun setSession( session: Session ) {
+        interceptor.removeQueryParams( PARAM_SESSION_ID )
+        interceptor.removeQueryParams( PARAM_GUEST_SESSION_ID )
+
         if (session.success) {
-            interceptor.addQueryParams(PARAM_SESSION_ID to session.id)
-        } else {
-            interceptor.removeQueryParams( PARAM_SESSION_ID )
+            val paramName = when(session) {
+                is Session.User -> PARAM_SESSION_ID
+                is Session.Guest -> PARAM_GUEST_SESSION_ID
+            }
+            interceptor.addQueryParams(paramName to session.id)
         }
     }
 

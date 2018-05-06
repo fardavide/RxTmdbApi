@@ -25,3 +25,4 @@ data class WatchlistRequest (
     @SerializedName("watchlist")            val watchlist: Boolean
 
 ) : Request
+

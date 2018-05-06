@@ -17,12 +17,13 @@ class TmdbApiUnitTest {
         TmdbApi( TMDB_API_KEY, SESSION_ID )
     }
 
-    private val tmdbAuth    get() = tmdbApi.auth
-    private val tmdbAccount get() = tmdbApi.account
-    private val tmdbChanges get() = tmdbApi.changes
-    private val tmdbConfig  get() = tmdbApi.config
-    private val tmdbMovies  get() = tmdbApi.movies
-    private val tmdbSearch  get() = tmdbApi.search
+    private val tmdbAuth        get() = tmdbApi.auth
+    private val tmdbAccount     get() = tmdbApi.account
+    private val tmdbChanges     get() = tmdbApi.changes
+    private val tmdbCollections get() = tmdbApi.collections
+    private val tmdbConfig      get() = tmdbApi.config
+    private val tmdbMovies      get() = tmdbApi.movies
+    private val tmdbSearch      get() = tmdbApi.search
 
 
     // Auth.
@@ -98,6 +99,22 @@ class TmdbApiUnitTest {
         println( page.resultsCount )
     }
 
+    // Collections.
+    @Test fun getCollectionDetails() {
+        val collection = tmdbCollections.getDetails(86311)
+                .blockingGet()
+
+        println( collection )
+    }
+
+    @Test fun getCollectionSomething() {
+        val collection = tmdbCollections.getTranslations(86311)
+                .blockingGet()
+
+        println( collection )
+    }
+
+
     // Config.
     @Test fun getLanguages() {
         val languages = tmdbConfig.getLanguages()
@@ -147,6 +164,14 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println( item )
+    }
+
+    @Test fun rateMovie() {
+        tmdbAuth.createGuessSession().blockingGet()
+        val response = tmdbMovies.rateMovie(181808, 8.5)
+                .blockingGet()
+
+        println( response.string() )
     }
 
     // Search.

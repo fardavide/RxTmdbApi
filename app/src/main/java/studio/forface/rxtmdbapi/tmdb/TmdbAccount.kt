@@ -12,8 +12,6 @@ import studio.forface.rxtmdbapi.utils.Sorting
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
- *
- * NOTICE: Many of those methods can also be used within a Guest Session.
  */
 
 private const val BASE_PATH = "account"

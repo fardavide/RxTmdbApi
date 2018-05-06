@@ -47,9 +47,9 @@ class TmdbAuth(
      *
      * @param username the username of the User.
      * @param password the password of the User.
-     * @return a [Single] of [UserSession]
+     * @return a [Single] of [Session.User]
      */
-    fun createUserSessionWithLogin( username: String, password: String ) : Single<UserSession> {
+    fun createUserSessionWithLogin( username: String, password: String ) : Single<Session.User> {
         return let {
             if ( token?.expired == false ) Single.just(token!!)
             else iTmdbAuth.createToken()
@@ -68,9 +68,9 @@ class TmdbAuth(
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
      * add it as [QueryInterceptor.params].
      *
-     * @return a [Single] of [GuestSession]
+     * @return a [Single] of [Session.Guest]
      */
-    fun createGuessSession() : Single<GuestSession> = iTmdbAuth.createGuestSession()
+    fun createGuessSession() : Single<Session.Guest> = iTmdbAuth.createGuestSession()
             .doOnSuccess { onSessionListener(it) }
 
     /**
@@ -78,7 +78,7 @@ class TmdbAuth(
      * dummy [Session].
      */
     fun logout() {
-        onSessionListener( UserSession(false, EMPTY_STRING) )
+        onSessionListener( Session.User(false, EMPTY_STRING) )
     }
 }
 
@@ -102,12 +102,12 @@ interface ITmdbAuth {
      * @param token must has been validated.
      * @see getTokenValidationUrl or
      * @see validateTokenWithLogin .
-     * @return a [Single] of [UserSession].
+     * @return a [Single] of [Session.User].
      */
     @GET("$BASE_PATH/session/new")
     fun createUserSession(
             @Query("request_token") token: Token
-    ) : Single<UserSession>
+    ) : Single<Session.User>
 
     /**
      * This method allows an application to validate a request token by entering a username and
@@ -142,10 +142,10 @@ interface ITmdbAuth {
      *
      * If a guest session is not used for the first time within 24 hours, it will be automatically
      * deleted.
-     * @return a [Single] of [GuestSession].
+     * @return a [Single] of [Session.Guest].
      */
     @GET("$BASE_PATH/guest_session/new")
-    fun createGuestSession() : Single<GuestSession>
+    fun createGuestSession() : Single<Session.Guest>
 
 }
 
@@ -177,21 +177,23 @@ data class Token(
     override fun toString() = value
 }
 
-abstract class Session {
+sealed class Session {
+
     abstract val id: String
     abstract val success: Boolean
     override fun toString() = id
-}
 
-data class UserSession internal constructor(
-    @SerializedName("success") override             val success: Boolean,
-    @SerializedName("session_id") override          val id: String
-) : Session()
+    data class User internal constructor(
+            @SerializedName("success") override val success: Boolean,
+            @SerializedName("session_id") override val id: String
+    ) : Session()
 
-data class GuestSession internal constructor(
-    @SerializedName("success") override             val success: Boolean,
-    @SerializedName("guest_session_id") override    val id: String,
-    @SerializedName("expires_at") private           val _expiration: String
-) : Session() {
-    val expiration get() = _expiration.timeInMillis
+    data class Guest internal constructor(
+            @SerializedName("success") override val success: Boolean,
+            @SerializedName("guest_session_id") override val id: String,
+            @SerializedName("expires_at") private val _expiration: String
+    ) : Session() {
+        val expiration get() = _expiration.timeInMillis
+    }
+
 }

@@ -24,7 +24,7 @@ data class TvShow(
         @SerializedName("overview")             val overview: String,
         @SerializedName("popularity")           val popularity: Double,
         @SerializedName("poster_path")          val posterPath: String,
-        @SerializedName("production_companies") val productionCompanies: List<ProductionCompany>,
+        @SerializedName("production_companies") val productionCompanies: List<Company>,
         @SerializedName("seasons")              val seasons: List<Season>,
         @SerializedName("status")               val status: String,
         @SerializedName("type")                 val type: String,
