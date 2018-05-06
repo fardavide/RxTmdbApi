@@ -49,13 +49,15 @@ class TmdbApi(
             .build()
             .create( S::class.java )
 
-    val auth        by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
-    val account     by lazy { getService<TmdbAccount>() }
-    val changes     by lazy { getService<TmdbChanges>() }
-    val collections by lazy { getService<TmdbCollections>() }
-    val config      by lazy { getService<TmdbConfig>() }
-    val movies      by lazy { getService<TmdbMovies>() }
-    val search      by lazy { getService<TmdbSearch>() }
+    val auth            by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
+    val account         by lazy { getService<TmdbAccount>() }
+    val certifications  by lazy { getService<TmdbCertifications>() }
+    val changes         by lazy { getService<TmdbChanges>() }
+    val collections     by lazy { getService<TmdbCollections>() }
+    val config          by lazy { getService<TmdbConfig>() }
+    val movies          by lazy { getService<TmdbMovies>() }
+    val search          by lazy { getService<TmdbSearch>() }
+    val tvShows         by lazy { getService<TmdbTv>() }
 
 
     private fun setSession( session: Session ) {

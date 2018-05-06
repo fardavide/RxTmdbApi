@@ -17,13 +17,15 @@ class TmdbApiUnitTest {
         TmdbApi( TMDB_API_KEY, SESSION_ID )
     }
 
-    private val tmdbAuth        get() = tmdbApi.auth
-    private val tmdbAccount     get() = tmdbApi.account
-    private val tmdbChanges     get() = tmdbApi.changes
-    private val tmdbCollections get() = tmdbApi.collections
-    private val tmdbConfig      get() = tmdbApi.config
-    private val tmdbMovies      get() = tmdbApi.movies
-    private val tmdbSearch      get() = tmdbApi.search
+    private val tmdbAuth            get() = tmdbApi.auth
+    private val tmdbAccount         get() = tmdbApi.account
+    private val tmdbCertifications  get() = tmdbApi.certifications
+    private val tmdbChanges         get() = tmdbApi.changes
+    private val tmdbCollections     get() = tmdbApi.collections
+    private val tmdbConfig          get() = tmdbApi.config
+    private val tmdbMovies          get() = tmdbApi.movies
+    private val tmdbSearch          get() = tmdbApi.search
+    private val tmdbTvShows         get() = tmdbApi.tvShows
 
 
     // Auth.
@@ -88,6 +90,14 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println( "completed ${response.string()}" )
+    }
+
+    // Certifications.
+    @Test fun getCertifications() {
+        val result = tmdbCertifications.getMovieCertifications()
+                .blockingGet()
+
+        println( result.certifications )
     }
 
     // Changes.
@@ -159,7 +169,7 @@ class TmdbApiUnitTest {
         println( page.results.joinToString { it.name } )
     }
 
-    @Test fun getSomething() {
+    @Test fun getMovieSomething() {
         val item = tmdbMovies.getRecommendations(335984)
                 .blockingGet()
 
@@ -197,5 +207,13 @@ class TmdbApiUnitTest {
                 .blockingGet()
 
         println(page.toString())
+    }
+
+    // Tv.
+    @Test fun getTvSomething() {
+        val result = tmdbTvShows.getOnTheAir()
+                .blockingGet()
+
+        println( result )
     }
 }

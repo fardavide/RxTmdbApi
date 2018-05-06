@@ -49,6 +49,6 @@ interface TmdbCollections {
     fun getTranslations(
             @Path(COLLECTION_ID)                 id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
-    ) : Single<Translations>
+    ) : Single<Translations<MovieCollection>>
 
 }
