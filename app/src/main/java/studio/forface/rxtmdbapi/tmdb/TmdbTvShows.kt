@@ -5,7 +5,7 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import studio.forface.rxtmdbapi.tmdb.models.*
+import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.utils.DateQuery
 
 /**

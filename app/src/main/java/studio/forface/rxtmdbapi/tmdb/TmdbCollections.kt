@@ -6,9 +6,9 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import studio.forface.rxtmdbapi.tmdb.models.Images
-import studio.forface.rxtmdbapi.tmdb.models.MovieCollection
-import studio.forface.rxtmdbapi.tmdb.models.Translations
+import studio.forface.rxtmdbapi.models.Images
+import studio.forface.rxtmdbapi.models.MovieCollection
+import studio.forface.rxtmdbapi.models.Translations
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).

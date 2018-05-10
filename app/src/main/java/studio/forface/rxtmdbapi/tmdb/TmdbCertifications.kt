@@ -4,7 +4,7 @@ package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
 import retrofit2.http.GET
-import studio.forface.rxtmdbapi.tmdb.models.CertificationsResult
+import studio.forface.rxtmdbapi.models.CertificationsResult
 
 
 private const val BASE_PATH = "certification"

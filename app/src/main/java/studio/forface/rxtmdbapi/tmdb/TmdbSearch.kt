@@ -3,10 +3,10 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
-import studio.forface.rxtmdbapi.tmdb.models.Movie
-import studio.forface.rxtmdbapi.tmdb.models.Person
-import studio.forface.rxtmdbapi.tmdb.models.ResultPage
-import studio.forface.rxtmdbapi.tmdb.models.TvShow
+import studio.forface.rxtmdbapi.models.Movie
+import studio.forface.rxtmdbapi.models.Person
+import studio.forface.rxtmdbapi.models.ResultPage
+import studio.forface.rxtmdbapi.models.TvShow
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).

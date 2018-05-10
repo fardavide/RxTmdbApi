@@ -7,7 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.http.*
 import studio.forface.rxtmdbapi.FavoriteRequest
 import studio.forface.rxtmdbapi.WatchlistRequest
-import studio.forface.rxtmdbapi.tmdb.models.*
+import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.utils.Sorting
 
 /**

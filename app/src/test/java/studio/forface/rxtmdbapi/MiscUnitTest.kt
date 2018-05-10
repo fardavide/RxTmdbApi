@@ -1,7 +1,7 @@
 package studio.forface.rxtmdbapi
 
 import org.junit.Test
-import studio.forface.rxtmdbapi.tmdb.models.ReleaseDate
+import studio.forface.rxtmdbapi.models.ReleaseDate
 
 
 val mockedReleaseDate get() = ReleaseDate (

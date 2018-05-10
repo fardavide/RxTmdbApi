@@ -1,14 +1,13 @@
 package studio.forface.rxtmdbapi
 
 import org.junit.Test
+import studio.forface.rxtmdbapi.models.Extra.*
+import studio.forface.rxtmdbapi.models.Extras
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
-import studio.forface.rxtmdbapi.tmdb.models.Extra.*
-import studio.forface.rxtmdbapi.tmdb.models.Extras
 import studio.forface.rxtmdbapi.tmdb.removeMovieFromFavorite
 import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
 import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
-import java.util.*
 
 
 class TmdbApiUnitTest {
@@ -138,7 +137,7 @@ class TmdbApiUnitTest {
         val movie = tmdbMovies.getDetails( id = 335984, extras = Extras( VIDEOS, IMAGES, KEYWORDS, REVIEWS, CREDITS ))
                 .blockingGet()
 
-        println( movie.allPeople.joinToString { it.name } )
+        println( movie.belongsToCollection )
     }
 
     @Test fun getLatestMovie() {
@@ -191,7 +190,7 @@ class TmdbApiUnitTest {
 
         val firstResult = page.results.first()
         println( firstResult )
-        println( Date(firstResult.releaseDate).toString() )
+        //println( Date(firstResult.releaseDate).toString() )
     }
 
     @Test fun searchPeople() {
