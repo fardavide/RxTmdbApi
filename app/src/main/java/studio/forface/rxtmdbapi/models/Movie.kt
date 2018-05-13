@@ -10,129 +10,135 @@ import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.plus
 import studio.forface.rxtmdbapi.utils.timeInMillis
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 
 @Entity(tableName = TABLE_NAME)
 @TypeConverters( ModelTypeConverters::class )
 data class Movie (
 
-        @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
-        @PrimaryKey
-        override var id: Int = 0,
+    @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
+    @PrimaryKey
+    override var id: Int = 0,
 
-        @SerializedName(Fields.ADULT)                   @ColumnInfo(name = Fields.ADULT)
-        var adult: Boolean = false,
+    @SerializedName(Fields.ADULT)                   @ColumnInfo(name = Fields.ADULT)
+    var adult: Boolean = false,
 
-        @SerializedName(Fields.BACKDROP_PATH)           @ColumnInfo(name = Fields.BACKDROP_PATH)
-        var backdropPath: String = EMPTY_STRING,
+    @SerializedName(Fields.BACKDROP_PATH)           @ColumnInfo(name = Fields.BACKDROP_PATH)
+    var backdropPath: String = EMPTY_STRING,
 
-        @SerializedName(Fields.BELONGS_TO_COLLECTION)   @Embedded
-        var belongsToCollection: MovieCollection = MovieCollection(),
+    @SerializedName(Fields.BELONGS_TO_COLLECTION)   @Embedded
+    var belongsToCollection: MovieCollection = MovieCollection(),
 
-        @SerializedName(Fields.BUDGET)                  @ColumnInfo(name = Fields.BUDGET)
-        var budget: Int = 0,
+    @SerializedName(Fields.BUDGET)                  @ColumnInfo(name = Fields.BUDGET)
+    var budget: Int = 0,
 
-        @SerializedName(Fields.GENRES)                  @ColumnInfo(name = Fields.GENRES)
-        var genres: List<Genre> = listOf(),
+    @SerializedName(Fields.GENRES)                  @ColumnInfo(name = Fields.GENRES)
+    var genres: List<Genre> = listOf(),
 
-        @SerializedName(Fields.HOMEPAGE)                @ColumnInfo(name = Fields.HOMEPAGE)
-        var homepage: String = EMPTY_STRING,
+    @SerializedName(Fields.HOMEPAGE)                @ColumnInfo(name = Fields.HOMEPAGE)
+    var homepage: String = EMPTY_STRING,
 
-        @SerializedName(Fields.IMDB_ID)                 @ColumnInfo(name = Fields.IMDB_ID)
-        var imdbId: String = EMPTY_STRING,
+    @SerializedName(Fields.IMDB_ID)                 @ColumnInfo(name = Fields.IMDB_ID)
+    var imdbId: String = EMPTY_STRING,
 
-        @SerializedName(Fields.ORIGINAL_LANGUAGE)       @ColumnInfo(name = Fields.ORIGINAL_LANGUAGE)
-        var originalLanguage: String = EMPTY_STRING,
+    @SerializedName(Fields.ORIGINAL_LANGUAGE)       @ColumnInfo(name = Fields.ORIGINAL_LANGUAGE)
+    var originalLanguage: String = EMPTY_STRING,
 
-        @SerializedName(Fields.ORIGINAL_TITLE)          @ColumnInfo(name = Fields.ORIGINAL_TITLE)
-        var originalTitle: String = EMPTY_STRING,
+    @SerializedName(Fields.ORIGINAL_TITLE)          @ColumnInfo(name = Fields.ORIGINAL_TITLE)
+    var originalTitle: String = EMPTY_STRING,
 
-        @SerializedName(Fields.OVERVIEW)                @ColumnInfo(name = Fields.OVERVIEW)
-        var overview: String = EMPTY_STRING,
+    @SerializedName(Fields.OVERVIEW)                @ColumnInfo(name = Fields.OVERVIEW)
+    var overview: String = EMPTY_STRING,
 
-        @SerializedName(Fields.POPULARITY)              @ColumnInfo(name = Fields.POPULARITY)
-        var popularity: Double = 0.0,
+    @SerializedName(Fields.POPULARITY)              @ColumnInfo(name = Fields.POPULARITY)
+    var popularity: Double = 0.0,
 
-        @SerializedName(Fields.POSTER_PATH)             @ColumnInfo(name = Fields.POSTER_PATH)
-        var posterPath: String = EMPTY_STRING,
+    @SerializedName(Fields.POSTER_PATH)             @ColumnInfo(name = Fields.POSTER_PATH)
+    var posterPath: String = EMPTY_STRING,
 
-        @SerializedName(Fields.PRODUCTION_COMPANIES)    @ColumnInfo(name = Fields.PRODUCTION_COMPANIES)
-        var productionCompanies: List<Company> = listOf(),
+    @SerializedName(Fields.PRODUCTION_COMPANIES)    @ColumnInfo(name = Fields.PRODUCTION_COMPANIES)
+    var productionCompanies: List<Company> = listOf(),
 
-        @SerializedName(Fields.PRODUCTION_COUNTRIES)    @ColumnInfo(name = Fields.PRODUCTION_COUNTRIES)
-        var productionCountries: List<Country> = listOf(),
+    @SerializedName(Fields.PRODUCTION_COUNTRIES)    @ColumnInfo(name = Fields.PRODUCTION_COUNTRIES)
+    var productionCountries: List<Country> = listOf(),
 
-        @SerializedName(Fields.RELEASE_DATE)            @ColumnInfo(name = Fields.RELEASE_DATE)
-        var _releaseDate: String = EMPTY_STRING,
+    @SerializedName(Fields.RELEASE_DATE)            @ColumnInfo(name = Fields.RELEASE_DATE)
+    var _releaseDate: String = EMPTY_STRING,
 
-        @SerializedName(Fields.REVENUE)                 @ColumnInfo(name = Fields.REVENUE)
-        var revenue: Int = 0,
+    @SerializedName(Fields.REVENUE)                 @ColumnInfo(name = Fields.REVENUE)
+    var revenue: Int = 0,
 
-        @SerializedName(Fields.RUNTIME)                 @ColumnInfo(name = Fields.RUNTIME)
-        var runtime: String = EMPTY_STRING,
+    @SerializedName(Fields.RUNTIME)                 @ColumnInfo(name = Fields.RUNTIME)
+    var runtime: String = EMPTY_STRING,
 
-        @SerializedName(Fields.SPOKEN_LANGUAGES)        @ColumnInfo(name = Fields.SPOKEN_LANGUAGES)
-        var languages: List<Language> = listOf(),
+    @SerializedName(Fields.SPOKEN_LANGUAGES)        @ColumnInfo(name = Fields.SPOKEN_LANGUAGES)
+    var languages: List<Language> = listOf(),
 
-        @SerializedName(Fields.STATUS)                  @ColumnInfo(name = Fields.STATUS)
-        var status: String = EMPTY_STRING,
+    @SerializedName(Fields.STATUS)                  @ColumnInfo(name = Fields.STATUS)
+    var status: String = EMPTY_STRING,
 
-        @SerializedName(Fields.TAGLINE)                 @ColumnInfo(name = Fields.TAGLINE)
-        var tagline: String = EMPTY_STRING,
+    @SerializedName(Fields.TAGLINE)                 @ColumnInfo(name = Fields.TAGLINE)
+    var tagline: String = EMPTY_STRING,
 
-        @SerializedName(Fields.TITLE)                   @ColumnInfo(name = Fields.TITLE)
-        var title: String = EMPTY_STRING,
+    @SerializedName(Fields.TITLE)                   @ColumnInfo(name = Fields.TITLE)
+    var title: String = EMPTY_STRING,
 
-        @SerializedName(Fields.VIDEO)                   @ColumnInfo(name = Fields.VIDEO)
-        var video: Boolean = false,
+    @SerializedName(Fields.VIDEO)                   @ColumnInfo(name = Fields.VIDEO)
+    var video: Boolean = false,
 
-        @SerializedName(Fields.VOTE_AVERAGE)            @ColumnInfo(name = Fields.VOTE_AVERAGE)
-        var voteAverage: Double = 0.0,
+    @SerializedName(Fields.VOTE_AVERAGE)            @ColumnInfo(name = Fields.VOTE_AVERAGE)
+    var voteAverage: Double = 0.0,
 
-        @SerializedName(Fields.VOTE_COUNT)              @ColumnInfo(name = Fields.VOTE_COUNT)
-        var voteCount: Int = 0,
+    @SerializedName(Fields.VOTE_COUNT)              @ColumnInfo(name = Fields.VOTE_COUNT)
+    var voteCount: Int = 0,
 
-        @SerializedName(Fields.DATES)                   @Embedded
-        var expectedRelease: ExpectedDate = ExpectedDate(),
+    @SerializedName(Fields.DATES)                   @Embedded
+    var expectedRelease: ExpectedDate = ExpectedDate(),
 
 
-        @SerializedName(Fields.ALTERNATIVE_TITLES)      @Ignore
-        var _alternativeTitles: AlternativeTitles = AlternativeTitles(),
+    // OPTIONALS.
 
-        @SerializedName(Fields.CHANGES)                 @Embedded
-        var _changes: ChangeList = ChangeList(),
+    @SerializedName(Fields.ALTERNATIVE_TITLES)      @Ignore
+    var _alternativeTitles: AlternativeTitles = AlternativeTitles(),
 
-        @SerializedName(Fields.CREDITS)                 @Embedded
-        var _credits: Credits = Credits(),
+    @SerializedName(Fields.CHANGES)                 @Embedded
+    var _changes: ChangeList = ChangeList(),
 
-        @SerializedName(Fields.EXTERNAL_IDS)            @Embedded
-        var externalIds: ExternalIds = ExternalIds(),
+    @SerializedName(Fields.CREDITS)                 @Embedded
+    var _credits: Credits = Credits(),
 
-        @SerializedName(Fields.IMAGES)                  @Embedded
-        var _images: Images = Images(),
+    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded
+    var externalIds: ExternalIds = ExternalIds(),
 
-        @SerializedName(Fields.KEYWORDS)                @Embedded
-        var _keywords: Keywords = Keywords(),
+    @SerializedName(Fields.IMAGES)                  @Embedded
+    var _images: Images = Images(),
 
-        @SerializedName(Fields.LISTS)                   @Ignore
-        var lists: ResultPage<MovieList>? = null,
+    @SerializedName(Fields.KEYWORDS)                @Embedded
+    var _keywords: Keywords = Keywords(),
 
-        @SerializedName(Fields.RECOMMENDATIONS)         @Ignore
-        var recommendations: ResultPage<Movie>? = null,
+    @SerializedName(Fields.LISTS)                   @Ignore
+    var lists: ResultPage<MovieList>? = null,
 
-        @SerializedName(Fields.RELEASE_DATES)           @Embedded
-        var releaseDates: ReleaseDates = ReleaseDates(),
+    @SerializedName(Fields.RECOMMENDATIONS)         @Ignore
+    var recommendations: ResultPage<Movie>? = null,
 
-        @SerializedName(Fields.REVIEWS)                 @Ignore
-        var reviews: ResultPage<Review>? = null,
+    @SerializedName(Fields.RELEASE_DATES)           @Embedded
+    var releaseDates: ReleaseDates = ReleaseDates(),
 
-        @SerializedName(Fields.SIMILAR)                 @Ignore
-        var similar: ResultPage<Movie>? = null,
+    @SerializedName(Fields.REVIEWS)                 @Ignore
+    var reviews: ResultPage<Review>? = null,
 
-        @SerializedName(Fields.TRANSLATIONS)            @Ignore
-        var _translations: Translations<Movie> = Translations(),
+    @SerializedName(Fields.SIMILAR)                 @Ignore
+    var similar: ResultPage<Movie>? = null,
 
-        @SerializedName(Fields.VIDEOS)                  @Embedded
-        var _videos: Videos = Videos()
+    @SerializedName(Fields.TRANSLATIONS)            @Ignore
+    var _translations: Translations<Movie> = Translations(),
+
+    @SerializedName(Fields.VIDEOS)                  @Embedded
+    var _videos: Videos = Videos()
+
 
 ) : NamedIdElement, Pageable {
 
@@ -181,6 +187,8 @@ data class Movie (
             voteAverage = 0.0,
             voteCount = 0,
             expectedRelease = ExpectedDate(),
+
+            // Optionals.
             _changes = ChangeList(),
             _credits = Credits(),
             externalIds = ExternalIds(),

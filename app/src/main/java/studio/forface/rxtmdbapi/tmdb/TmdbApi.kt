@@ -2,6 +2,7 @@
 
 package studio.forface.rxtmdbapi.tmdb
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,6 +10,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import studio.forface.rxtmdbapi.models.Session
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -26,11 +28,15 @@ internal const val HEADER_JSON = "Content-Type: application/json;charset=utf-8"
 
 class TmdbApi(
         apiKey: String,
-        sessionId: String? = null
+        sessionId: String? = null,
+        guest: Boolean = false
 ) {
 
     private val interceptor = QueryInterceptor( mutableMapOf( PARAM_API_KEY to apiKey ) ).apply {
-        sessionId?.let { addQueryParams( PARAM_SESSION_ID to it ) }
+        sessionId?.let {
+            val paramName = if ( guest ) PARAM_GUEST_SESSION_ID else PARAM_SESSION_ID
+            addQueryParams( paramName to it )
+        }
     }
 
     private val httpClientBuilder = OkHttpClient.Builder()
@@ -64,12 +70,12 @@ class TmdbApi(
         interceptor.removeQueryParams( PARAM_SESSION_ID )
         interceptor.removeQueryParams( PARAM_GUEST_SESSION_ID )
 
-        if (session.success) {
-            val paramName = when(session) {
-                is Session.User -> PARAM_SESSION_ID
-                is Session.Guest -> PARAM_GUEST_SESSION_ID
+        if ( session.success ) {
+            val paramName = when( session.guest ) {
+                false -> PARAM_SESSION_ID
+                true -> PARAM_GUEST_SESSION_ID
             }
-            interceptor.addQueryParams(paramName to session.id)
+            interceptor.addQueryParams(paramName to session.sessionId)
         }
     }
 

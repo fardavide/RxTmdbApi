@@ -32,10 +32,10 @@ class TmdbApiUnitTest {
         tmdbAuth.run {
             preloadToken().blockingAwait()
 
-            val guestSession = createGuessSession().blockingGet()
-            //val userSession = createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
+            //val guestSession = createGuessSession().blockingGet()
+            val userSession = createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
 
-            println( guestSession )
+            println( userSession )
         }
     }
 

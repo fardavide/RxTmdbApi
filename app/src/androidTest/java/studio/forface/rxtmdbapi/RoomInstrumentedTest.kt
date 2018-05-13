@@ -8,6 +8,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import studio.forface.rxtmdbapi.models.Session
 import studio.forface.rxtmdbapi.room.LocalDatabase
 import studio.forface.rxtmdbapi.room.MoviesDao
 import studio.forface.rxtmdbapi.room.updateOrInsertAsync
@@ -19,37 +20,81 @@ import java.io.IOException
  *
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
+
+private const val TAG = "RoomInstrumentedTest"
+
 @RunWith(AndroidJUnit4::class)
 class RoomInstrumentedTest {
 
     private val tmdbApi = TmdbApi( TMDB_API_KEY, SESSION_ID )
-    private lateinit var localDb: LocalDatabase
-    private lateinit var moviesDao: MoviesDao
+    private val localDb = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getTargetContext(), LocalDatabase::class.java ).build()
 
-    @Before
-    fun createDb() {
-        val context = InstrumentationRegistry.getTargetContext()
-        localDb = Room.inMemoryDatabaseBuilder(context, LocalDatabase::class.java).build()
-        moviesDao = localDb.moviesDao
-    }
+    private val moviesDao   by lazy { localDb.moviesDao }
+    private val sessionsDao by lazy { localDb.sessionsDao }
+    private val tvShowsDao  by lazy { localDb.tvShowsDao }
+
 
     @After
-    @Throws(IOException::class)
     fun closeDb() {
         localDb.close()
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun writeMovieAndReadInList() {
-        val movie = tmdbApi.movies.getDetails(299536 ).blockingGet()
+    // Movies.
+    @Test fun writeMovieAndRead() {
+        val movie = tmdbApi.movies.getDetails(299536 )
+                .blockingGet()
 
-        moviesDao.updateOrInsertAsync(movie)
+        moviesDao.updateOrInsertAsync( movie )
                 .blockingAwait()
 
-        val byId = moviesDao.getMovie(299536 ).blockingGet()
+        val byId = moviesDao.get( 299536 )
+                .blockingGet()
 
-        Log.d( javaClass.simpleName, byId.toString() )
+        println( byId )
+    }
+
+    // TvShows.
+    @Test fun writeTvShowAndRead() {
+        val tvShow = tmdbApi.tvShows.getDetails( 31911 )
+                .blockingGet()
+
+        tvShowsDao.updateOrInsertAsync( tvShow )
+                .blockingAwait()
+
+        val byId = tvShowsDao.get( 31911 )
+                .blockingGet()
+
+        println( byId )
+    }
+
+    // Sessions.
+    @Test fun writeAndReadSession() {
+        val session = tmdbApi.auth.createGuessSession()
+                .blockingGet()
+
+        with(session) {
+            if (success) sessionsDao.insert( this )
+        }
+
+        println( sessionsDao.get().blockingGet() )
+    }
+
+    @Test fun logWithSession() {
+        val mockSession = Session( SESSION_ID, false )
+        sessionsDao.insert( mockSession )
+
+        val api = TmdbApi( TMDB_API_KEY, sessionsDao.get().blockingGet().toString() )
+
+        val page = api.account.getRatedMovies()
+                .blockingGet()
+
+        println( page.results.first() )
+    }
+
+
+    private fun println( any: Any ) {
+        Log.d( TAG, any.toString() )
     }
 
 }

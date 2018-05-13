@@ -1,64 +1,196 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package studio.forface.rxtmdbapi.models
 
+import android.arch.persistence.room.*
 import com.google.gson.annotations.SerializedName
+import studio.forface.rxtmdbapi.ModelTypeConverters
+import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.plus
 import studio.forface.rxtmdbapi.utils.timeInMillis
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+
+@Entity(tableName = TvShow.TABLE_NAME)
+@TypeConverters( ModelTypeConverters::class )
 data class TvShow(
 
-        @SerializedName("backdrop_path")                val backdropPath: String,
-        @SerializedName("created_by")                   val createdBy: List<Person>,
-        @SerializedName("episode_run_time")             val episodeRunTime: List<Int>,
-        @SerializedName("first_air_date")               val firstAirDate: String,
-        @SerializedName("genres")                       val genres: List<Genre>,
-        @SerializedName("homepage")                     val homepage: String,
-        @SerializedName("id") override                  val id: Int,
-        @SerializedName("in_production")                val inProduction: Boolean,
-        @SerializedName("languages")                    val languages: List<String>,
-        @SerializedName("last_air_date") private        val _lastAirDate: String,
-        @SerializedName("name") override                val name: String,
-        @SerializedName("networks")                     val networks: List<Network>,
-        @SerializedName("number_of_episodes")           val numberOfEpisodes: Int,
-        @SerializedName("number_of_seasons")            val numberOfSeasons: Int,
-        @SerializedName("origin_country")               val originCountry: List<String>,
-        @SerializedName("original_language")            val originalLanguage: String,
-        @SerializedName("original_name")                val originalName: String,
-        @SerializedName("overview")                     val overview: String,
-        @SerializedName("popularity")                   val popularity: Double,
-        @SerializedName("poster_path")                  val posterPath: String,
-        @SerializedName("production_companies")         val productionCompanies: List<Company>,
-        @SerializedName("seasons")                      val seasons: List<Season>,
-        @SerializedName("status")                       val status: String,
-        @SerializedName("type")                         val type: String,
-        @SerializedName("vote_average")                 val voteAverage: Double,
-        @SerializedName("vote_count")                   val voteCount: Int,
+    @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
+    @PrimaryKey
+    override var id: Int = 0,
 
-        @SerializedName("alternative_titles") private   val _alternativeTitles: AlternativeTitles?,
-        @SerializedName("changes") private              val _changes: ChangeList?,
-        @SerializedName("credits") private              val _credits: Credits?,
-        @SerializedName("external_ids")                 val externalIds: ExternalIds?,
-        @SerializedName("images") private               val _images: Images?,
-        @SerializedName("keywords") private             val _keywords: Keywords?,
-        @SerializedName("recommendations")              val recommendations: ResultPage<TvShow>?,
-        @SerializedName("release_dates")                val releaseDates: ReleaseDates?,
-        @SerializedName("reviews")                      val reviews: ResultPage<Review>?,
-        @SerializedName("similar")                      val similar: ResultPage<TvShow>?,
-        @SerializedName("translations") private         val _translations: Translations<TvShow>?,
-        @SerializedName("videos") private               val _videos: Videos?
+    @SerializedName(Fields.BACKDROP_PATH)           @ColumnInfo(name = Fields.BACKDROP_PATH)
+    var backdropPath: String = EMPTY_STRING,
+
+    @SerializedName(Fields.CREATED_BY)              @ColumnInfo(name = Fields.CREATED_BY)
+    var createdBy: List<Person> = listOf(),
+
+    @SerializedName(Fields.EPISODE_RUN_TIME)        @ColumnInfo(name = Fields.EPISODE_RUN_TIME)
+    var episodeRunTime: List<Int> = listOf(),
+
+    @SerializedName(Fields.FIRST_AIR_DATE)          @ColumnInfo(name = Fields.FIRST_AIR_DATE)
+    var firstAirDate: String = EMPTY_STRING,
+
+    @SerializedName(Fields.GENRES)                  @ColumnInfo(name = Fields.GENRES)
+    var genres: List<Genre> = listOf(),
+
+    @SerializedName(Fields.HOMEPAGE)                @ColumnInfo(name = Fields.HOMEPAGE)
+    var homepage: String = EMPTY_STRING,
+
+    @SerializedName(Fields.IN_PRODUCTION)           @ColumnInfo(name = Fields.IN_PRODUCTION)
+    var inProduction: Boolean = false,
+
+    @SerializedName(Fields.LANGUAGES)               @ColumnInfo(name = Fields.LANGUAGES)
+    var languages: List<String> = listOf(),
+
+    @SerializedName(Fields.LAST_AIR_DATE)           @ColumnInfo(name = Fields.LAST_AIR_DATE)
+    var _lastAirDate: String = EMPTY_STRING,
+
+    @SerializedName(Fields.NAME)                    @ColumnInfo(name = Fields.NAME)
+    override var name: String = EMPTY_STRING,
+
+    @SerializedName(Fields.NETWORKS)                @ColumnInfo(name = Fields.NETWORKS)
+    var networks: List<Network> = listOf(),
+
+    @SerializedName(Fields.NUMBER_OF_EPISODES)      @ColumnInfo(name = Fields.NUMBER_OF_EPISODES)
+    var numberOfEpisodes: Int = 0,
+
+    @SerializedName(Fields.NUMBER_OF_SEASONS)       @ColumnInfo(name = Fields.NUMBER_OF_SEASONS)
+    var numberOfSeasons: Int = 0,
+
+    @SerializedName(Fields.ORIGIN_COUNTRY)          @ColumnInfo(name = Fields.ORIGIN_COUNTRY)
+    var originCountry: List<String> = listOf(),
+
+    @SerializedName(Fields.ORIGINAL_LANGUAGE)       @ColumnInfo(name = Fields.ORIGINAL_LANGUAGE)
+    var originalLanguage: String = EMPTY_STRING,
+
+    @SerializedName(Fields.ORIGINAL_NAME)           @ColumnInfo(name = Fields.ORIGINAL_NAME)
+    var originalName: String = EMPTY_STRING,
+
+    @SerializedName(Fields.OVERVIEW)                @ColumnInfo(name = Fields.OVERVIEW)
+    var overview: String = EMPTY_STRING,
+
+    @SerializedName(Fields.POPULARITY)              @ColumnInfo(name = Fields.POPULARITY)
+    var popularity: Double = 0.0,
+
+    @SerializedName(Fields.POSTER_PATH)             @ColumnInfo(name = Fields.POSTER_PATH)
+    var posterPath: String = EMPTY_STRING,
+
+    @SerializedName(Fields.PRODUCTION_COMPANIES)    @ColumnInfo(name = Fields.PRODUCTION_COMPANIES)
+    var productionCompanies: List<Company> = listOf(),
+
+    @SerializedName(Fields.SEASONS)                 @ColumnInfo(name = Fields.SEASONS)
+    var seasons: List<Season> = listOf(),
+
+    @SerializedName(Fields.STATUS)                  @ColumnInfo(name = Fields.STATUS)
+    var status: String = EMPTY_STRING,
+
+    @SerializedName(Fields.TYPE)                    @ColumnInfo(name = Fields.TYPE)
+    var type: String = EMPTY_STRING,
+
+    @SerializedName(Fields.VOTE_AVERAGE)            @ColumnInfo(name = Fields.VOTE_AVERAGE)
+    var voteAverage: Double = 0.0,
+
+    @SerializedName(Fields.VOTE_COUNT)              @ColumnInfo(name = Fields.VOTE_COUNT)
+    var voteCount: Int = 0,
+
+
+    // OPTIONALS.
+
+    @SerializedName(Fields.ALTERNATIVE_TITLES)      @Ignore
+    var _alternativeTitles: AlternativeTitles = AlternativeTitles(),
+
+    @SerializedName(Fields.CHANGES)                 @Embedded
+    var _changes: ChangeList = ChangeList(),
+
+    @SerializedName(Fields.CREDITS)                 @Embedded
+    var _credits: Credits = Credits(),
+
+    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded
+    var externalIds: ExternalIds = ExternalIds(),
+
+    @SerializedName(Fields.IMAGES)                  @Embedded
+    var _images: Images = Images(),
+
+    @SerializedName(Fields.KEYWORDS)                @Embedded
+    var _keywords: Keywords = Keywords(),
+
+    @SerializedName(Fields.RECOMMENDATIONS)         @Ignore
+    var recommendations: ResultPage<Movie>? = null,
+
+    @SerializedName(Fields.RELEASE_DATES)           @Embedded
+    var releaseDates: ReleaseDates = ReleaseDates(),
+
+    @SerializedName(Fields.REVIEWS)                 @Ignore
+    var reviews: ResultPage<Review>? = null,
+
+    @SerializedName(Fields.SIMILAR)                 @Ignore
+    var similar: ResultPage<Movie>? = null,
+
+    @SerializedName(Fields.TRANSLATIONS)            @Ignore
+    var _translations: Translations<Movie> = Translations(),
+
+    @SerializedName(Fields.VIDEOS)                  @Embedded
+    var _videos: Videos = Videos()
+
 
 ) : NamedIdElement, Pageable {
 
+    companion object {
+        internal const val TABLE_NAME = "tv_shows"
+    }
+
     val lastAirDate         get() = _lastAirDate.timeInMillis
 
-    val alternativeTitles   get() = _alternativeTitles?.titles
-    val changes             get() = _changes?.changes
-    val cast                get() = _credits?.cast
-    val crew                get() = _credits?.crew
+    val alternativeTitles   get() = _alternativeTitles.titles
+    val changes             get() = _changes.changes
+    val cast                get() = _credits.cast
+    val crew                get() = _credits.crew
     val allPeople           get() =  cast + crew
-    val backdrops           get() = _images?.backdrops
-    val posters             get() = _images?.posters
-    val keywords            get() = _keywords?.keywords
-    val translations        get() = _translations?.translations
-    val videos              get() = _videos?.results
+    val backdrops           get() = _images.backdrops
+    val posters             get() = _images.posters
+    val keywords            get() = _keywords.keywords
+    val translations        get() = _translations.translations
+    val videos              get() = _videos.results
+
+    constructor() : this(
+            id = 0,
+            backdropPath = EMPTY_STRING,
+            createdBy = listOf(),
+            episodeRunTime = listOf(),
+            firstAirDate = EMPTY_STRING,
+            genres = listOf(),
+            homepage = EMPTY_STRING,
+            inProduction = false,
+            languages = listOf(),
+            _lastAirDate = EMPTY_STRING,
+            name = EMPTY_STRING,
+            networks = listOf(),
+            numberOfEpisodes = 0,
+            numberOfSeasons = 0,
+            originCountry = listOf(),
+            originalLanguage = EMPTY_STRING,
+            originalName = EMPTY_STRING,
+            overview = EMPTY_STRING,
+            popularity = 0.0,
+            posterPath = EMPTY_STRING,
+            productionCompanies = listOf(),
+            seasons = listOf(),
+            status = EMPTY_STRING,
+            type = EMPTY_STRING,
+            voteAverage = 0.0,
+            voteCount = 0,
+
+            // Optionals.
+            _changes = ChangeList(),
+            _credits = Credits(),
+            externalIds = ExternalIds(),
+            _images = Images(),
+            _keywords = Keywords(),
+            releaseDates = ReleaseDates(),
+            _videos = Videos()
+    )
 
 }

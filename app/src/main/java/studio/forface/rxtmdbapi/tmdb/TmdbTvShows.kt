@@ -26,7 +26,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}")
     fun getDetails(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<TvShow>
@@ -38,7 +38,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/alternative_titles")
     fun getAlternativeTitles(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<AlternativeTitles>
 
@@ -53,7 +53,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/changes")
     fun getChanges(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("start_date")            startDate: DateQuery? = null,
             @Query("end_date")              endDate: DateQuery? = null
@@ -66,7 +66,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/content_ratings")
     fun getContentRatings(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<ContentRatings>
 
@@ -77,7 +77,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/credits")
     fun getCredits(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<Credits>
 
@@ -96,7 +96,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/external_ids")
     fun getExternalIds(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<ExternalIds>
 
@@ -111,7 +111,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/images")
     fun getImages(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
     ) : Single<Images>
@@ -132,7 +132,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/videos")
     fun getVideos(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<Videos>
 
@@ -142,7 +142,7 @@ interface TmdbTv {
      */
     @GET("$BASE_PATH/{$TV_ID}/translations")
     fun getTranslations(
-            @Path(TV_ID)                         id: Int,
+            @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<Translations<TvShow>>
 

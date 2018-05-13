@@ -7,6 +7,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
+import studio.forface.rxtmdbapi.models.Session
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.now
 import studio.forface.rxtmdbapi.utils.timeInMillis
@@ -177,23 +178,3 @@ data class Token(
     override fun toString() = value
 }
 
-sealed class Session {
-
-    abstract val id: String
-    abstract val success: Boolean
-    override fun toString() = id
-
-    data class User internal constructor(
-            @SerializedName("success") override val success: Boolean,
-            @SerializedName("session_id") override val id: String
-    ) : Session()
-
-    data class Guest internal constructor(
-            @SerializedName("success") override val success: Boolean,
-            @SerializedName("guest_session_id") override val id: String,
-            @SerializedName("expires_at") private val _expiration: String
-    ) : Session() {
-        val expiration get() = _expiration.timeInMillis
-    }
-
-}

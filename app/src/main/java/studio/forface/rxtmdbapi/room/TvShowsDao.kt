@@ -13,28 +13,29 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import studio.forface.rxtmdbapi.models.Fields
 import studio.forface.rxtmdbapi.models.Movie
+import studio.forface.rxtmdbapi.models.TvShow
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
 @Dao
-interface MoviesDao : IntIdDao<Movie> {
+interface TvShowsDao : IntIdDao<TvShow> {
 
-    @Query("SELECT * from ${Movie.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
-    override fun get( id: Int ): Single<Movie>
+    @Query("SELECT * from ${TvShow.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
+    override fun get( id: Int ): Single<TvShow>
 
-    @Query("SELECT * from ${Movie.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
-    override fun observe( id: Int ): Flowable<Movie>
+    @Query("SELECT * from ${TvShow.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
+    override fun observe( id: Int ): Flowable<TvShow>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override fun insert( movie: Movie )
+    override fun insert( tvShow: TvShow )
 
     @Update
-    override fun update( movie: Movie )
+    override fun update( tvShow: TvShow )
 
     @Delete
-    override fun delete( movie: Movie )
+    override fun delete( tvShow: TvShow )
 
 }
 
