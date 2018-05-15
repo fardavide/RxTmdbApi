@@ -1,7 +1,5 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.PrimaryKey
-
 
 interface IdElement {
     val id: Int

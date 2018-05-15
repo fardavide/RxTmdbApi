@@ -6,6 +6,7 @@ import android.arch.persistence.room.*
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.ModelTypeConverters
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
+import studio.forface.rxtmdbapi.utils.now
 import studio.forface.rxtmdbapi.utils.plus
 import studio.forface.rxtmdbapi.utils.timeInMillis
 
@@ -20,6 +21,9 @@ data class TvShow(
     @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
     @PrimaryKey
     override var id: Int = 0,
+
+    /* Local value */                               @ColumnInfo(name = Fields.TIMESTAMP)
+    var timestamp: Long = now,
 
     @SerializedName(Fields.BACKDROP_PATH)           @ColumnInfo(name = Fields.BACKDROP_PATH)
     var backdropPath: String = EMPTY_STRING,
@@ -157,6 +161,7 @@ data class TvShow(
 
     constructor() : this(
             id = 0,
+            timestamp = now,
             backdropPath = EMPTY_STRING,
             createdBy = listOf(),
             episodeRunTime = listOf(),

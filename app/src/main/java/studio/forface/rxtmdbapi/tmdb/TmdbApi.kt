@@ -2,7 +2,6 @@
 
 package studio.forface.rxtmdbapi.tmdb
 
-import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -63,7 +62,9 @@ class TmdbApi(
     val config          by lazy { getService<TmdbConfig>() }
     val movies          by lazy { getService<TmdbMovies>() }
     val search          by lazy { getService<TmdbSearch>() }
-    val tvShows         by lazy { getService<TmdbTv>() }
+    val tvShows         by lazy { getService<TmdbTvShows>() }
+    val tvSeasons       by lazy { getService<TmdbTvSeasons>() }
+    val tvEpisodes      by lazy { getService<TmdbTvEpisodes>() }
 
 
     private fun setSession( session: Session ) {

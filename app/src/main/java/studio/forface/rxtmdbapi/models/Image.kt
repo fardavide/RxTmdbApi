@@ -10,7 +10,10 @@ data class Images (
     var backdrops: List<Image> = listOf(),
 
     @SerializedName(Fields.POSTERS)     @ColumnInfo(name = "${Fields.IMAGES}_${Fields.POSTERS}")
-    var posters:    List<Image> = listOf()
+    var posters:    List<Image> = listOf(),
+
+    @SerializedName(Fields.STILLS)      @ColumnInfo(name = "${Fields.IMAGES}_${Fields.STILLS}")
+    var stills:     List<Image> = listOf()
 
 )
 

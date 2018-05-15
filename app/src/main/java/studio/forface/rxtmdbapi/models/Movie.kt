@@ -7,8 +7,10 @@ import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.ModelTypeConverters
 import studio.forface.rxtmdbapi.models.Movie.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
+import studio.forface.rxtmdbapi.utils.now
 import studio.forface.rxtmdbapi.utils.plus
 import studio.forface.rxtmdbapi.utils.timeInMillis
+import java.sql.Timestamp
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -21,6 +23,9 @@ data class Movie (
     @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
     @PrimaryKey
     override var id: Int = 0,
+
+    /* Local value */                               @ColumnInfo(name = Fields.TIMESTAMP)
+    var timestamp: Long = now,
 
     @SerializedName(Fields.ADULT)                   @ColumnInfo(name = Fields.ADULT)
     var adult: Boolean = false,
@@ -162,6 +167,7 @@ data class Movie (
 
     constructor() : this(
             id = 0,
+            timestamp = now,
             adult = false,
             backdropPath = EMPTY_STRING,
             belongsToCollection = MovieCollection(),

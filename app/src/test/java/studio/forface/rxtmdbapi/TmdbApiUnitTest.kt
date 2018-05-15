@@ -1,5 +1,7 @@
 package studio.forface.rxtmdbapi
 
+import io.reactivex.Single
+import okhttp3.ResponseBody
 import org.junit.Test
 import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
@@ -9,6 +11,8 @@ import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
 import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
 
+
+private const val TV_SHOW_ID_SIMPSON = 456
 
 class TmdbApiUnitTest {
 
@@ -25,6 +29,8 @@ class TmdbApiUnitTest {
     private val tmdbMovies          get() = tmdbApi.movies
     private val tmdbSearch          get() = tmdbApi.search
     private val tmdbTvShows         get() = tmdbApi.tvShows
+    private val tmdbTvSeasons       get() = tmdbApi.tvSeasons
+    private val tmdbTvEpisodes      get() = tmdbApi.tvEpisodes
 
 
     // Auth.
@@ -208,11 +214,68 @@ class TmdbApiUnitTest {
         println(page.toString())
     }
 
-    // Tv.
-    @Test fun getTvSomething() {
-        val result = tmdbTvShows.getOnTheAir()
-                .blockingGet()
-
-        println( result )
+    // Tv shows.
+    @Test fun tvShows() {
+        tmdbTvShows.run { testSinglesStream(
+                getDetails              ( TV_SHOW_ID_SIMPSON ),
+                getAlternativeTitles    ( TV_SHOW_ID_SIMPSON ),
+                getChanges              ( TV_SHOW_ID_SIMPSON ),
+                getContentRatings       ( TV_SHOW_ID_SIMPSON ),
+                getCredits              ( TV_SHOW_ID_SIMPSON ),
+                getExternalIds          ( TV_SHOW_ID_SIMPSON ),
+                getImages               ( TV_SHOW_ID_SIMPSON ),
+                getKeywords             ( TV_SHOW_ID_SIMPSON ),
+                getVideos               ( TV_SHOW_ID_SIMPSON ),
+                getTranslations         ( TV_SHOW_ID_SIMPSON ),
+                getRecommendations      ( TV_SHOW_ID_SIMPSON ),
+                getSimilar              ( TV_SHOW_ID_SIMPSON ),
+                getReviews              ( TV_SHOW_ID_SIMPSON ),
+                getScreenedTheatrically ( TV_SHOW_ID_SIMPSON ),
+                getLatest(),
+                getPopular(),
+                getTopRated(),
+                getAiringToday(),
+                getOnTheAir(),
+                rateTvShow              ( TV_SHOW_ID_SIMPSON, 6 ),
+                removeTvShowRating      ( TV_SHOW_ID_SIMPSON )
+        ) }
     }
+
+    // Tv season.
+    @Test fun tvSeasons() {
+        tmdbTvSeasons.run { testSinglesStream(
+                getDetails      ( TV_SHOW_ID_SIMPSON, seasonNumber = 26 ),
+                getCredits      ( TV_SHOW_ID_SIMPSON, seasonNumber = 26 ),
+                getExternalIds  ( TV_SHOW_ID_SIMPSON, seasonNumber = 26 ),
+                getImages       ( TV_SHOW_ID_SIMPSON, seasonNumber = 26 ),
+                getVideos       ( TV_SHOW_ID_SIMPSON, seasonNumber = 26 )
+        ) }
+    }
+
+    //Tv episode.
+    @Test fun tvEpisodes() {
+        tmdbTvEpisodes.run { testSinglesStream (
+                getDetails              ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
+                getCredits              ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
+                getExternalIds          ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
+                getImages               ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
+                getVideos               ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
+                rateTvEpisode           ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1, value =  6 ),
+                removeTvEpisodeRating   ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 )
+        ) }
+    }
+
+}
+
+private fun testSinglesStream (vararg singles: Single<*>) {
+    var last = singles.first().test
+    singles.drop(1).forEach { single ->
+        last = last.flatMap { single.test }
+    }
+    last.blockingGet()
+}
+
+private val <T> Single<T>.test get() = doOnSuccess {
+    val string = if ( it is ResponseBody ) it.string() else it.toString()
+    println( "$string\n" )
 }

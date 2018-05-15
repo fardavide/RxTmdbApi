@@ -12,19 +12,20 @@ import studio.forface.rxtmdbapi.utils.DateQuery
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
-private const val BASE_PATH = "tv"
-private const val TV_ID = "tv_id"
-interface TmdbTv {
+internal const val TV_PATH = "tv"
+internal const val TV_ID = "tv_id"
+interface TmdbTvShows {
 
     /**
      * Get the primary information about a Tv show.
-     * Supports append_to_response. Read more about this: https://developers.themoviedb.org/3/getting-started/append-to-response .
+     * Supports append_to_response. Read more about this here:
+     * https://developers.themoviedb.org/3/getting-started/append-to-response .
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @param extras all the extra information we want to get for the queried [TvShow].
      * @see Extras
      * @return a [Single] of [TvShow].
      */
-    @GET("$BASE_PATH/{$TV_ID}")
+    @GET("$TV_PATH/{$TV_ID}")
     fun getDetails(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language,
@@ -36,7 +37,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [AlternativeTitles].
      */
-    @GET("$BASE_PATH/{$TV_ID}/alternative_titles")
+    @GET("$TV_PATH/{$TV_ID}/alternative_titles")
     fun getAlternativeTitles(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -51,7 +52,7 @@ interface TmdbTv {
      * @param endDate use [DateQuery] for build a formatted String.
      * @return a [Single] of [ChangeList].
      */
-    @GET("$BASE_PATH/{$TV_ID}/changes")
+    @GET("$TV_PATH/{$TV_ID}/changes")
     fun getChanges(
             @Path(TV_ID)                          id: Int,
             @Query("page")                  page: Int? = 1,
@@ -64,7 +65,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ContentRatings].
      */
-    @GET("$BASE_PATH/{$TV_ID}/content_ratings")
+    @GET("$TV_PATH/{$TV_ID}/content_ratings")
     fun getContentRatings(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -75,7 +76,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [Credits].
      */
-    @GET("$BASE_PATH/{$TV_ID}/credits")
+    @GET("$TV_PATH/{$TV_ID}/credits")
     fun getCredits(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -88,13 +89,14 @@ interface TmdbTv {
      * - Instagram
      * - Twitter
      * - Tvdb
-     * - Freebase mid
-     * - Freebase id
-     * - Tvrage
+     * - Freebase mid*
+     * - Freebase id*
+     * - Tvrage*
+     * *Defunct or no longer available as a service.
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return [Single] of [ExternalIds].
      */
-    @GET("$BASE_PATH/{$TV_ID}/external_ids")
+    @GET("$TV_PATH/{$TV_ID}/external_ids")
     fun getExternalIds(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -109,7 +111,7 @@ interface TmdbTv {
      * @param includeImageLanguages a list of SO 639-1 values.
      * @return a [Single] of [Images].
      */
-    @GET("$BASE_PATH/{$TV_ID}/images")
+    @GET("$TV_PATH/{$TV_ID}/images")
     fun getImages(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language,
@@ -120,7 +122,7 @@ interface TmdbTv {
      * Get the keywords that have been added to a Tv show.
      * @return a [Single] of [Keywords].
      */
-    @GET("$BASE_PATH/{$TV_ID}/keywords")
+    @GET("$TV_PATH/{$TV_ID}/keywords")
     fun getKeywords(
             @Path(TV_ID)                      id: Int
     ) : Single<Keywords>
@@ -130,7 +132,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [Videos].
      */
-    @GET("$BASE_PATH/{$TV_ID}/videos")
+    @GET("$TV_PATH/{$TV_ID}/videos")
     fun getVideos(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -140,7 +142,7 @@ interface TmdbTv {
      * Get a list of translations that have been created for a Tv show.
      * @return a [Single] of [Translations] of [TvShow].
      */
-    @GET("$BASE_PATH/{$TV_ID}/translations")
+    @GET("$TV_PATH/{$TV_ID}/translations")
     fun getTranslations(
             @Path(TV_ID)                          id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -152,7 +154,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/{$TV_ID}/recommendations")
+    @GET("$TV_PATH/{$TV_ID}/recommendations")
     fun getRecommendations(
             @Path(TV_ID)                         id: Int,
             @Query("page")                  page: Int? = 1,
@@ -165,7 +167,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/{$TV_ID}/similar")
+    @GET("$TV_PATH/{$TV_ID}/similar")
     fun getSimilar(
             @Path(TV_ID)                         id: Int,
             @Query("page")                  page: Int? = 1,
@@ -178,7 +180,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [Review].
      */
-    @GET("$BASE_PATH/{$TV_ID}/reviews")
+    @GET("$TV_PATH/{$TV_ID}/reviews")
     fun getReviews(
             @Path(TV_ID)                        id: Int,
             @Query("page")                  page: Int? = 1,
@@ -189,7 +191,7 @@ interface TmdbTv {
      * Get a list of seasons or episodes that have been screened in a film festival or theatre.
      * @return a [Single] of [TvEpisodeReferences].
      */
-    @GET("$BASE_PATH/{$TV_ID}/screened_theatrically")
+    @GET("$TV_PATH/{$TV_ID}/screened_theatrically")
     fun getScreenedTheatrically(
             @Path(TV_ID)                        id: Int
     ) : Single<TvEpisodeReferences>
@@ -199,7 +201,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [TvShow].
      */
-    @GET("$BASE_PATH/latest")
+    @GET("$TV_PATH/latest")
     fun getLatest(
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<TvShow>
@@ -210,7 +212,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/popular")
+    @GET("$TV_PATH/popular")
     fun getPopular(
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -222,7 +224,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/top_rated")
+    @GET("$TV_PATH/top_rated")
     fun getTopRated(
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -235,7 +237,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/airing_today")
+    @GET("$TV_PATH/airing_today")
     fun getAiringToday(
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -248,7 +250,7 @@ interface TmdbTv {
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/on_the_air")
+    @GET("$TV_PATH/on_the_air")
     fun getOnTheAir(
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
@@ -262,7 +264,7 @@ interface TmdbTv {
      * The value is expected to be between 0.5 and 10.0 and the decimal should be 0 or 5.
      * @return a [Single] of [ResponseBody].
      */
-    @POST("$BASE_PATH/{$TV_ID}/rating")
+    @POST("$TV_PATH/{$TV_ID}/rating")
     @FormUrlEncoded
     fun rateTvShow(
             @Path(TV_ID)                         id: Int,
@@ -275,7 +277,7 @@ interface TmdbTv {
      * https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id .
      * @return a [Single] of [ResponseBody].
      */
-    @DELETE("$BASE_PATH/{$TV_ID}/rating")
+    @DELETE("$TV_PATH/{$TV_ID}/rating")
     fun removeTvShowRating(
             @Path(TV_ID)                         id: Int
     ) : Single<ResponseBody>
