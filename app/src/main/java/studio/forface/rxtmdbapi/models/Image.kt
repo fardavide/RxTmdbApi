@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Images (
 
-    @SerializedName(Fields.BACKDROPS)   @ColumnInfo(name = "${Fields.IMAGES}_${Fields.BACKDROPS}")
+    @SerializedName(Fields.BACKDROPS)   @ColumnInfo(name = Fields.BACKDROPS)
     var backdrops: List<Image> = listOf(),
 
-    @SerializedName(Fields.POSTERS)     @ColumnInfo(name = "${Fields.IMAGES}_${Fields.POSTERS}")
+    @SerializedName(Fields.POSTERS)     @ColumnInfo(name = Fields.POSTERS)
     var posters:    List<Image> = listOf(),
 
-    @SerializedName(Fields.STILLS)      @ColumnInfo(name = "${Fields.IMAGES}_${Fields.STILLS}")
+    @SerializedName(Fields.STILLS)      @ColumnInfo(name = Fields.STILLS)
     var stills:     List<Image> = listOf()
 
 )

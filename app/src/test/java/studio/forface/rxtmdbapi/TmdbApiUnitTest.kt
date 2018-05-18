@@ -190,28 +190,16 @@ class TmdbApiUnitTest {
     }
 
     // Search.
-    @Test fun searchMovie() {
-        val page = tmdbSearch.searchMovie(query = "titanic")
-                .blockingGet()
-
-        val firstResult = page.results.first()
-        println( firstResult )
-        //println( Date(firstResult.releaseDate).toString() )
-    }
-
-    @Test fun searchPeople() {
-        val page = tmdbSearch.searchPeople(query = "muffy")
-                .blockingGet()
-
-        val firstResult = page.results.first()
-        println( firstResult )
-    }
-
-    @Test fun searchTv() {
-        val page = tmdbSearch.searchTv(query = "griffin")
-                .blockingGet()
-
-        println(page.toString())
+    @Test fun search() {
+        tmdbSearch.run { testSinglesStream(
+                multiSearch(        "deep" ),
+                searchCompanies(    "test" ),
+                searchCollections(  "test" ),
+                searchLanguages(    "ita" ),
+                searchMovies(       "simps"),
+                searchPeople(       "dicaprio" ),
+                searchTvShows(      "griffin" )
+        ) }
     }
 
     // Tv shows.

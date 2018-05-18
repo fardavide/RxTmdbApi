@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Keywords(
 
-    @SerializedName(Fields.KEYWORDS)    @ColumnInfo(name = "${Fields.KEYWORDS}_${Fields.KEYWORDS}")
+    @SerializedName(Fields.KEYWORDS)    @ColumnInfo(name = Fields.KEYWORDS)
     var keywords: List<Keyword> = listOf()
 
 )

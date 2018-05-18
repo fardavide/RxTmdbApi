@@ -10,7 +10,6 @@ import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.now
 import studio.forface.rxtmdbapi.utils.plus
 import studio.forface.rxtmdbapi.utils.timeInMillis
-import java.sql.Timestamp
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -33,7 +32,7 @@ data class Movie (
     @SerializedName(Fields.BACKDROP_PATH)           @ColumnInfo(name = Fields.BACKDROP_PATH)
     var backdropPath: String = EMPTY_STRING,
 
-    @SerializedName(Fields.BELONGS_TO_COLLECTION)   @Embedded
+    @SerializedName(Fields.BELONGS_TO_COLLECTION)   @Embedded(prefix = Fields.BELONGS_TO_COLLECTION)
     var belongsToCollection: MovieCollection = MovieCollection(),
 
     @SerializedName(Fields.BUDGET)                  @ColumnInfo(name = Fields.BUDGET)
@@ -99,7 +98,7 @@ data class Movie (
     @SerializedName(Fields.VOTE_COUNT)              @ColumnInfo(name = Fields.VOTE_COUNT)
     var voteCount: Int = 0,
 
-    @SerializedName(Fields.DATES)                   @Embedded
+    @SerializedName(Fields.DATES)                   @Embedded(prefix = Fields.DATES)
     var expectedRelease: ExpectedDate = ExpectedDate(),
 
 
@@ -108,19 +107,19 @@ data class Movie (
     @SerializedName(Fields.ALTERNATIVE_TITLES)      @Ignore
     var _alternativeTitles: AlternativeTitles = AlternativeTitles(),
 
-    @SerializedName(Fields.CHANGES)                 @Embedded
+    @SerializedName(Fields.CHANGES)                 @Embedded(prefix = Fields.CHANGES)
     var _changes: ChangeList = ChangeList(),
 
-    @SerializedName(Fields.CREDITS)                 @Embedded
+    @SerializedName(Fields.CREDITS)                 @Embedded(prefix = Fields.CREDITS)
     var _credits: Credits = Credits(),
 
-    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded
+    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded(prefix = Fields.EXTERNAL_IDS)
     var externalIds: ExternalIds = ExternalIds(),
 
-    @SerializedName(Fields.IMAGES)                  @Embedded
+    @SerializedName(Fields.IMAGES)                  @Embedded(prefix = Fields.IMAGES)
     var _images: Images = Images(),
 
-    @SerializedName(Fields.KEYWORDS)                @Embedded
+    @SerializedName(Fields.KEYWORDS)                @Embedded(prefix = Fields.KEYWORDS)
     var _keywords: Keywords = Keywords(),
 
     @SerializedName(Fields.LISTS)                   @Ignore
@@ -129,7 +128,7 @@ data class Movie (
     @SerializedName(Fields.RECOMMENDATIONS)         @Ignore
     var recommendations: ResultPage<Movie>? = null,
 
-    @SerializedName(Fields.RELEASE_DATES)           @Embedded
+    @SerializedName(Fields.RELEASE_DATES)           @Embedded(prefix = Fields.RELEASE_DATES)
     var releaseDates: ReleaseDates = ReleaseDates(),
 
     @SerializedName(Fields.REVIEWS)                 @Ignore
@@ -141,7 +140,7 @@ data class Movie (
     @SerializedName(Fields.TRANSLATIONS)            @Ignore
     var _translations: Translations<Movie> = Translations(),
 
-    @SerializedName(Fields.VIDEOS)                  @Embedded
+    @SerializedName(Fields.VIDEOS)                  @Embedded(prefix = Fields.VIDEOS)
     var _videos: Videos = Videos()
 
 

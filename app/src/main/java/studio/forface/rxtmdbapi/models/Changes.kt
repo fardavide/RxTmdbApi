@@ -5,10 +5,9 @@ import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.timeInMillis
 
 
-private const val CHANGE_LIST = "change_list"
 data class ChangeList (
 
-    @SerializedName(Fields.CHANGES) @ColumnInfo(name = "${CHANGE_LIST}_${Fields.CHANGES}")
+    @SerializedName(Fields.CHANGES) @ColumnInfo(name = Fields.CHANGES)
     var changes: List<Changes> = listOf()
 
 )

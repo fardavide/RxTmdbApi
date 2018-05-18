@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Videos (
 
-    @SerializedName(Fields.RESULTS) @ColumnInfo(name = "${Fields.VIDEOS}_${Fields.RESULTS}")
+    @SerializedName(Fields.RESULTS) @ColumnInfo(name = Fields.RESULTS)
     var results: List<Video> = listOf()
 
 )

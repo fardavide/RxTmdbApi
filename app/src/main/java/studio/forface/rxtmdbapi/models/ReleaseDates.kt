@@ -11,7 +11,7 @@ data class ReleaseDates (
     @SerializedName(Fields.ID)      @Ignore
     var movieId: Int = 0,
 
-    @SerializedName(Fields.RESULTS) @ColumnInfo(name = "${Fields.RELEASE_DATES}_${Fields.RESULTS}")
+    @SerializedName(Fields.RESULTS) @ColumnInfo(name = Fields.RESULTS)
     var regionReleases: List<RegionRelease> = listOf()
 
 )

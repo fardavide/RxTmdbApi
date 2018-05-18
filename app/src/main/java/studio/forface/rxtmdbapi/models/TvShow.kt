@@ -106,25 +106,25 @@ data class TvShow(
     @SerializedName(Fields.ALTERNATIVE_TITLES)      @Ignore
     var _alternativeTitles: AlternativeTitles = AlternativeTitles(),
 
-    @SerializedName(Fields.CHANGES)                 @Embedded
+    @SerializedName(Fields.CHANGES)                 @Embedded(prefix = Fields.CHANGES)
     var _changes: ChangeList = ChangeList(),
 
-    @SerializedName(Fields.CREDITS)                 @Embedded
+    @SerializedName(Fields.CREDITS)                 @Embedded(prefix = Fields.CREDITS)
     var _credits: Credits = Credits(),
 
-    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded
+    @SerializedName(Fields.EXTERNAL_IDS)            @Embedded(prefix = Fields.EXTERNAL_IDS)
     var externalIds: ExternalIds = ExternalIds(),
 
-    @SerializedName(Fields.IMAGES)                  @Embedded
+    @SerializedName(Fields.IMAGES)                  @Embedded(prefix = Fields.IMAGES)
     var _images: Images = Images(),
 
-    @SerializedName(Fields.KEYWORDS)                @Embedded
+    @SerializedName(Fields.KEYWORDS)                @Embedded(prefix = Fields.KEYWORDS)
     var _keywords: Keywords = Keywords(),
 
     @SerializedName(Fields.RECOMMENDATIONS)         @Ignore
     var recommendations: ResultPage<Movie>? = null,
 
-    @SerializedName(Fields.RELEASE_DATES)           @Embedded
+    @SerializedName(Fields.RELEASE_DATES)           @Embedded(prefix = Fields.RELEASE_DATES)
     var releaseDates: ReleaseDates = ReleaseDates(),
 
     @SerializedName(Fields.REVIEWS)                 @Ignore
@@ -136,7 +136,7 @@ data class TvShow(
     @SerializedName(Fields.TRANSLATIONS)            @Ignore
     var _translations: Translations<Movie> = Translations(),
 
-    @SerializedName(Fields.VIDEOS)                  @Embedded
+    @SerializedName(Fields.VIDEOS)                  @Embedded(prefix = Fields.VIDEOS)
     var _videos: Videos = Videos()
 
 
