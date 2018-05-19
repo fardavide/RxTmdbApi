@@ -144,7 +144,7 @@ data class Movie (
     var _videos: Videos = Videos()
 
 
-) : NamedIdElement, Pageable {
+) : Media( MediaType.MOVIE.name ), NamedIdElement, Pageable {
 
     companion object {
         internal const val TABLE_NAME = "movies"

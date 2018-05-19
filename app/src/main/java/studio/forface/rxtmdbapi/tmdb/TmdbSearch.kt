@@ -19,7 +19,7 @@ interface TmdbSearch {
      * @param page specify which page to query. Minimum 1, maximum 1000.
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @param includeAdults choose whether to include adult (pornography) content in the results.
-     * @return a [Single] of [ResultPage] of [Pageable].
+     * @return a [Single] of [ResultPage] of [Media].
      */
     @GET("$BASE_PATH/multi")
     fun multiSearch(
@@ -28,7 +28,7 @@ interface TmdbSearch {
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults,
             @Query("region")                region: String? = null
-    ): Single<ResultPage<Pageable>>
+    ): Single<ResultPage<Media>>
 
     /**
      * Search for companies.

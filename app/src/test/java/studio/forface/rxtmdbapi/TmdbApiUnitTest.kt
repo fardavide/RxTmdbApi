@@ -192,7 +192,8 @@ class TmdbApiUnitTest {
     // Search.
     @Test fun search() {
         tmdbSearch.run { testSinglesStream(
-                multiSearch(        "deep" ),
+                multiSearch(        "dicapr" )
+                        .map { it.results.joinToString { it.javaClass.simpleName } },
                 searchCompanies(    "test" ),
                 searchCollections(  "test" ),
                 searchLanguages(    "ita" ),

@@ -5,15 +5,12 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import android.util.Log
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import studio.forface.rxtmdbapi.models.Session
 import studio.forface.rxtmdbapi.room.LocalDatabase
-import studio.forface.rxtmdbapi.room.MoviesDao
 import studio.forface.rxtmdbapi.room.updateOrInsertAsync
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
-import java.io.IOException
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -31,6 +28,7 @@ class RoomInstrumentedTest {
             InstrumentationRegistry.getTargetContext(), LocalDatabase::class.java ).build()
 
     private val moviesDao   by lazy { localDb.moviesDao }
+    private val peopleDao   by lazy { localDb.peopleDao }
     private val sessionsDao by lazy { localDb.sessionsDao }
     private val tvShowsDao  by lazy { localDb.tvShowsDao }
 
@@ -41,7 +39,7 @@ class RoomInstrumentedTest {
     }
 
     // Movies.
-    @Test fun writeMovieAndRead() {
+    @Test fun movies() {
         val movie = tmdbApi.movies.getDetails(299536 )
                 .blockingGet()
 
@@ -54,8 +52,25 @@ class RoomInstrumentedTest {
         println( byId )
     }
 
+    // People.
+    @Test fun people() {
+        var id = 0
+        val person = tmdbApi.search.searchPeople("dicaprio")
+                .map { it.results.first() }
+                .doAfterSuccess { id = it.id }
+                .blockingGet()
+
+        peopleDao.updateOrInsertAsync( person )
+                .blockingAwait()
+
+        val byId = peopleDao.get( id )
+                .blockingGet()
+
+        println( byId )
+    }
+
     // TvShows.
-    @Test fun writeTvShowAndRead() {
+    @Test fun thShows() {
         val tvShow = tmdbApi.tvShows.getDetails( 31911 )
                 .blockingGet()
 

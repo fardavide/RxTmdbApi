@@ -9,6 +9,9 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import studio.forface.rxtmdbapi.MediaDeserializer
+import studio.forface.rxtmdbapi.MediaSerializer
+import studio.forface.rxtmdbapi.models.Media
 import studio.forface.rxtmdbapi.models.Session
 
 /**
@@ -42,6 +45,8 @@ class TmdbApi(
             .addInterceptor( interceptor )
 
     private val gson get() = GsonBuilder()
+            .registerTypeAdapter( Media::class.java, MediaSerializer() )
+            .registerTypeAdapter( Media::class.java, MediaDeserializer() )
             .create()
 
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()

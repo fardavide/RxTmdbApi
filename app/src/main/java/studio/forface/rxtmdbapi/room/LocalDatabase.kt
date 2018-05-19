@@ -9,6 +9,7 @@ import studio.forface.rxtmdbapi.models.*
     Company::class,
     Movie::class,
     MovieCollection::class,
+    Person::class,
     Session::class,
     TvShow::class
 ], version = 1)
@@ -17,6 +18,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract val companiesDao:          CompaniesDao
     abstract val moviesDao:             MoviesDao
     abstract val movieCollectionsDao:   MovieCollectionsDao
+    abstract val peopleDao:             PeopleDao
     abstract val sessionsDao:           SessionsDao
     abstract val tvShowsDao:            TvShowsDao
 
