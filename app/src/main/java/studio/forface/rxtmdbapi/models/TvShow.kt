@@ -4,7 +4,7 @@ package studio.forface.rxtmdbapi.models
 
 import android.arch.persistence.room.*
 import com.google.gson.annotations.SerializedName
-import studio.forface.rxtmdbapi.ModelTypeConverters
+import studio.forface.rxtmdbapi.utils.ModelTypeConverters
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.now
 import studio.forface.rxtmdbapi.utils.plus

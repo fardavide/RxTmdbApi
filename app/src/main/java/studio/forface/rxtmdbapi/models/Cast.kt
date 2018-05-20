@@ -3,7 +3,7 @@ package studio.forface.rxtmdbapi.models
 import com.google.gson.annotations.SerializedName
 
 
-data class Cast(
+data class Cast (
 
     @SerializedName("cast_id")          val castId: Int,
     @SerializedName("character")        val character: String,

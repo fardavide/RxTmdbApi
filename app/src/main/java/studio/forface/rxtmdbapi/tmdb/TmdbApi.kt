@@ -9,10 +9,10 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import studio.forface.rxtmdbapi.MediaDeserializer
-import studio.forface.rxtmdbapi.MediaSerializer
 import studio.forface.rxtmdbapi.models.Media
 import studio.forface.rxtmdbapi.models.Session
+import studio.forface.rxtmdbapi.utils.MediaDeserializer
+import studio.forface.rxtmdbapi.utils.MediaSerializer
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -45,8 +45,8 @@ class TmdbApi(
             .addInterceptor( interceptor )
 
     private val gson get() = GsonBuilder()
-            .registerTypeAdapter( Media::class.java, MediaSerializer() )
-            .registerTypeAdapter( Media::class.java, MediaDeserializer() )
+            .registerTypeAdapter( Media::class.java, MediaSerializer())
+            .registerTypeAdapter( Media::class.java, MediaDeserializer())
             .create()
 
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
@@ -65,7 +65,12 @@ class TmdbApi(
     val changes         by lazy { getService<TmdbChanges>() }
     val collections     by lazy { getService<TmdbCollections>() }
     val config          by lazy { getService<TmdbConfig>() }
+    val discover        by lazy { getService<TmdbDiscover>() }
+    val keywords        by lazy { getService<TmdbKeywords>() }
     val movies          by lazy { getService<TmdbMovies>() }
+    val networks        by lazy { getService<TmdbNetworks>() }
+    val people          by lazy { getService<TmdbPeople>() }
+    val reviews         by lazy { getService<TmdbReviews>() }
     val search          by lazy { getService<TmdbSearch>() }
     val tvShows         by lazy { getService<TmdbTvShows>() }
     val tvSeasons       by lazy { getService<TmdbTvSeasons>() }

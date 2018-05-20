@@ -5,10 +5,10 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import studio.forface.rxtmdbapi.FavoriteRequest
-import studio.forface.rxtmdbapi.WatchlistRequest
 import studio.forface.rxtmdbapi.models.*
+import studio.forface.rxtmdbapi.utils.FavoriteRequest
 import studio.forface.rxtmdbapi.utils.Sorting
+import studio.forface.rxtmdbapi.utils.WatchlistRequest
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).

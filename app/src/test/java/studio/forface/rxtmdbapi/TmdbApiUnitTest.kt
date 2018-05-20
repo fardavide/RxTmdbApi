@@ -11,7 +11,9 @@ import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
 import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
 
-
+private const val MOVIE_ID_BLADE = 335984
+private const val NETWORK_ID_RANDOM = "213"
+private const val PERSON_ID_DICAPRIO = 6193
 private const val TV_SHOW_ID_SIMPSON = 456
 
 class TmdbApiUnitTest {
@@ -27,6 +29,9 @@ class TmdbApiUnitTest {
     private val tmdbCollections     get() = tmdbApi.collections
     private val tmdbConfig          get() = tmdbApi.config
     private val tmdbMovies          get() = tmdbApi.movies
+    private val tmdbNetworks        get() = tmdbApi.networks
+    private val tmdbPeople          get() = tmdbApi.people
+    private val tmdbReviews         get() = tmdbApi.reviews
     private val tmdbSearch          get() = tmdbApi.search
     private val tmdbTvShows         get() = tmdbApi.tvShows
     private val tmdbTvSeasons       get() = tmdbApi.tvSeasons
@@ -139,54 +144,65 @@ class TmdbApiUnitTest {
     }
 
     // Movies.
-    @Test fun getMovieDetails() {
-        val movie = tmdbMovies.getDetails( id = 335984, extras = Extras( VIDEOS, IMAGES, KEYWORDS, REVIEWS, CREDITS ))
-                .blockingGet()
-
-        println( movie.belongsToCollection )
+    @Test fun movies() {
+        tmdbMovies.run { testSinglesStream(
+                getDetails(             MOVIE_ID_BLADE,
+                        extras = Extras( VIDEOS, IMAGES, KEYWORDS, REVIEWS, CREDITS )),
+                getAlternativeTitles(   MOVIE_ID_BLADE ),
+                getChanges(             MOVIE_ID_BLADE ),
+                getCredits(             MOVIE_ID_BLADE ),
+                getExternalIds(         MOVIE_ID_BLADE ),
+                getImages(              MOVIE_ID_BLADE ),
+                getKeywords(            MOVIE_ID_BLADE ),
+                getReleaseDates(        MOVIE_ID_BLADE ),
+                getVideos(              MOVIE_ID_BLADE ),
+                getTranslations(        MOVIE_ID_BLADE ),
+                getRecommendations(     MOVIE_ID_BLADE ),
+                getSimilar(             MOVIE_ID_BLADE ),
+                getReviews(             MOVIE_ID_BLADE ),
+                // FIXME: getLists(               MOVIE_ID_BLADE ),
+                getLatest(),
+                getNowPlaying(),
+                getPopular(),
+                getTopRated(),
+                getUpcoming(),
+                rateMovie(          MOVIE_ID_BLADE, 6 ),
+                removeMovieRating(  MOVIE_ID_BLADE )
+        ) }
     }
 
-    @Test fun getLatestMovie() {
-        val movie = tmdbMovies.getLatest()
-                .blockingGet()
-
-        println( movie )
+    // Networks.
+    @Test fun networks() {
+        tmdbNetworks.run { testSinglesStream(
+                getDetails(             NETWORK_ID_RANDOM ),
+                getAlternativeNames(    NETWORK_ID_RANDOM ),
+                getImages(              NETWORK_ID_RANDOM )
+                        .map { it.all }
+        ) }
     }
 
-    @Test fun getPopularMovies() {
-        val page = tmdbMovies.getPopular( page = 3, language = "it", region = "IT" )
-                .blockingGet()
-
-        println( page.results.joinToString { it.name } )
+    // People.
+    @Test fun people() {
+        tmdbPeople.run { testSinglesStream(
+                getDetails(         PERSON_ID_DICAPRIO ),
+                getChanges(         PERSON_ID_DICAPRIO ),
+                getMovieCredits(    PERSON_ID_DICAPRIO ),
+                getTvCredits(       PERSON_ID_DICAPRIO ),
+                getCombinedCredits( PERSON_ID_DICAPRIO ),
+                getExternalIds(     PERSON_ID_DICAPRIO ),
+                getImages(          PERSON_ID_DICAPRIO ),
+                getTaggedImages(    PERSON_ID_DICAPRIO ),
+                getTranslations(    PERSON_ID_DICAPRIO ),
+                getLatest(),
+                getPopular()
+        ) }
     }
 
-    @Test fun getTopRatedMovies() {
-        val page = tmdbMovies.getTopRated()
-                .blockingGet()
-
-        println( page.results.joinToString { it.name } )
-    }
-
-    @Test fun getUpcomingMovies() {
-        val page = tmdbMovies.getUpcoming()
-                .blockingGet()
-
-        println( page.results.joinToString { it.name } )
-    }
-
-    @Test fun getMovieSomething() {
-        val item = tmdbMovies.getRecommendations(335984)
-                .blockingGet()
-
-        println( item )
-    }
-
-    @Test fun rateMovie() {
-        tmdbAuth.createGuessSession().blockingGet()
-        val response = tmdbMovies.rateMovie(181808, 8.5)
-                .blockingGet()
-
-        println( response.string() )
+    // Reviews.
+    @Test fun reviews() {
+        tmdbReviews.run { testSinglesStream(
+                getDetails( "5488c29bc3a3686f4a00004a" )
+        ) }
     }
 
     // Search.

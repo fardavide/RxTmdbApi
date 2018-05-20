@@ -1,4 +1,4 @@
-package studio.forface.rxtmdbapi
+package studio.forface.rxtmdbapi.utils
 
 import com.google.gson.annotations.SerializedName
 

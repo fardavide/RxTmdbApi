@@ -3,7 +3,9 @@ package studio.forface.rxtmdbapi.models
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import studio.forface.rxtmdbapi.utils.ModelTypeConverters
 import studio.forface.rxtmdbapi.models.Person.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.timeInMillis
@@ -13,6 +15,7 @@ import studio.forface.rxtmdbapi.utils.timeInMillis
  */
 
 @Entity(tableName = TABLE_NAME)
+@TypeConverters( ModelTypeConverters::class )
 data class Person(
 
     @SerializedName(Fields.ID)                  @ColumnInfo(name = Fields.ID)
@@ -35,7 +38,7 @@ data class Person(
     var _deathday: String = EMPTY_STRING,
 
     @SerializedName(Fields.GENDER)              @ColumnInfo(name = Fields.GENDER)
-    var gender: Int = 0,
+    var _gender: Int = 0,
 
     @SerializedName(Fields.HOMEPAGE)            @ColumnInfo(name = Fields.HOMEPAGE)
     var homepage: String = EMPTY_STRING,
@@ -63,5 +66,18 @@ data class Person(
 
     val birthday get() = _birthday.timeInMillis
     val deathday get() = _deathday.timeInMillis
+    val gender   get() = Gender.fromValue( _gender )
 
+}
+
+enum class Gender (val value: Int) {
+    NOT_SET (0),
+    MALE    (1),
+    FEMALE  (2);
+
+    companion object {
+        val fromValue: (Int) -> Gender get() = { value ->
+            values().find { it.value == value } ?: NOT_SET
+        }
+    }
 }

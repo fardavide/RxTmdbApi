@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package studio.forface.rxtmdbapi
+package studio.forface.rxtmdbapi.utils
 
 import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson
@@ -16,7 +16,7 @@ class ModelTypeConverters {
     val gson = Gson()
 
     @TypeConverter fun String?.alternativeTitles():                     List<AlternativeTitles> = toList()
-    @TypeConverter fun List<AlternativeTitle>?.alternativeTitles():     String = toJsonString()
+    @TypeConverter fun List<AlternativeName>?.alternativeTitles():     String = toJsonString()
 
     @TypeConverter fun String?.changesList():                           List<Changes> = toList()
     @TypeConverter fun List<Changes>?.changesList():                    String = toJsonString()

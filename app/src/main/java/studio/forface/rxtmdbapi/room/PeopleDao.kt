@@ -16,10 +16,10 @@ import studio.forface.rxtmdbapi.models.Person
 @Dao
 interface PeopleDao : IntIdDao<Person> {
 
-    @Query("SELECT * from ${Movie.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
+    @Query("SELECT * from ${Person.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
     override fun get( id: Int ): Single<Person>
 
-    @Query("SELECT * from ${Movie.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
+    @Query("SELECT * from ${Person.TABLE_NAME} where ${Fields.ID} = :id LIMIT 1")
     override fun observe( id: Int ): Flowable<Person>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

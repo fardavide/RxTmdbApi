@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import studio.forface.rxtmdbapi.ModelTypeConverters
+import studio.forface.rxtmdbapi.utils.ModelTypeConverters
 import studio.forface.rxtmdbapi.models.MovieCollection.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.timeInMillis
