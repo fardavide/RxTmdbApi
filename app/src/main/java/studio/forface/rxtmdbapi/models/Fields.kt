@@ -14,6 +14,7 @@ object Fields {
     internal const val BIRTHDAY =               "birthday"
     internal const val BUDGET =                 "budget"
     internal const val CAST =                   "cast"
+    internal const val CHANGE_KEYS =            "change_keys"
     internal const val CHANGES =                "changes"
     internal const val CREATED_BY =             "created_by"
     internal const val CREDITS =                "credits"
@@ -93,6 +94,16 @@ object Fields {
     internal const val VOTE_COUNT =             "vote_count"
     internal const val WIDTH =                  "width"
 
+    // Images config.
+    internal const val BASE_URL =               "base_url"
+    internal const val SECURE_BASE_URL =        "secure_base_url"
+    internal const val BACKDROP_SIZES =         "backdrop_sizes"
+    internal const val LOGO_SIZES =             "logo_sizes"
+    internal const val POSTER_SIZES =           "poster_sizes"
+    internal const val PROFILE_SIZES =          "profile_sizes"
+    internal const val STILL_SIZES =            "still_sizes"
+
+    // External IDS.
     internal const val FACEBOOK_ID =            "facebook_id"
     internal const val FREEBASE_ID =            "freebase_id"
     internal const val FREEBASE_MID =           "freebase_mid"

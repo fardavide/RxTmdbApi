@@ -35,7 +35,7 @@ interface TmdbAccount {
      */
     @GET("$BASE_PATH/{$ACCOUNT_ID}/lists")
     fun getCreatedLists(
-            @Path(ACCOUNT_ID)                    id: Int? = 0,
+            @Path(ACCOUNT_ID)                     id: Int? = 0,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<ResultPage<MovieList>>

@@ -3,14 +3,20 @@ package studio.forface.rxtmdbapi
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.junit.Test
+import studio.forface.rxtmdbapi.models.Extra
 import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
-import studio.forface.rxtmdbapi.tmdb.TmdbApi
-import studio.forface.rxtmdbapi.tmdb.removeMovieFromFavorite
-import studio.forface.rxtmdbapi.tmdb.removeMovieFromWatchlist
+import studio.forface.rxtmdbapi.models.ImageType
+import studio.forface.rxtmdbapi.models.mapToSizedUrls
+import studio.forface.rxtmdbapi.tmdb.*
 import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+
+private const val COLLECTION_ID_TRANSFORMERS = 8650
 private const val MOVIE_ID_BLADE = 335984
 private const val NETWORK_ID_RANDOM = "213"
 private const val PERSON_ID_DICAPRIO = 6193
@@ -19,7 +25,7 @@ private const val TV_SHOW_ID_SIMPSON = 456
 class TmdbApiUnitTest {
 
     private val tmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, SESSION_ID )
+        TmdbApi( TMDB_API_KEY, USER_SESSION_ID )
     }
 
     private val tmdbAuth            get() = tmdbApi.auth
@@ -43,104 +49,65 @@ class TmdbApiUnitTest {
         tmdbAuth.run {
             preloadToken().blockingAwait()
 
-            //val guestSession = createGuessSession().blockingGet()
-            val userSession = createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
+            val session = createGuessSession().blockingGet()
+            //val session = createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
 
-            println( userSession )
+            println( session )
         }
     }
 
     // Account.
-    @Test fun getAccountDetails() {
-        //tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
-
-        val account = tmdbAccount.getDetails()
-                .blockingGet()
-
-        println( account )
-    }
-
-    @Test fun getCreatedLists() {
-        val page = tmdbAccount.getCreatedLists()
-                .blockingGet()
-
-        println( page )
-    }
-
-    @Test fun getFavorite() {
-        val page = tmdbAccount.getFavoriteTvShows( sortBy = Sorting.CreationDate.ASCENDING )
-                .blockingGet()
-
-        println( page )
-    }
-
-    @Test fun getRated() {
-        val page = tmdbAccount.getRatedTvEpisodes( sortBy = Sorting.CreationDate.DESCENDING )
-                .blockingGet()
-
-        println( page )
-    }
-
-    @Test fun getWatchlist() {
-        val page = tmdbAccount.getMoviesWatchlist()
-                .blockingGet()
-
-        println( page )
-    }
-
-    @Test fun manageWatchlist() {
-        val response = tmdbAccount.removeMovieFromWatchlist(335984)
-                .blockingGet()
-
-        println( "completed ${response.string()}" )
-    }
-
-    @Test fun manageFavorite() {
-        val response = tmdbAccount.removeMovieFromFavorite(335984)
-                .blockingGet()
-
-        println( "completed ${response.string()}" )
+    @Test fun account() {
+        tmdbAccount.run { testSinglesStream(
+                getDetails(),
+                getCreatedLists(),
+                getFavoriteMovies(),
+                getFavoriteTvShows(),
+                getRatedMovies(),
+                getRatedTvShows(),
+                getRatedTvEpisodes(),
+                getMoviesWatchlist(),
+                getTvShowsWatchlist(),
+                addMovieToFavorite(         MOVIE_ID_BLADE ),
+                removeMovieFromFavorite(    MOVIE_ID_BLADE ),
+                addMovieToWatchlist(        MOVIE_ID_BLADE ),
+                removeMovieFromWatchlist(   MOVIE_ID_BLADE )
+        ) }
     }
 
     // Certifications.
-    @Test fun getCertifications() {
-        val result = tmdbCertifications.getMovieCertifications()
-                .blockingGet()
-
-        println( result.certifications )
+    @Test fun certifications() {
+        tmdbCertifications.run { testSinglesStream(
+                getMovieCertifications(),
+                getTvCertifications()
+        ) }
     }
 
     // Changes.
-    @Test fun getChanges() {
-        val page = tmdbChanges.getMovieChanges(
-                startDate = DateQuery( 2018, 5, 6 )
-        ).blockingGet()
-
-        println( page.resultsCount )
+    @Test fun changes() {
+        tmdbChanges.run { testSinglesStream(
+                getMovieChanges(),
+                getTvShowChanges(),
+                getPersonChanges()
+        ) }
     }
 
     // Collections.
-    @Test fun getCollectionDetails() {
-        val collection = tmdbCollections.getDetails(86311)
-                .blockingGet()
-
-        println( collection )
+    @Test fun collections() {
+        tmdbCollections.run { testSinglesStream(
+                getDetails(         COLLECTION_ID_TRANSFORMERS ),
+                getImages(          COLLECTION_ID_TRANSFORMERS ),
+                getTranslations(    COLLECTION_ID_TRANSFORMERS )
+        ) }
     }
-
-    @Test fun getCollectionSomething() {
-        val collection = tmdbCollections.getTranslations(86311)
-                .blockingGet()
-
-        println( collection )
-    }
-
 
     // Config.
-    @Test fun getLanguages() {
-        val languages = tmdbConfig.getLanguages()
-                .blockingGet()
-
-        println( languages )
+    @Test fun config() {
+        tmdbConfig.run { testSinglesStream(
+                getApiConfig(),
+                getImagesConfig(),
+                getLanguages()
+        ) }
     }
 
     // Movies.
@@ -257,7 +224,7 @@ class TmdbApiUnitTest {
         ) }
     }
 
-    //Tv episode.
+    // Tv episode.
     @Test fun tvEpisodes() {
         tmdbTvEpisodes.run { testSinglesStream (
                 getDetails              ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 ),
@@ -268,6 +235,26 @@ class TmdbApiUnitTest {
                 rateTvEpisode           ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1, value =  6 ),
                 removeTvEpisodeRating   ( TV_SHOW_ID_SIMPSON, seasonNumber = 26, episodeNumber =  1 )
         ) }
+    }
+
+    // Images.
+    @Test fun images() {
+        val imagesConfig = tmdbConfig.getImagesConfig().blockingGet().apply {
+            sizeFinderTolerancePercentage = 50
+        }
+
+        val images = tmdbMovies.getDetails( MOVIE_ID_BLADE, extras = Extras(IMAGES) )
+                .map { it.backdrops }
+                .map { it.sortedByDescending { it.voteAverage } }
+                .map {
+                    it.mapToSizedUrls(
+                            imagesConfig,
+                            ImageType.BACKDROP,
+                            1280,
+                            true
+                ) }.blockingGet()
+
+        println( images )
     }
 
 }

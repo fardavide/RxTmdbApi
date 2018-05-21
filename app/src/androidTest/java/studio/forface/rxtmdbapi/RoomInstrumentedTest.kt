@@ -23,7 +23,7 @@ private const val TAG = "RoomInstrumentedTest"
 @RunWith(AndroidJUnit4::class)
 class RoomInstrumentedTest {
 
-    private val tmdbApi = TmdbApi( TMDB_API_KEY, SESSION_ID )
+    private val tmdbApi = TmdbApi( TMDB_API_KEY, USER_SESSION_ID )
     private val localDb = Room.inMemoryDatabaseBuilder(
             InstrumentationRegistry.getTargetContext(), LocalDatabase::class.java ).build()
 
@@ -96,7 +96,7 @@ class RoomInstrumentedTest {
     }
 
     @Test fun logWithSession() {
-        val mockSession = Session( SESSION_ID, false )
+        val mockSession = Session( USER_SESSION_ID, false )
         sessionsDao.insert( mockSession )
 
         val api = TmdbApi( TMDB_API_KEY, sessionsDao.get().blockingGet().toString() )

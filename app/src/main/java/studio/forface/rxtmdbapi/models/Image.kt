@@ -4,6 +4,13 @@ import android.arch.persistence.room.ColumnInfo
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+
+enum class ImageType {
+    BACKDROP, POSTER, PROFILE, LOGO, STILL
+}
 
 data class Images (
 
@@ -28,6 +35,13 @@ data class Images (
             backdrops + posters + profiles + logos + stills
 
 }
+
+fun List<Image>.mapToSizedUrls(
+        imagesConfig: ImagesConfig,
+        imageType: ImageType,
+        requestedWidth: Int,
+        secureConnection: Boolean = false
+) = map { it.getSizedUrl( imagesConfig, imageType, requestedWidth, secureConnection ) }
 
 
 data class Image(
@@ -56,4 +70,13 @@ data class Image(
     @SerializedName(Fields.WIDTH)           @ColumnInfo(name = Fields.WIDTH)
     var width: Int = 0
 
-) : Pageable
+) : Pageable {
+
+    fun getSizedUrl(
+            imagesConfig: ImagesConfig,
+            imageType: ImageType,
+            requestedWidth: Int,
+            secureConnection: Boolean = false
+    ) = imagesConfig.bestSizeUrl( imageType, requestedWidth, filePath, secureConnection )
+
+}

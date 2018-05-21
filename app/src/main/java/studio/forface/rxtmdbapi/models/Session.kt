@@ -17,8 +17,7 @@ open class Session constructor (
         @ColumnInfo(name = Fields.GUEST)
         var guest: Boolean,
 
-        @PrimaryKey
-        var id: Int = 0
+        @PrimaryKey var id: Int = 0
 
 ) {
 

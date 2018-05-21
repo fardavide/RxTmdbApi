@@ -8,9 +8,9 @@ sealed class Sorting( private val toString: String ) {
     interface MovieSorting
     interface TvShowSorting
 
-    sealed class CreationDate {
-        object ASCENDING:   Sorting( "created_at.asc" )
-        object DESCENDING:  Sorting( "created_at.desc" )
+    sealed class CreationDate( toString: String ): Sorting( toString ) {
+        object ASCENDING:   CreationDate( "created_at.asc" )
+        object DESCENDING:  CreationDate( "created_at.desc" )
     }
 
     sealed class FirstAirDate:                      TvShowSorting {
