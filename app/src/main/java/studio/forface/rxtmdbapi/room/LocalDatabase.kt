@@ -7,6 +7,7 @@ import studio.forface.rxtmdbapi.models.*
 
 @Database(entities = [
     Company::class,
+    ImagesConfig::class,
     Movie::class,
     MovieCollection::class,
     Person::class,
@@ -16,6 +17,7 @@ import studio.forface.rxtmdbapi.models.*
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract val companiesDao:          CompaniesDao
+    abstract val imagesConfigsDao:      ImagesConfigsDao
     abstract val moviesDao:             MoviesDao
     abstract val movieCollectionsDao:   MovieCollectionsDao
     abstract val peopleDao:             PeopleDao

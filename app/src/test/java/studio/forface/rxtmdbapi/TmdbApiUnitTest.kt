@@ -106,6 +106,7 @@ class TmdbApiUnitTest {
         tmdbConfig.run { testSinglesStream(
                 getApiConfig(),
                 getImagesConfig(),
+                getCountries(),
                 getLanguages()
         ) }
     }

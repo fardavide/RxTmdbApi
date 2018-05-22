@@ -40,6 +40,13 @@ interface TmdbConfig {
     fun getApiConfig() : Single<ApiConfig>
 
     /**
+     * Get the list of countries (ISO 3166-1 tags) used throughout TMDb.
+     * @return a [Single] of [List] of [Country]
+     */
+    @GET("$BASE_URL/countries")
+    fun getCountries() : Single<List<Country>>
+
+    /**
      * Get the list of languages (ISO 639-1 tags) used throughout TMDb.
      * @return a [Single] of [List] of [Language].
      */
