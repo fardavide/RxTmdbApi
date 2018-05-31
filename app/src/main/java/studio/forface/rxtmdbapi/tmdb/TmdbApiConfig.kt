@@ -1,5 +1,8 @@
 package studio.forface.rxtmdbapi.tmdb
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 
 object TmdbApiConfig {
 

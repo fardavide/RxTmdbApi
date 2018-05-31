@@ -5,10 +5,12 @@ package studio.forface.rxtmdbapi.models
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.models.ImageType.*
 import studio.forface.rxtmdbapi.models.ImagesConfig.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
+import studio.forface.rxtmdbapi.utils.ModelTypeConverters
 import studio.forface.rxtmdbapi.utils.toIntOrZero
 
 /**
@@ -23,6 +25,7 @@ data class ApiConfig (
 )
 
 @Entity(tableName = TABLE_NAME)
+@TypeConverters( ModelTypeConverters::class )
 data class ImagesConfig (
 
     @SerializedName(Fields.BASE_URL)            @ColumnInfo(name = Fields.BASE_URL)

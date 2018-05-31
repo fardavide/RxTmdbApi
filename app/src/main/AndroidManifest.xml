@@ -6,4 +6,21 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
 
+    <application>
+
+        <activity android:name=".utils.AuthActivity">
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="rxtmdb"
+                    android:scheme="api" />
+
+            </intent-filter>
+        </activity>
+
+    </application>
+
 </manifest>

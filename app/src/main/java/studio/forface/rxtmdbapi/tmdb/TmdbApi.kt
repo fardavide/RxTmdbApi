@@ -52,7 +52,7 @@ class TmdbApi(
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
             .baseUrl( TMDB_API_URL_V3 )
             .addCallAdapterFactory( RxJava2CallAdapterFactory.createAsync() )
-            .addConverterFactory( GsonConverterFactory.create(gson) )
+            .addConverterFactory( GsonConverterFactory.create( gson ) )
 
     private inline fun <reified S> getService(): S = retrofitBuilder
             .client( httpClientBuilder.build() )

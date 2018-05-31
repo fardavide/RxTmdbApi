@@ -13,9 +13,7 @@ import studio.forface.rxtmdbapi.room.updateOrInsertAsync
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 
 /**
- * Instrumented test, which will execute on an Android device.
- *
- * @see [Testing documentation](http://d.android.com/tools/testing)
+ * @author 4face Studio (Davide Giuseppe Farella).
  */
 
 private const val TAG = "RoomInstrumentedTest"
