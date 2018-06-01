@@ -1,5 +1,10 @@
+@file:Suppress("unused")
+
 package studio.forface.rxtmdbapi.utils
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 
 fun <T> redundantTry(
         try1: () -> T,
@@ -9,7 +14,7 @@ fun <T> redundantTry(
 
     return try {
         try1()
-    } catch (t: Throwable) {
+    } catch ( t: Throwable ) {
         redundantTry( try2, try3, catch )
     }
 
@@ -22,7 +27,7 @@ fun <T> redundantTry(
 
     return try {
         try1()
-    } catch (t: Throwable) {
+    } catch ( t: Throwable ) {
         redundantTry( try2, catch )
     }
 
@@ -34,7 +39,7 @@ fun <T> redundantTry(
 
     return try {
         try1()
-    } catch (t: Throwable) {
+    } catch ( t: Throwable ) {
         catch(t)
     }
 
