@@ -270,7 +270,7 @@ interface TmdbMovies {
     @POST("$BASE_PATH/{$MOVIE_ID}/rating")
     @FormUrlEncoded
     fun rateMovie(
-            @Path(MOVIE_ID)                      id: Int,
+            @Path(MOVIE_ID)                         id: Int,
             @Field("value")                 value: Number
     ) : Single<ResponseBody>
 
@@ -282,7 +282,7 @@ interface TmdbMovies {
      */
     @DELETE("$BASE_PATH/{$MOVIE_ID}/rating")
     fun removeMovieRating(
-            @Path(MOVIE_ID)                      id: Int
+            @Path(MOVIE_ID)                         id: Int
     ) : Single<ResponseBody>
 
 }

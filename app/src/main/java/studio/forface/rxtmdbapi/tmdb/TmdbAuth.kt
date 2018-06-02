@@ -2,29 +2,29 @@
 
 package studio.forface.rxtmdbapi.tmdb
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.PrimaryKey
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import retrofit2.http.GET
 import retrofit2.http.Query
-import studio.forface.rxtmdbapi.models.Session
-import studio.forface.rxtmdbapi.utils.AuthActivity
-import studio.forface.rxtmdbapi.utils.EMPTY_STRING
-import studio.forface.rxtmdbapi.utils.now
-import studio.forface.rxtmdbapi.utils.timeInMillis
+import studio.forface.rxtmdbapi.models.Fields
+import studio.forface.rxtmdbapi.utils.*
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
-internal typealias OnSessionListener = ( Session ) -> Unit
-private const val TOKEN_AUTHENTICATION_REQUEST_URL = "https://www.themoviedb.org/authenticate/\$TOKEN?redirect_to=\$REDIRECT"
+internal typealias OnSessionListener = (Session) -> Unit
+private const val TOKEN_AUTHENTICATION_REQUEST_URL = "https://www.themoviedb.org/authenticate/\$TOKEN?redirect_to=\$URI"
 class TmdbAuth(
-        private val iTmdbAuth: ITmdbAuthV3,
+        private val iTmdbAuth: ITmdbAuth,
         private val onSessionListener: OnSessionListener
 ) {
 
@@ -36,7 +36,7 @@ class TmdbAuth(
 
     /**
      * It creates a [Token] and cache it in [token].
-     * @see ITmdbAuthV3.createToken .
+     * @see ITmdbAuth.createToken .
      * @return a [Completable]
      */
     fun preloadToken() : Completable = iTmdbAuth.createToken()
@@ -48,11 +48,11 @@ class TmdbAuth(
      * application session. It will be automatically set in [TmdbApi].
      *
      * If [token] is cached (not null) and not [Token.expired] use it, else create a new one
-     * @see ITmdbAuthV3.createToken .
+     * @see ITmdbAuth.createToken .
      * Then it validates the [Token] with user credentials
-     * @see ITmdbAuthV3.validateTokenWithLogin .
+     * @see ITmdbAuth.validateTokenWithLogin .
      * Then creates a [Session] with the created [Token]
-     * @see ITmdbAuthV3.createUserSession .
+     * @see ITmdbAuth.createUserSession .
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
      * add it as [QueryInterceptor.params].
      *
@@ -70,21 +70,34 @@ class TmdbAuth(
                 .doOnSuccess { onSessionListener( it ) }
     }
 
+    /**
+     * The return value is used just for store the [Session] in the device and use it for next
+     * application session. It will be automatically set in [TmdbApi].
+     *
+     * If [token] is cached (not null) and not [Token.expired] use it, else create a new one
+     * @see ITmdbAuth.createToken .
+     * Then it sends the user to the Tmdb web page for authenticate the [Token].
+     * @see ITmdbAuth.getTokenValidationUrl .
+     * Then creates a [Session] with the created [Token]
+     * @see ITmdbAuth.createUserSession .
+     * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
+     * add it as [QueryInterceptor.params].
+     *
+     * @param context the Android [Context] required for the [Intent].
+     * @return a [Single] of [Session.User]
+     */
     fun createUserSessionWithUserAuthentication( context: Context ) : Single<Session.User> {
         return let {
             if ( token?.expired == false ) Single.just( token!! )
             else iTmdbAuth.createToken()
         }
                 .doOnSuccess {
-                    val uri = Uri.parse(
-                            TOKEN_AUTHENTICATION_REQUEST_URL
-                                    .replace("\$TOKEN", it.value )
-                                    .replace("\$REDIRECT", AuthActivity.URI )
-                    )
-                    context.startActivity( Intent( Intent.ACTION_VIEW, uri ) )
+                    val url = iTmdbAuth.getTokenValidationUrl( it, AuthActivity.URI )
+                    val intent = Intent( context, AuthActivity::class.java )
+                            .putExtra( AuthActivity.PARAM_AUTH_URL, url )
+                    context.startActivity( intent )
                 }
-                .flatMap { tokenAuthorizationSubject.singleOrError() }
-                .doOnSuccess { println( it ) }
+                .flatMap { tokenAuthorizationSubject.firstOrError() }
                 .flatMap { iTmdbAuth.createUserSession( it ) }
                 .doOnSuccess { onSessionListener( it ) }
     }
@@ -94,7 +107,7 @@ class TmdbAuth(
      * application session. It will be automatically set in [TmdbApi].
      *
      * It creates a guest [Session]
-     * @see ITmdbAuthV3.createGuestSession .
+     * @see ITmdbAuth.createGuestSession .
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
      * add it as [QueryInterceptor.params].
      *
@@ -113,7 +126,7 @@ class TmdbAuth(
 }
 
 private const val BASE_PATH = "authentication"
-interface ITmdbAuthV3 {
+interface ITmdbAuth {
 
     /**
      * Create a temporary request token that can be used to validate a TMDb user login.
@@ -190,20 +203,65 @@ interface ITmdbAuthV3 {
  * @param redirectTo
  * @return a [String] with the url.
  */
-// TODO:
-internal fun ITmdbAuthV3.getTokenValidationUrl(token: Token, redirectTo: String? = null) =
-        "https://www.themoviedb.org/authenticate/${token.value}" +
-                (redirectTo?.let { "?redirect_to=$it" } ?: EMPTY_STRING)
-
+internal fun ITmdbAuth.getTokenValidationUrl( token: Token, redirectTo: String? = null ) =
+        TOKEN_AUTHENTICATION_REQUEST_URL
+                .replace("\$TOKEN", token.value )
+                .let { url -> redirectTo?.let { url.replace("\$URI", redirectTo ) } }
 
 
 data class Token(
         @SerializedName("request_token")        val value: String,
         @SerializedName("expires_at") private   val _expiration: String
 ) {
+    @Suppress("MemberVisibilityCanBePrivate")
     val expiration get() = _expiration.timeInMillis
     val expired get() = expiration < now
 
     override fun toString() = value
 }
 
+@Entity(tableName = Session.TABLE_NAME)
+open class Session constructor (
+
+        @ColumnInfo(name = Fields.SESSION_ID)
+        open var sessionId: String,
+
+        @ColumnInfo(name = Fields.GUEST)
+        var guest: Boolean,
+
+        @PrimaryKey var id: Int = 0
+
+) {
+
+    companion object {
+        internal const val TABLE_NAME = "sessions"
+    }
+
+    @Ignore
+    @Transient
+    open val success: Boolean = true
+
+    override fun toString() = sessionId
+
+
+    data class User internal constructor(
+
+            @SerializedName(Fields.SUCCESS) override            val success: Boolean,
+            @SerializedName(Fields.SESSION_ID) override         var sessionId: String
+
+    ) : Session( sessionId, false )
+
+
+    data class Guest internal constructor(
+
+            @SerializedName(Fields.SUCCESS) override            val success: Boolean,
+            @SerializedName(Fields.GUEST_SESSION_ID) override   var sessionId: String,
+            @SerializedName(Fields.EXPIRES_AT) private          val _expiration: String
+
+    ) : Session( sessionId, true ) {
+
+        val expiration get() = _expiration.timeInMillis
+
+    }
+
+}

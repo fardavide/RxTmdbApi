@@ -7,7 +7,7 @@ import android.util.Log
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import studio.forface.rxtmdbapi.models.Session
+import studio.forface.rxtmdbapi.tmdb.Session
 import studio.forface.rxtmdbapi.room.LocalDatabase
 import studio.forface.rxtmdbapi.room.updateOrInsertAsync
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
@@ -94,7 +94,7 @@ class RoomInstrumentedTest {
     }
 
     @Test fun logWithSession() {
-        val mockSession = Session( USER_SESSION_ID, false )
+        val mockSession = Session(USER_SESSION_ID, false)
         sessionsDao.insert( mockSession )
 
         val api = TmdbApi( TMDB_API_KEY, sessionsDao.get().blockingGet().toString() )

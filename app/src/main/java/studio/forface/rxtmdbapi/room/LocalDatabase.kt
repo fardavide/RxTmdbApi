@@ -3,6 +3,7 @@ package studio.forface.rxtmdbapi.room
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import studio.forface.rxtmdbapi.models.*
+import studio.forface.rxtmdbapi.tmdb.Session
 
 
 @Database(entities = [

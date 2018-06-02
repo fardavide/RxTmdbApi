@@ -5,7 +5,7 @@ package studio.forface.rxtmdbapi.room
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
-import studio.forface.rxtmdbapi.models.Session
+import studio.forface.rxtmdbapi.tmdb.Session
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).

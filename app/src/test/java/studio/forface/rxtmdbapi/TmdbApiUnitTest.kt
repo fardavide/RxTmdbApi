@@ -16,6 +16,7 @@ import studio.forface.rxtmdbapi.utils.Sorting
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
+private const val ACCOUNT_ID_4FACE = "6574440"
 private const val COLLECTION_ID_TRANSFORMERS = 8650
 private const val MOVIE_ID_BLADE = 335984
 private const val NETWORK_ID_RANDOM = "213"
@@ -25,11 +26,13 @@ private const val TV_SHOW_ID_SIMPSON = 456
 class TmdbApiUnitTest {
 
     private val tmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, USER_SESSION_ID )
+        TmdbApi( TMDB_API_KEY, USER_ACCESS_TOKEN, USER_SESSION_ID )
     }
 
     private val tmdbAuth            get() = tmdbApi.auth
+    private val tmdbAuthV4          get() = tmdbApi.authV4
     private val tmdbAccount         get() = tmdbApi.account
+    private val tmdbAccountV4       get() = tmdbApi.accountV4
     private val tmdbCertifications  get() = tmdbApi.certifications
     private val tmdbChanges         get() = tmdbApi.changes
     private val tmdbCollections     get() = tmdbApi.collections
@@ -45,7 +48,7 @@ class TmdbApiUnitTest {
 
 
     // Auth.
-    @Test fun createSession() {
+    @Test fun auth() {
         tmdbAuth.run {
             preloadToken().blockingAwait()
 
@@ -53,6 +56,17 @@ class TmdbApiUnitTest {
             //val session = createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet()
 
             println( session )
+        }
+    }
+
+    // Auth v4.
+    @Test fun authV4() {
+        tmdbAuthV4.run {
+            preloadToken().blockingAwait()
+
+            val token = iTmdbAuth.createToken().blockingGet()
+
+            println( token )
         }
     }
 
@@ -72,6 +86,13 @@ class TmdbApiUnitTest {
                 removeMovieFromFavorite(    MOVIE_ID_BLADE ),
                 addMovieToWatchlist(        MOVIE_ID_BLADE ),
                 removeMovieFromWatchlist(   MOVIE_ID_BLADE )
+        ) }
+    }
+
+    // Account v4.
+    @Test fun accountV4() {
+        tmdbAccountV4.run { testSinglesStream(
+                getFavoriteMovies( ACCOUNT_ID_4FACE, sortBy = Sorting.ReleaseDate.ASCENDING )
         ) }
     }
 
