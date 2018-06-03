@@ -1,15 +1,15 @@
+@file:Suppress("unused")
+
 package studio.forface.rxtmdbapi
 
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.junit.Test
-import studio.forface.rxtmdbapi.models.Extra
 import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
 import studio.forface.rxtmdbapi.models.ImageType
 import studio.forface.rxtmdbapi.models.mapToSizedUrls
 import studio.forface.rxtmdbapi.tmdb.*
-import studio.forface.rxtmdbapi.utils.DateQuery
 import studio.forface.rxtmdbapi.utils.Sorting
 
 /**
@@ -18,6 +18,10 @@ import studio.forface.rxtmdbapi.utils.Sorting
 
 private const val ACCOUNT_ID_4FACE = "6574440"
 private const val COLLECTION_ID_TRANSFORMERS = 8650
+private const val COMPANY_ID_COLUMBIA_PICTURES = 5
+private const val GENRE_ID_ANIMATION = 16
+private const val GENRE_ID_CRIME = 80
+private const val GENRE_ID_DRAMA = 18
 private const val MOVIE_ID_BLADE = 335984
 private const val NETWORK_ID_RANDOM = "213"
 private const val PERSON_ID_DICAPRIO = 6193
@@ -26,7 +30,7 @@ private const val TV_SHOW_ID_SIMPSON = 456
 class TmdbApiUnitTest {
 
     private val tmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, USER_ACCESS_TOKEN, USER_SESSION_ID )
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN, GUEST_SESSION_ID, true )
     }
 
     private val tmdbAuth            get() = tmdbApi.auth
@@ -36,7 +40,10 @@ class TmdbApiUnitTest {
     private val tmdbCertifications  get() = tmdbApi.certifications
     private val tmdbChanges         get() = tmdbApi.changes
     private val tmdbCollections     get() = tmdbApi.collections
+    private val tmdbCompanies       get() = tmdbApi.companies
     private val tmdbConfig          get() = tmdbApi.config
+    private val tmdbDiscover        get() = tmdbApi.discover
+    private val tmdbGuest           get() = tmdbApi.guest
     private val tmdbMovies          get() = tmdbApi.movies
     private val tmdbNetworks        get() = tmdbApi.networks
     private val tmdbPeople          get() = tmdbApi.people
@@ -122,15 +129,56 @@ class TmdbApiUnitTest {
         ) }
     }
 
+    // Companies.
+    @Test fun companies() {
+        tmdbCompanies.run { testSinglesStream(
+                getDetails(             COMPANY_ID_COLUMBIA_PICTURES ),
+                getAlternativeNames(    COMPANY_ID_COLUMBIA_PICTURES),
+                getImages(              COMPANY_ID_COLUMBIA_PICTURES)
+        ) }
+    }
+
     // Config.
     @Test fun config() {
         tmdbConfig.run { testSinglesStream(
                 getApiConfig(),
                 getImagesConfig(),
                 getCountries(),
+                getMovieGenres(),
+                getTvShowGenres(),
                 getLanguages()
         ) }
     }
+
+    // Discover.
+    @Test fun discover() {
+        tmdbDiscover.run { testSinglesStream(
+                movieDiscover(
+                        includeAdults = true,
+                        year = 2017,
+                        sortBy = Sorting.VoteCount.ASCENDING
+                ).map { it.resultsCount },
+                movieDiscover(
+                        withGenres = listOf(
+                                GENRE_ID_ANIMATION,
+                                GENRE_ID_CRIME
+                        )
+                ).map { it.resultsCount },
+                tvShowDiscover(
+                        // no params.
+                ).map { it.resultsCount }
+        ) }
+    }
+
+    // Guest.
+    @Test fun guest() {
+        tmdbGuest.run { testSinglesStream(
+                getRatedMovies(),
+                getRatedTvShows(),
+                getRatedTvEpisodes()
+        ) }
+    }
+
 
     // Movies.
     @Test fun movies() {

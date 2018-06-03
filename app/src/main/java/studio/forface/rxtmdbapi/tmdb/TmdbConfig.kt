@@ -4,6 +4,7 @@ package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 import studio.forface.rxtmdbapi.models.*
 
 /**
@@ -45,6 +46,28 @@ interface TmdbConfig {
      */
     @GET("$BASE_URL/countries")
     fun getCountries() : Single<List<Country>>
+
+    /**
+     * Get the list of official genres for movies.
+     * In the official doc this method belongs to Genres endpoint, but here is more appropriate.
+     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @return a [Single] of [Genres]
+     */
+    @GET("genre/movie/list")
+    fun getMovieGenres(
+            @Query("language")      language: String? = TmdbApiConfig.language
+    ) : Single<Genres>
+
+    /**
+     * Get the list of official genres for Tv shows.
+     * In the official doc this method belongs to Genres endpoint, but here is more appropriate.
+     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @return a [Single] of [Genres]
+     */
+    @GET("genre/tv/list")
+    fun getTvShowGenres(
+            @Query("language")      language: String? = TmdbApiConfig.language
+    ) : Single<Genres>
 
     /**
      * Get the list of languages (ISO 639-1 tags) used throughout TMDb.

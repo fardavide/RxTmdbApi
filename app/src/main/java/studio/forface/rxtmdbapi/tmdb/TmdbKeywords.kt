@@ -36,8 +36,12 @@ interface TmdbKeywords {
      * @return a [Single] of [ResultPage] of [Movie].
      */
     @GET("$BASE_PATH/{$KEYWORD_ID}/movies")
+    @Deprecated(
+            "Deprecated in API",
+            ReplaceWith("TmdbDiscover.movieDiscover" )
+    )
     fun getMovies(
-            @Path(KEYWORD_ID)                    id: String,
+            @Path(KEYWORD_ID)                       id: String,
             @Query("language")              language: String? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults
     ): Single<ResultPage<Movie>>

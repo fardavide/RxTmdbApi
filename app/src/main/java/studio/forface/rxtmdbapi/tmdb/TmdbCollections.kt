@@ -25,7 +25,7 @@ interface TmdbCollections {
      */
     @GET("$BASE_PATH/{$COLLECTION_ID}")
     fun getDetails(
-            @Path(COLLECTION_ID)                 id: Int,
+            @Path(COLLECTION_ID)                    id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<MovieCollection>
 
@@ -36,7 +36,7 @@ interface TmdbCollections {
      */
     @GET("$BASE_PATH/{$COLLECTION_ID}/images")
     fun getImages(
-            @Path(COLLECTION_ID)                 id: Int,
+            @Path(COLLECTION_ID)                    id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<Images>
 
@@ -47,7 +47,7 @@ interface TmdbCollections {
      */
     @GET("$BASE_PATH/{$COLLECTION_ID}/translations")
     fun getTranslations(
-            @Path(COLLECTION_ID)                 id: Int,
+            @Path(COLLECTION_ID)                    id: Int,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<Translations<MovieCollection>>
 

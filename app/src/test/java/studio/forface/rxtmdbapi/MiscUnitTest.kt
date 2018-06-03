@@ -14,6 +14,10 @@ val mockedReleaseDate get() = ReleaseDate (
 
 class MiscUnitTest {
 
+    @Test fun queryList() {
+        println( listOf( 1, 2, 3, 4 ) )
+    }
+
     @Test fun releaseDateReleaseType() {
         println( mockedReleaseDate.type )
     }

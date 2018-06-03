@@ -3,6 +3,7 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import com.google.gson.GsonBuilder
+import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -10,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import studio.forface.rxtmdbapi.models.Media
+import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.MediaDeserializer
 import studio.forface.rxtmdbapi.utils.MediaSerializer
 
@@ -74,8 +76,11 @@ class TmdbApi(
     val certifications  by lazy { getService<TmdbCertifications>() }
     val changes         by lazy { getService<TmdbChanges>() }
     val collections     by lazy { getService<TmdbCollections>() }
+    val companies       by lazy { getService<TmdbCompanies>() }
     val config          by lazy { getService<TmdbConfig>() }
+    val credits         by lazy { getService<TmdbCredits>() }
     val discover        by lazy { getService<TmdbDiscover>() }
+    val guest           by lazy { getService<TmdbGuest>() }
     val keywords        by lazy { getService<TmdbKeywords>() }
     val movies          by lazy { getService<TmdbMovies>() }
     val networks        by lazy { getService<TmdbNetworks>() }
@@ -94,7 +99,8 @@ class TmdbApi(
         if ( session.success ) {
             val paramName = when( session.guest ) {
                 false -> PARAM_SESSION_ID
-                true -> PARAM_GUEST_SESSION_ID
+                true ->  PARAM_GUEST_SESSION_ID
+
             }
             interceptor.addQueryParams(paramName to session.sessionId)
         }
@@ -135,15 +141,25 @@ private class QueryInterceptor(private val params: MutableMap<String, String>) :
 
         return chain.request().let { request ->
 
-            val url = request.url().newBuilder().apply {
+            val url = request.url()
+
+            var sessionId: String = EMPTY_STRING
+            var indexToReplace = -1
+            params[PARAM_GUEST_SESSION_ID]?.let {
+                sessionId = it
+                indexToReplace = url.pathSegments().indexOfFirst { it == PATH_GUEST_SESSION_ID }
+            }
+
+            val finalUrl = url.newBuilder().apply {
                 params.forEach { addQueryParameter( it.key, it.value ) }
+                if ( indexToReplace > -1 ) setPathSegment( indexToReplace, sessionId )
             }.build()
 
-            println( url.toString() )
+            println( finalUrl.toString() )
 
             val newRequest = request.newBuilder()
-                    .url( url )
-                    .apply { headers.forEach { addHeader( it.key, it.value ) } }
+                    .url( finalUrl )
+                    .headers( Headers.of( headers ) )
                     .method( request.method(), request.body() )
                     .build()
 

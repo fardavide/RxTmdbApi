@@ -14,6 +14,10 @@ import studio.forface.rxtmdbapi.utils.WatchlistRequest
  * @author 4face Studio (Davide Giuseppe Farella).
  */
 
+/*
+TODO: file copied from TmdbAccount.kt, it needs to be fixed.
+Progress: getFavoriteMovies - DONE - not tested, error 500
+ */
 private const val BASE_PATH = "/4/account"
 private const val ACCOUNT_ID = "account_id"
 private const val DEF_ACCOUNT = "0"
