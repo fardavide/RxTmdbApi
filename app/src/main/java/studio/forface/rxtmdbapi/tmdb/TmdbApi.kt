@@ -161,7 +161,7 @@ private class QueryInterceptor(private val params: MutableMap<String, String>) :
             var accountIndex = -1
             params[PARAM_ACCOUNT_ID]?.let {
                 accountId = it
-                accountIndex = url.pathSegments().indexOfFirst { it == PARAM_ACCOUNT_ID }
+                accountIndex = url.pathSegments().indexOfFirst { it == PATH_ACCOUNT_ID }
             }
 
             val finalUrl = url.newBuilder().apply {
