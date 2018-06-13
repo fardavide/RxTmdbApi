@@ -36,7 +36,7 @@ class TmdbAuthV4(
      * @see ITmdbAuthV4.createToken .
      * @return a [Completable]
      */
-    fun preloadToken() : Completable = iTmdbAuth.createToken( AuthActivity.URI )
+    fun preloadToken() : Completable = iTmdbAuth.createToken( AuthActivity.URI_V4 )
             .doOnSuccess { token = it }
             .ignoreElement()
 
@@ -62,8 +62,7 @@ class TmdbAuthV4(
             else iTmdbAuth.createToken( AuthActivity.URI_V4 )
         }
                 .doOnSuccess {
-                    val url = TOKEN_AUTHENTICATION_REQUEST_URL
-                            .replace("\$TOKEN", it.value )
+                    val url = iTmdbAuth.getTokenValidationUrl( it )
                     val intent = Intent( context, AuthActivity::class.java )
                             .putExtra( AuthActivity.PARAM_AUTH_URL, url )
                     context.startActivity( intent )
@@ -116,6 +115,12 @@ interface ITmdbAuthV4 {
             @Field("request_token") token: TokenV4
     ) : Single<TokenV4>
 
+    @POST("$BASE_PATH/access_token")
+    @FormUrlEncoded
+    fun createRawAccessToken(
+            @Field("request_token") token: TokenV4
+    ) : Single<ResponseBody>
+
     /**
      * This method gives your users the ability to log out of a session.
      * @return a [Single] of [ResponseBody].
@@ -133,19 +138,18 @@ interface ITmdbAuthV4 {
  * This header contains the API call for step #3. You can either manually generate it or simply
  * use the one we return.
  * @param token the [Token] to authorize.
- * @param redirectTo the redirect Uri.
  * @return a [String] with the url.
  */
-internal fun ITmdbAuthV4.getTokenValidationUrl( token: TokenV4, redirectTo: String? = null ) =
+internal fun ITmdbAuthV4.getTokenValidationUrl( token: TokenV4 ) =
         TOKEN_AUTHENTICATION_REQUEST_URL
                 .replace("\$TOKEN", token.value )
-                .let { url -> redirectTo?.let { url.replace("\$URI", redirectTo ) } }
 
 
 @Suppress("MemberVisibilityCanBePrivate")
 data class TokenV4(
         @SerializedName("request_token")        val _value1: String,
-        @SerializedName("access_token")         val _value2: String? = null
+        @SerializedName("access_token")         val _value2: String? = null,
+        @SerializedName("account_id")           val accountId: String? = null
 ) {
     val value get() = _value2 ?: _value1
     val expiration get() = now + 15 * 60 * 1000 // 15 mins later.

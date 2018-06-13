@@ -31,11 +31,11 @@ class TmdbInstrumentedTest {
     }
 
     @Test fun authV4() {
+        tmdbAuthV4.preloadToken().blockingAwait()
         tmdbAuthV4.createAccessToken( context )
                 .blockingGet()
 
         val result = tmdbApi.accountV4.getFavoriteMovies(
-                accountId = "6574440",
                 sortBy = Sorting.CreationDate.ASCENDING
         ).blockingGet()
 

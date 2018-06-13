@@ -25,6 +25,7 @@ private const val TMDB_API_URL_V4 = "${TMDB_API_URL}4/"
 
 private const val PARAM_API_KEY = "api_key"
 private const val HEADER_API_V4_ACCESS_READ_TOKEN = "Authorization"
+private const val PARAM_ACCOUNT_ID = "account_id"
 private const val PARAM_SESSION_ID = "session_id"
 private const val PARAM_GUEST_SESSION_ID = "guest_session_id"
 
@@ -108,9 +109,15 @@ class TmdbApi(
 
     private fun setAccessToken( token: TokenV4 ) {
         if ( token.value.isNotBlank() ) {
-            interceptor.addHeaders(HEADER_API_V4_ACCESS_READ_TOKEN to  "Bearer ${token.value}")
+            interceptor.run {
+                addHeaders(HEADER_API_V4_ACCESS_READ_TOKEN to "Bearer ${token.value}")
+                addQueryParams(PARAM_ACCOUNT_ID to token.accountId!! )
+            }
         } else {
-            interceptor.removeHeaders( HEADER_API_V4_ACCESS_READ_TOKEN )
+            interceptor.run {
+                removeHeaders(HEADER_API_V4_ACCESS_READ_TOKEN)
+                removeQueryParams( PARAM_ACCOUNT_ID )
+            }
         }
     }
 
@@ -144,15 +151,23 @@ private class QueryInterceptor(private val params: MutableMap<String, String>) :
             val url = request.url()
 
             var sessionId: String = EMPTY_STRING
-            var indexToReplace = -1
+            var sessionIndex = -1
             params[PARAM_GUEST_SESSION_ID]?.let {
                 sessionId = it
-                indexToReplace = url.pathSegments().indexOfFirst { it == PATH_GUEST_SESSION_ID }
+                sessionIndex = url.pathSegments().indexOfFirst { it == PATH_GUEST_SESSION_ID }
+            }
+
+            var accountId: String = EMPTY_STRING
+            var accountIndex = -1
+            params[PARAM_ACCOUNT_ID]?.let {
+                accountId = it
+                accountIndex = url.pathSegments().indexOfFirst { it == PARAM_ACCOUNT_ID }
             }
 
             val finalUrl = url.newBuilder().apply {
                 params.forEach { addQueryParameter( it.key, it.value ) }
-                if ( indexToReplace > -1 ) setPathSegment( indexToReplace, sessionId )
+                if ( sessionIndex > -1 ) setPathSegment( sessionIndex, sessionId )
+                if ( accountIndex > -1 ) setPathSegment( accountIndex, accountId )
             }.build()
 
             println( finalUrl.toString() )

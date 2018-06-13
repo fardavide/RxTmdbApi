@@ -16,11 +16,12 @@ import studio.forface.rxtmdbapi.utils.WatchlistRequest
 
 /*
 TODO: file copied from TmdbAccount.kt, it needs to be fixed.
-Progress: getFavoriteMovies - DONE - not tested, error 500
+Progress: getFavoriteMovies - DONE - tested.
  */
 private const val BASE_PATH = "/4/account"
 private const val ACCOUNT_ID = "account_id"
 private const val DEF_ACCOUNT = "0"
+internal const val PATH_ACCOUNT_ID = ACCOUNT_ID
 interface TmdbAccountV4 {
 
     /**
@@ -32,29 +33,25 @@ interface TmdbAccountV4 {
 
     /**
      * Get all of the lists created by an account. Will include private lists if you are the owner.
-     * @param id the id of the account to query, self account id it will be used if empty.
      * @param page specify which page to query. Minimum 1, maximum 1000.
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [MovieList].
      */
     @GET("$BASE_PATH/{$ACCOUNT_ID}/lists")
     fun getCreatedLists(
-            @Path(ACCOUNT_ID)                     id: Int? = 0,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: String? = TmdbApiConfig.language
     ) : Single<ResultPage<MovieList>>
 
     /**
      * Get the list of favorite movies of an account.
-     * @param accountId the id of the account to query.
      * @param page specify which page to query. Minimum 1, maximum 1000.
      * @param sortBy sort the result ascending or descending using [Sorting.ListMovieSorting]
      * params.
      * @return a [Single] of [ResultPage] of [Movie].
      */
-    @GET("$BASE_PATH/{$ACCOUNT_ID}/movie/favorites")
+    @GET("$BASE_PATH/$ACCOUNT_ID/movie/favorites")
     fun getFavoriteMovies(
-            @Query(ACCOUNT_ID)                      accountId: String,
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.ListMovieSorting? = null
     ) : Single<ResultPage<Movie>>
