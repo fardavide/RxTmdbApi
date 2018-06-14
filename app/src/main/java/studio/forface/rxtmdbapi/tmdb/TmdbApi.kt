@@ -70,8 +70,8 @@ class TmdbApi(
             .build()
             .create( S::class.java )
 
-    val auth            by lazy { TmdbAuth( getService(), { setSession( it ) } ) }
-    val authV4          by lazy { TmdbAuthV4( getService(), { setAccessToken( it ) } ) }
+    val auth            by lazy { TmdbAuth( getService() ) { setSession( it ) } }
+    val authV4          by lazy { TmdbAuthV4( getService() ) { setAccessToken( it ) } }
     val account         by lazy { getService<TmdbAccount>() }
     val accountV4       by lazy { getService<TmdbAccountV4>() }
     val certifications  by lazy { getService<TmdbCertifications>() }

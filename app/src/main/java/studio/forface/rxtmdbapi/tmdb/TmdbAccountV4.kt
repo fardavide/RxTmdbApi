@@ -16,7 +16,11 @@ import studio.forface.rxtmdbapi.utils.WatchlistRequest
 
 /*
 TODO: file copied from TmdbAccount.kt, it needs to be fixed.
-Progress: getFavoriteMovies - DONE - tested.
+Progress:
+TESTED:
+getFavoriteMovies.
+UNTESTED:
+getLists, getFavoriteTvShows, getMovieRecommendations, getTvShowRecommendations.
  */
 private const val BASE_PATH = "/4/account"
 private const val ACCOUNT_ID = "account_id"
@@ -32,19 +36,17 @@ interface TmdbAccountV4 {
     fun getDetails() : Single<Account>
 
     /**
-     * Get all of the lists created by an account. Will include private lists if you are the owner.
+     * Get all of the lists created by the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @return a [Single] of [ResultPage] of [MovieList].
      */
     @GET("$BASE_PATH/$PATH_ACCOUNT_ID/lists")
-    fun getCreatedLists(
-            @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+    fun getLists(
+            @Query("page")                  page: Int? = 1
     ) : Single<ResultPage<MovieList>>
 
     /**
-     * Get the list of favorite movies of an account.
+     * Get the list of favorite movies of the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
      * @param sortBy sort the result ascending or descending using [Sorting.ListMovieSorting]
      * params.
@@ -57,17 +59,40 @@ interface TmdbAccountV4 {
     ) : Single<ResultPage<Movie>>
 
     /**
-     * Get the list of favorite TV shows of an account.
+     * Get the list of favorite TV shows of the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListTvShowSorting].
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/favorite/tv")
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/tv/favorites")
     fun getFavoriteTvShows(
             @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("sort_by")               sortBy: Sorting.ListTvShowSorting? = null
+    ) : Single<ResultPage<TvShow>>
+
+    /**
+     * Get the list of movies recommendations for the logged account.
+     * @param page specify which page to query. Minimum 1, maximum 1000.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListMovieSorting]
+     * params.
+     * @return a [Single] of [ResultPage] of [Movie].
+     */
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/movie/recommendations")
+    fun getMovieRecommendations(
+            @Query("page")                  page: Int? = 1,
+            @Query("sort_by")               sortBy: Sorting.ListMovieSorting? = null
+    ) : Single<ResultPage<Movie>>
+
+    /**
+     * Get the list of TV shows recommendations for the logged account.
+     * @param page specify which page to query. Minimum 1, maximum 1000.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListTvShowSorting].
+     * @return a [Single] of [ResultPage] of [TvShow].
+     */
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/tv/recommendations")
+    fun getTvShowsRecommendations(
+            @Query("page")                  page: Int? = 1,
+            @Query("sort_by")               sortBy: Sorting.ListTvShowSorting? = null
     ) : Single<ResultPage<TvShow>>
 
     /**

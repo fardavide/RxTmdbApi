@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package studio.forface.rxtmdbapi.tmdb
 
@@ -48,7 +48,8 @@ class TmdbAuthV4(
      * @see ITmdbAuthV4.createToken .
      * Then it sends the user to the Tmdb web page for authenticate the [Token].
      * @see ITmdbAuthV4.getTokenValidationUrl .
-     * Then creates a [Session] with the created [Token]
+     * Then authorize the just created [TokenV4].
+     * @see authenticate .
      * @see ITmdbAuthV4.createAccessToken .
      * Then notify the [TmdbApi] with the just created session thought [OnTokenListener], which will
      * add it as [QueryInterceptor.headers].
@@ -56,7 +57,7 @@ class TmdbAuthV4(
      * @param context the Android [Context] required for the [Intent].
      * @return a [Single] of [TokenV4]
      */
-    fun createAccessToken( context: Context ) : Single<TokenV4> {
+    fun authenticate( context: Context ) : Single<TokenV4> {
         return let {
             if ( token?.expired == false ) Single.just( token!! )
             else iTmdbAuth.createToken( AuthActivity.URI_V4 )
@@ -68,9 +69,21 @@ class TmdbAuthV4(
                     context.startActivity( intent )
                 }
                 .flatMap { token -> tokenAuthorizationSubject.map { token }.firstOrError() }
-                .flatMap { iTmdbAuth.createAccessToken( it ) }
-                .doOnSuccess { onTokenListener( it ) }
+                .flatMap { authenticate( it ) }
     }
+
+    /**
+     * Authorize the [TokenV4].
+     * @see authenticate .
+     * @see ITmdbAuthV4.createAccessToken .
+     * Then notify the [TmdbApi] with the just created session thought [OnTokenListener], which will
+     * add it as [QueryInterceptor.headers].
+     *
+     * @param token the [TokenV4] to authenticate.
+     * @return a [Single] of [TokenV4]
+     */
+    fun authenticate( token: TokenV4 ): Single<TokenV4> = iTmdbAuth.createAccessToken( token )
+                .doOnSuccess { onTokenListener( it ) }
 
     /**
      * It will notify [TmdbApi] to remove the Header from the [TmdbApi.interceptor] creating a

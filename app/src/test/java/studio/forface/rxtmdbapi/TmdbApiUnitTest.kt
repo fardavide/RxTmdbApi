@@ -68,10 +68,12 @@ class TmdbApiUnitTest {
 
     // Auth v4.
     @Test fun authV4() {
+        // TODO: set USER ID and run test.
         tmdbAuthV4.run {
-            preloadToken().blockingAwait()
-
-            val token = iTmdbAuth.createToken().blockingGet()
+            val token = authenticate( TokenV4(
+                    _value1 = USER_ACCESS_TOKEN,
+                    accountId = USER_ID
+            ) )
 
             println( token )
         }
@@ -99,7 +101,9 @@ class TmdbApiUnitTest {
     // Account v4.
     @Test fun accountV4() {
         tmdbAccountV4.run { testSinglesStream(
-                getFavoriteMovies( ACCOUNT_ID_4FACE, sortBy = Sorting.ReleaseDate.ASCENDING )
+                getLists(),
+                getFavoriteMovies( sortBy = Sorting.ReleaseDate.ASCENDING ),
+                getFavoriteTvShows()
         ) }
     }
 
