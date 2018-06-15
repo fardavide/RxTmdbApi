@@ -28,7 +28,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}")
     fun getDetails(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<TvShow>
 
@@ -40,7 +40,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/alternative_titles")
     fun getAlternativeTitles(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<AlternativeTitles>
 
     /**
@@ -68,7 +68,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/content_ratings")
     fun getContentRatings(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ContentRatings>
 
     /**
@@ -79,7 +79,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/credits")
     fun getCredits(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -99,7 +99,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/external_ids")
     fun getExternalIds(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ExternalIds>
 
     /**
@@ -114,7 +114,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/images")
     fun getImages(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
     ) : Single<Images>
 
@@ -135,7 +135,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/videos")
     fun getVideos(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Videos>
 
     /**
@@ -145,7 +145,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/{$TV_ID}/translations")
     fun getTranslations(
             @Path(TV_ID)                          id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Translations<TvShow>>
 
     /**
@@ -158,7 +158,7 @@ interface TmdbTvShows {
     fun getRecommendations(
             @Path(TV_ID)                         id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -171,7 +171,7 @@ interface TmdbTvShows {
     fun getSimilar(
             @Path(TV_ID)                         id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -184,7 +184,7 @@ interface TmdbTvShows {
     fun getReviews(
             @Path(TV_ID)                        id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Review>>
 
     /**
@@ -203,7 +203,7 @@ interface TmdbTvShows {
      */
     @GET("$TV_PATH/latest")
     fun getLatest(
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<TvShow>
 
     /**
@@ -215,7 +215,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/popular")
     fun getPopular(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -227,7 +227,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/top_rated")
     fun getTopRated(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -240,7 +240,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/airing_today")
     fun getAiringToday(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -253,7 +253,7 @@ interface TmdbTvShows {
     @GET("$TV_PATH/on_the_air")
     fun getOnTheAir(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**

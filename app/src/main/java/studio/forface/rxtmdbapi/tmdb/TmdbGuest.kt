@@ -26,7 +26,7 @@ interface TmdbGuest {
     fun getRatedMovies(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -40,7 +40,7 @@ interface TmdbGuest {
     fun getRatedTvShows(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -54,7 +54,7 @@ interface TmdbGuest {
     fun getRatedTvEpisodes(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvEpisode>>
 
 }

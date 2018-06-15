@@ -31,14 +31,15 @@ class TmdbInstrumentedTest {
     }
 
     @Test fun authV4() {
-        tmdbAuthV4.preloadToken().blockingAwait()
-        tmdbAuthV4.authenticate( context )
+        //tmdbAuthV4.preloadToken().blockingAwait()
+        val token = tmdbAuthV4.authenticate( context )
                 .blockingGet()
 
         val result = tmdbApi.accountV4.getFavoriteMovies(
                 sortBy = Sorting.CreationDate.ASCENDING
         ).blockingGet()
 
+        Log.d( TAG, "token: ${token.fullString()}" )
         Log.d( TAG, result.toString() )
     }
 

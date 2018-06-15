@@ -3,24 +3,12 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
-import okhttp3.ResponseBody
 import retrofit2.http.*
 import studio.forface.rxtmdbapi.models.*
-import studio.forface.rxtmdbapi.utils.FavoriteRequest
 import studio.forface.rxtmdbapi.utils.Sorting
-import studio.forface.rxtmdbapi.utils.WatchlistRequest
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
- */
-
-/*
-TODO: file copied from TmdbAccount.kt, it needs to be fixed.
-Progress:
-TESTED:
-getFavoriteMovies.
-UNTESTED:
-getLists, getFavoriteTvShows, getMovieRecommendations, getTvShowRecommendations.
  */
 private const val BASE_PATH = "/4/account"
 private const val ACCOUNT_ID = "account_id"
@@ -96,89 +84,53 @@ interface TmdbAccountV4 {
     ) : Single<ResultPage<TvShow>>
 
     /**
-     * Get the list of rated movies of an account.
+     * Get the list of rated movies for the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListMovieSorting]
+     * params.
      * @return a [Single] of [ResultPage] of [Movie].
      */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/rated/movies")
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/movie/rated")
     fun getRatedMovies(
             @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("sort_by")               sortBy: Sorting.ListMovieSorting? = null
     ) : Single<ResultPage<Movie>>
 
     /**
-     * Get the list of rated Tv shows of an account.
+     * Get the list of rated TV shows for the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListTvShowSorting].
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/rated/tv")
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/tv/rated")
     fun getRatedTvShows(
             @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("sort_by")               sortBy: Sorting.ListTvShowSorting? = null
     ) : Single<ResultPage<TvShow>>
 
     /**
-     * Get the list of rated Tv episodes of an account.
+     * Get the list of movies in watchlist for the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
-     * @return a [Single] of [ResultPage] of [TvEpisode].
-     */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/rated/tv/episodes")
-    fun getRatedTvEpisodes(
-            @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
-    ) : Single<ResultPage<TvEpisode>>
-
-    /**
-     * Get the list of movies in watchlist of an account.
-     * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListMovieSorting]
+     * params.
      * @return a [Single] of [ResultPage] of [Movie].
      */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/watchlist/movies")
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/movie/watchlist")
     fun getMoviesWatchlist(
             @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("sort_by")               sortBy: Sorting.ListMovieSorting? = null
     ) : Single<ResultPage<Movie>>
 
     /**
-     * Get the list of Tv shows in watchlist of an account.
+     * Get the list of TV shows in watchlist for the logged account.
      * @param page specify which page to query. Minimum 1, maximum 1000.
-     * @param sortBy sort the result ascending or descending by creationDate.
-     * @param language a ISO 639-1 value to display translated data for the fields that support it.
+     * @param sortBy sort the result ascending or descending using [Sorting.ListTvShowSorting].
      * @return a [Single] of [ResultPage] of [TvShow].
      */
-    @GET("$BASE_PATH/$DEF_ACCOUNT/watchlist/tv")
+    @GET("$BASE_PATH/$PATH_ACCOUNT_ID/tv/watchlist")
     fun getTvShowsWatchlist(
             @Query("page")                  page: Int? = 1,
-            @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("sort_by")               sortBy: Sorting.ListTvShowSorting? = null
     ) : Single<ResultPage<TvShow>>
 
-    @POST("$BASE_PATH/$DEF_ACCOUNT/favorite")
-    fun manageFavorite( @Body request: FavoriteRequest) : Single<ResponseBody>
-
-    @POST("$BASE_PATH/$DEF_ACCOUNT/watchlist")
-    fun manageWatchlist( @Body request: WatchlistRequest) : Single<ResponseBody>
-
 }
-
-fun TmdbAccountV4.addMovieToFavorite( id: Int ) =
-        manageFavorite(FavoriteRequest("movie", id, true))
-fun TmdbAccountV4.removeMovieFromFavorite(id: Int ) =
-        manageFavorite(FavoriteRequest("movie", id, false))
-
-fun TmdbAccountV4.addMovieToWatchlist( id: Int ) =
-        manageWatchlist(WatchlistRequest("movie", id, true))
-fun TmdbAccountV4.removeMovieFromWatchlist( id: Int ) =
-        manageWatchlist(WatchlistRequest("movie", id, false))

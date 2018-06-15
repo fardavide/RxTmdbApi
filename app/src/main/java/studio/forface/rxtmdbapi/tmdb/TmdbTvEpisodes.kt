@@ -31,7 +31,7 @@ interface TmdbTvEpisodes {
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
             @Path(EPISODE_NUMBER)                 episodeNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<TvEpisode>
 
@@ -62,7 +62,7 @@ interface TmdbTvEpisodes {
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
             @Path(EPISODE_NUMBER)                 episodeNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -81,7 +81,7 @@ interface TmdbTvEpisodes {
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
             @Path(EPISODE_NUMBER)                 episodeNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ExternalIds>
 
     /**
@@ -98,7 +98,7 @@ interface TmdbTvEpisodes {
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
             @Path(EPISODE_NUMBER)                 episodeNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
     ) : Single<Images>
 
@@ -112,7 +112,7 @@ interface TmdbTvEpisodes {
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
             @Path(EPISODE_NUMBER)                 episodeNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Videos>
 
 

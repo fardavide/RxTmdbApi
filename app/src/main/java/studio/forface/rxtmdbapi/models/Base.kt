@@ -3,7 +3,9 @@ package studio.forface.rxtmdbapi.models
 import android.arch.persistence.room.Ignore
 import com.google.gson.annotations.SerializedName
 
-
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 interface IdElement {
     val id: Int
 }

@@ -27,7 +27,7 @@ data class Item (
     @SerializedName("action")           val action: String,
     @SerializedName("time") private     val _time: String,
     @SerializedName("iso_639_1")        val iso6391: String,
-    @SerializedName("value")            val value: String,
+    @SerializedName("value")            val value: Any?,
     @SerializedName("original_value")   val originalValue: String
 
 ) : StringIdElement {

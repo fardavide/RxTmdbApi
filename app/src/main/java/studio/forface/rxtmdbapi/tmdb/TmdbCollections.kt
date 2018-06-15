@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import studio.forface.rxtmdbapi.models.Images
+import studio.forface.rxtmdbapi.models.Language
 import studio.forface.rxtmdbapi.models.MovieCollection
 import studio.forface.rxtmdbapi.models.Translations
 
@@ -26,7 +27,7 @@ interface TmdbCollections {
     @GET("$BASE_PATH/{$COLLECTION_ID}")
     fun getDetails(
             @Path(COLLECTION_ID)                    id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<MovieCollection>
 
     /**
@@ -37,7 +38,7 @@ interface TmdbCollections {
     @GET("$BASE_PATH/{$COLLECTION_ID}/images")
     fun getImages(
             @Path(COLLECTION_ID)                    id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Images>
 
     /**
@@ -48,7 +49,7 @@ interface TmdbCollections {
     @GET("$BASE_PATH/{$COLLECTION_ID}/translations")
     fun getTranslations(
             @Path(COLLECTION_ID)                    id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Translations<MovieCollection>>
 
 }

@@ -28,7 +28,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}")
     fun getDetails(
             @Path(PERSON_ID)                     id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<Person>
 
@@ -57,7 +57,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}/movie_credits")
     fun getMovieCredits(
             @Path(PERSON_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -68,7 +68,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}/tv_credits")
     fun getTvCredits(
             @Path(PERSON_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -79,7 +79,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}/combined_credits")
     fun getCombinedCredits(
             @Path(PERSON_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -97,7 +97,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}/external_ids")
     fun getExternalIds(
             @Path(PERSON_ID)                     id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ExternalIds>
 
     /**
@@ -119,7 +119,7 @@ interface TmdbPeople {
     fun getTaggedImages(
             @Path(PERSON_ID)                     id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
      ) : Single<ResultPage<Image>>
 
     /**
@@ -130,7 +130,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/{$PERSON_ID}/translations")
     fun getTranslations(
             @Path(PERSON_ID)                     id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Translations<Person>>
 
     /**
@@ -140,7 +140,7 @@ interface TmdbPeople {
      */
     @GET("$BASE_PATH/latest")
     fun getLatest(
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Person>
 
     /**
@@ -152,7 +152,7 @@ interface TmdbPeople {
     @GET("$BASE_PATH/popular")
     fun getPopular(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Person>>
 
 }

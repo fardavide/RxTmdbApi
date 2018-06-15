@@ -8,6 +8,8 @@ sealed class Sorting( private val toString: String ) {
     interface MovieSorting
     interface TvShowSorting
 
+    interface ListSorting
+
     interface ListMovieSorting
     interface ListTvShowSorting
 
@@ -42,6 +44,7 @@ sealed class Sorting( private val toString: String ) {
     }
 
     sealed class ReleaseDate( toString: String): Sorting( toString ),
+            ListSorting,
             MovieSorting,
             ListMovieSorting {
         object ASCENDING:   ReleaseDate( "release_date.asc" )
@@ -55,6 +58,7 @@ sealed class Sorting( private val toString: String ) {
     }
 
     sealed class Title( toString: String): Sorting( toString ),
+            ListSorting,
             ListMovieSorting {
         object ASCENDING:   Title( "title.asc" )
         object DESCENDING:  Title( "title.desc" )
@@ -62,6 +66,7 @@ sealed class Sorting( private val toString: String ) {
 
     sealed class VoteAverage( toString: String): Sorting( toString ),
             MovieSorting,       TvShowSorting,
+            ListSorting,
             ListMovieSorting {
         object ASCENDING:   VoteAverage( "vote_average.asc" )
         object DESCENDING:  VoteAverage( "vote_average.desc" )

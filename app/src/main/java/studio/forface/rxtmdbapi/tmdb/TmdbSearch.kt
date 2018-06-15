@@ -25,7 +25,7 @@ interface TmdbSearch {
     fun multiSearch(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults,
             @Query("region")                region: String? = null
     ): Single<ResultPage<Media>>
@@ -53,7 +53,7 @@ interface TmdbSearch {
     fun searchCollections(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ): Single<ResultPage<MovieCollection>>
 
     /**
@@ -81,7 +81,7 @@ interface TmdbSearch {
     fun searchMovies(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults,
             @Query("region")                region: String? = null,
             @Query("year")                  year: Int? = null,
@@ -101,7 +101,7 @@ interface TmdbSearch {
     fun searchPeople(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults,
             @Query("region")                region: String? = null
     ): Single<ResultPage<Person>>
@@ -117,7 +117,7 @@ interface TmdbSearch {
     fun searchTvShows(
             @Query("query")                 query: String,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("first_air_date_year")   startYear: Int? = null
     ): Single<ResultPage<TvShow>>
 

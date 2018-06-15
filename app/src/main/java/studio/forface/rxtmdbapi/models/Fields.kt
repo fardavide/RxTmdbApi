@@ -7,6 +7,7 @@ object Fields {
     internal const val ALSO_KNOWN_AS =          "also_knows_as"
     internal const val ALTERNATIVE_TITLES =     "alternative_titles"
     internal const val ASPECT_RATIO =           "aspect_ratio"
+    internal const val AVERAGE_RATING =         "average_rating"
     internal const val BACKDROPS =              "backdrops"
     internal const val BACKDROP_PATH =          "backdrop_path"
     internal const val BELONGS_TO_COLLECTION =  "belongs_to_collection"
@@ -38,7 +39,8 @@ object Fields {
     internal const val ID =                     "id"
     internal const val IN_PRODUCTION =          "in_production"
     internal const val IMAGES =                 "images"
-    internal const val ISO_639_1 =              "iso_639_1"
+    internal const val ISO_3166_1 =             "iso_3166_1" // Region.
+    internal const val ISO_639_1 =              "iso_639_1" //Language.
     internal const val KEYWORDS =               "keywords"
     internal const val KNOWN_FOR =              "knows_for"
     internal const val LANGUAGES =              "languages"
@@ -68,6 +70,7 @@ object Fields {
     internal const val PRODUCTION_COUNTRIES =   "production_countries"
     internal const val PROFILE_PATH =           "profile_path"
     internal const val PROFILES =               "profiles"
+    internal const val PUBLIC =                 "public"
     internal const val RECOMMENDATIONS =        "recommendations"
     internal const val RELEASE_DATE =           "release_date"
     internal const val RELEASE_DATES =          "release_dates"
@@ -93,6 +96,10 @@ object Fields {
     internal const val VOTE_AVERAGE =           "vote_average"
     internal const val VOTE_COUNT =             "vote_count"
     internal const val WIDTH =                  "width"
+
+    // Users.
+    internal const val GRAVATAR_HASH =          "gravatar_hash"
+    internal const val USERNAME =               "username"
 
     // Images config.
     internal const val BASE_URL =               "base_url"

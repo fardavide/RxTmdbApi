@@ -2,8 +2,10 @@ package studio.forface.rxtmdbapi.models
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 data class MovieList(
-
     @SerializedName("description")      val description: String,
     @SerializedName("favorite_count")   val favoriteCount: Int,
     @SerializedName("id") override      val id: Int,
@@ -12,5 +14,4 @@ data class MovieList(
     @SerializedName("list_type")        val listType: String,
     @SerializedName("name") override    val name: String,
     @SerializedName("poster_path")      val posterPath: String?
-
 ) : NamedIdElement, Pageable

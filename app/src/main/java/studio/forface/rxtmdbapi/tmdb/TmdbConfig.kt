@@ -55,7 +55,7 @@ interface TmdbConfig {
      */
     @GET("genre/movie/list")
     fun getMovieGenres(
-            @Query("language")      language: String? = TmdbApiConfig.language
+            @Query("language")      language: Language? = TmdbApiConfig.language
     ) : Single<Genres>
 
     /**
@@ -66,7 +66,7 @@ interface TmdbConfig {
      */
     @GET("genre/tv/list")
     fun getTvShowGenres(
-            @Query("language")      language: String? = TmdbApiConfig.language
+            @Query("language")      language: Language? = TmdbApiConfig.language
     ) : Single<Genres>
 
     /**

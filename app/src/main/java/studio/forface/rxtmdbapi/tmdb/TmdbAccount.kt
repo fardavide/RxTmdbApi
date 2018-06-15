@@ -6,9 +6,9 @@ import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
 import studio.forface.rxtmdbapi.models.*
-import studio.forface.rxtmdbapi.utils.FavoriteRequest
+import studio.forface.rxtmdbapi.models.requests.FavoriteRequest
 import studio.forface.rxtmdbapi.utils.Sorting
-import studio.forface.rxtmdbapi.utils.WatchlistRequest
+import studio.forface.rxtmdbapi.models.requests.WatchlistRequest
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -37,7 +37,7 @@ interface TmdbAccount {
     fun getCreatedLists(
             @Path(ACCOUNT_ID)                     id: Int? = 0,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<MovieList>>
 
     /**
@@ -51,7 +51,7 @@ interface TmdbAccount {
     fun getFavoriteMovies(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -65,7 +65,7 @@ interface TmdbAccount {
     fun getFavoriteTvShows(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -79,7 +79,7 @@ interface TmdbAccount {
     fun getRatedMovies(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -93,7 +93,7 @@ interface TmdbAccount {
     fun getRatedTvShows(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     /**
@@ -107,7 +107,7 @@ interface TmdbAccount {
     fun getRatedTvEpisodes(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvEpisode>>
 
     /**
@@ -121,7 +121,7 @@ interface TmdbAccount {
     fun getMoviesWatchlist(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -135,7 +135,7 @@ interface TmdbAccount {
     fun getTvShowsWatchlist(
             @Query("page")                  page: Int? = 1,
             @Query("sort_by")               sortBy: Sorting.CreationDate? = null,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<TvShow>>
 
     @POST("$BASE_PATH/$DEF_ACCOUNT/favorite")
@@ -147,11 +147,11 @@ interface TmdbAccount {
 }
 
 fun TmdbAccount.addMovieToFavorite( id: Int ) =
-        manageFavorite(FavoriteRequest("movie", id, true))
+        manageFavorite( FavoriteRequest("movie", id, true ) )
 fun TmdbAccount.removeMovieFromFavorite(id: Int ) =
-        manageFavorite(FavoriteRequest("movie", id, false))
+        manageFavorite( FavoriteRequest("movie", id, false ) )
 
 fun TmdbAccount.addMovieToWatchlist( id: Int ) =
-        manageWatchlist(WatchlistRequest("movie", id, true))
+        manageWatchlist( WatchlistRequest("movie", id, true ) )
 fun TmdbAccount.removeMovieFromWatchlist( id: Int ) =
-        manageWatchlist(WatchlistRequest("movie", id, false))
+        manageWatchlist( WatchlistRequest("movie", id, false ) )

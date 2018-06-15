@@ -9,12 +9,11 @@ import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
 import studio.forface.rxtmdbapi.models.ImageType
 import studio.forface.rxtmdbapi.models.mapToSizedUrls
+import studio.forface.rxtmdbapi.models.requests.ListV4CreateRequest
 import studio.forface.rxtmdbapi.tmdb.*
 import studio.forface.rxtmdbapi.utils.Sorting
 
-/**
- * @author 4face Studio (Davide Giuseppe Farella).
- */
+
 
 private const val ACCOUNT_ID_4FACE = "6574440"
 private const val COLLECTION_ID_TRANSFORMERS = 8650
@@ -22,21 +21,33 @@ private const val COMPANY_ID_COLUMBIA_PICTURES = 5
 private const val GENRE_ID_ANIMATION = 16
 private const val GENRE_ID_CRIME = 80
 private const val GENRE_ID_DRAMA = 18
+private const val LIST_ID_MY_LIST = 64964
 private const val MOVIE_ID_BLADE = 335984
 private const val NETWORK_ID_RANDOM = "213"
 private const val PERSON_ID_DICAPRIO = 6193
 private const val TV_SHOW_ID_SIMPSON = 456
 
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 class TmdbApiUnitTest {
 
-    private val tmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN, GUEST_SESSION_ID, true )
+    private val tmdbApi: TmdbApi by lazy {
+        TmdbApi(
+                TMDB_API_KEY,
+                TMDB_API_ACCESS_TOKEN,
+                USER_SESSION_ID
+        )
+    }
+
+    private val tokenV4 by lazy {
+        TokenV4( USER_ACCESS_TOKEN, accountId = USER_ID )
     }
 
     private val tmdbAuth            get() = tmdbApi.auth
     private val tmdbAuthV4          get() = tmdbApi.authV4
-    private val tmdbAccount         get() = tmdbApi.account
-    private val tmdbAccountV4       get() = tmdbApi.accountV4
+    private val tmdbAccount         get() = tmdbApi.account.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
+    private val tmdbAccountV4       get() = tmdbApi.accountV4.also { tmdbAuthV4.authenticate( tokenV4 ).blockingGet() }
     private val tmdbCertifications  get() = tmdbApi.certifications
     private val tmdbChanges         get() = tmdbApi.changes
     private val tmdbCollections     get() = tmdbApi.collections
@@ -44,14 +55,16 @@ class TmdbApiUnitTest {
     private val tmdbConfig          get() = tmdbApi.config
     private val tmdbDiscover        get() = tmdbApi.discover
     private val tmdbGuest           get() = tmdbApi.guest
-    private val tmdbMovies          get() = tmdbApi.movies
+    private val tmdbLists           get() = tmdbApi.lists
+    private val tmdbListsV4         get() = tmdbApi.listsV4.also { tmdbAuthV4.authenticate( tokenV4 ).blockingGet() }
+    private val tmdbMovies          get() = tmdbApi.movies.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
     private val tmdbNetworks        get() = tmdbApi.networks
     private val tmdbPeople          get() = tmdbApi.people
     private val tmdbReviews         get() = tmdbApi.reviews
     private val tmdbSearch          get() = tmdbApi.search
-    private val tmdbTvShows         get() = tmdbApi.tvShows
+    private val tmdbTvShows         get() = tmdbApi.tvShows.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
     private val tmdbTvSeasons       get() = tmdbApi.tvSeasons
-    private val tmdbTvEpisodes      get() = tmdbApi.tvEpisodes
+    private val tmdbTvEpisodes      get() = tmdbApi.tvEpisodes.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
 
 
     // Auth.
@@ -68,12 +81,9 @@ class TmdbApiUnitTest {
 
     // Auth v4.
     @Test fun authV4() {
-        // TODO: set USER ID and run test.
         tmdbAuthV4.run {
-            val token = authenticate( TokenV4(
-                    _value1 = USER_ACCESS_TOKEN,
-                    accountId = USER_ID
-            ) )
+            val token = authenticate( tokenV4 )
+                    .blockingGet()
 
             println( token )
         }
@@ -103,7 +113,11 @@ class TmdbApiUnitTest {
         tmdbAccountV4.run { testSinglesStream(
                 getLists(),
                 getFavoriteMovies( sortBy = Sorting.ReleaseDate.ASCENDING ),
-                getFavoriteTvShows()
+                getFavoriteTvShows(),
+                getRatedMovies(),
+                getRatedTvShows(),
+                getMoviesWatchlist(),
+                getTvShowsWatchlist()
         ) }
     }
 
@@ -176,6 +190,7 @@ class TmdbApiUnitTest {
 
     // Guest.
     @Test fun guest() {
+        //tmdbAuth.createGuessSession()
         tmdbGuest.run { testSinglesStream(
                 getRatedMovies(),
                 getRatedTvShows(),
@@ -183,6 +198,15 @@ class TmdbApiUnitTest {
         ) }
     }
 
+    // Lists V4.
+    @Test fun listsV4() {
+        tmdbListsV4.run { testSinglesStream(
+                getDetails( LIST_ID_MY_LIST ),
+                //createList("API test list","desc" ), // TESTED, do not run too many times.
+                updateList(  )
+                // deleteList(80192 ), // TESTED, do not run too many times.
+        ) }
+    }
 
     // Movies.
     @Test fun movies() {
@@ -201,7 +225,7 @@ class TmdbApiUnitTest {
                 getRecommendations(     MOVIE_ID_BLADE ),
                 getSimilar(             MOVIE_ID_BLADE ),
                 getReviews(             MOVIE_ID_BLADE ),
-                // FIXME: getLists(               MOVIE_ID_BLADE ),
+                getLists(               MOVIE_ID_BLADE ),
                 getLatest(),
                 getNowPlaying(),
                 getPopular(),

@@ -3,6 +3,7 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
+import studio.forface.rxtmdbapi.models.Language
 import studio.forface.rxtmdbapi.models.Movie
 import studio.forface.rxtmdbapi.models.ResultPage
 import studio.forface.rxtmdbapi.models.TvShow
@@ -106,7 +107,7 @@ interface TmdbDiscover {
             @Query("page")          page: Int? = 1,
             @Query("sort_by")       sortBy: Sorting.MovieSorting = Sorting.Popularity.DESCENDING,
             @Query("include_adult") includeAdults: Boolean? = TmdbApiConfig.includeAdults,
-            @Query("language")                  language: String? = TmdbApiConfig.language,
+            @Query("language")                  language: Language? = TmdbApiConfig.language,
             @Query("region")                    region: String? = null,
             @Query("year")                      year: Int? = null,
             @Query("with_genres")               withGenres: List<Int>? = null,
@@ -215,7 +216,7 @@ interface TmdbDiscover {
             @Query("page")          page: Int? = 1,
             @Query("sort_by")       sortBy: Sorting.TvShowSorting = Sorting.Popularity.DESCENDING,
             @Query("include_adult") includeAdults: Boolean? = TmdbApiConfig.includeAdults,
-            @Query("language")                      language: String? = TmdbApiConfig.language,
+            @Query("language")                      language: Language? = TmdbApiConfig.language,
             @Query("screened_theatrically")         screenedTheatrically: Boolean? = null,
             @Query("first_air_date_year")           firstAirDateYear: Int? = null,
             @Query("with_genres")                   withGenres: List<Int>? = null,

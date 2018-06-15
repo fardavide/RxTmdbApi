@@ -29,7 +29,7 @@ interface TmdbTvSeasons {
     fun getDetails(
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<Season>
 
@@ -59,7 +59,7 @@ interface TmdbTvSeasons {
     fun getCredits(
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Credits>
 
     /**
@@ -76,7 +76,7 @@ interface TmdbTvSeasons {
     fun getExternalIds(
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ExternalIds>
 
     /**
@@ -92,7 +92,7 @@ interface TmdbTvSeasons {
     fun getImages(
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
     ) : Single<Images>
 
@@ -105,7 +105,7 @@ interface TmdbTvSeasons {
     fun getVideos(
             @Path(TV_ID)                          tvShowId: Int,
             @Path(SEASON_NUMBER)                  seasonNumber: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Videos>
 
 }

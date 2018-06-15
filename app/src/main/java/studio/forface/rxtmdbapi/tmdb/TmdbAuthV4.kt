@@ -160,13 +160,18 @@ internal fun ITmdbAuthV4.getTokenValidationUrl( token: TokenV4 ) =
 
 @Suppress("MemberVisibilityCanBePrivate")
 data class TokenV4(
-        @SerializedName("request_token")        val _value1: String,
-        @SerializedName("access_token")         val _value2: String? = null,
-        @SerializedName("account_id")           val accountId: String? = null
+    @SerializedName("request_token")        val _value1: String,
+    @SerializedName("access_token")         val _value2: String? = null,
+    @SerializedName("account_id")           val accountId: String? = null
 ) {
-    val value get() = _value2 ?: _value1
-    val expiration get() = now + 15 * 60 * 1000 // 15 mins later.
-    val expired get() = expiration < now
+    val value       get() = _value2 ?: _value1
+    val expiration  get() = now + 15 * 60 * 1000 // 15 mins later.
+    val expired     get() = expiration < now
 
+    @Deprecated(
+            "toString() has been override for Api purpose",
+            ReplaceWith("fullString()")
+    )
     override fun toString() = value
+    fun fullString() = "{ value= \"$value\", accountId= \"$accountId\" }"
 }

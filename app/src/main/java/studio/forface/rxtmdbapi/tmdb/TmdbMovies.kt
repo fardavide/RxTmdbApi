@@ -27,7 +27,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}")
     fun getDetails(
             @Path(MOVIE_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
     ) : Single<Movie>
 
@@ -93,7 +93,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/images")
     fun getImages(
             @Path(MOVIE_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
     ) : Single<Images>
 
@@ -123,7 +123,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/videos")
     fun getVideos(
             @Path(MOVIE_ID)                      id: Int,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Videos>
 
     /**
@@ -145,7 +145,7 @@ interface TmdbMovies {
     fun getRecommendations(
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -160,7 +160,7 @@ interface TmdbMovies {
     fun getSimilar(
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Movie>>
 
     /**
@@ -173,7 +173,7 @@ interface TmdbMovies {
     fun getReviews(
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<Review>>
 
     /**
@@ -186,7 +186,7 @@ interface TmdbMovies {
     fun getLists(
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<ResultPage<MovieList>>
 
     /**
@@ -196,7 +196,7 @@ interface TmdbMovies {
      */
     @GET("$BASE_PATH/latest")
     fun getLatest(
-            @Query("language")              language: String? = TmdbApiConfig.language
+            @Query("language")              language: Language? = TmdbApiConfig.language
     ) : Single<Movie>
 
     /**
@@ -211,7 +211,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/now_playing")
     fun getNowPlaying(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
     ) : Single<ResultPage<Movie>>
 
@@ -225,7 +225,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/popular")
     fun getPopular(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
     ) : Single<ResultPage<Movie>>
 
@@ -239,7 +239,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/top_rated")
     fun getTopRated(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
     ) : Single<ResultPage<Movie>>
 
@@ -255,7 +255,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/upcoming")
     fun getUpcoming(
             @Query("page")                  page: Int? = 1,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
     ) : Single<ResultPage<Movie>>
 

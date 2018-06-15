@@ -38,6 +38,8 @@ class TmdbApi(
         guest: Boolean = false
 ) {
 
+    var settings = TmdbApiConfig
+
     private val interceptor = QueryInterceptor( mutableMapOf( PARAM_API_KEY to apiV3Key ) ).apply {
         apiV4accessToken?.let {
             if ( it.split('.' ).size == 3) {
@@ -83,6 +85,8 @@ class TmdbApi(
     val discover        by lazy { getService<TmdbDiscover>() }
     val guest           by lazy { getService<TmdbGuest>() }
     val keywords        by lazy { getService<TmdbKeywords>() }
+    val lists           by lazy { getService<TmdbLists>() }
+    val listsV4         by lazy { getService<TmdbListsV4>() }
     val movies          by lazy { getService<TmdbMovies>() }
     val networks        by lazy { getService<TmdbNetworks>() }
     val people          by lazy { getService<TmdbPeople>() }

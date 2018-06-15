@@ -6,6 +6,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import studio.forface.rxtmdbapi.models.Language
 import studio.forface.rxtmdbapi.models.Movie
 import studio.forface.rxtmdbapi.models.Network
 import studio.forface.rxtmdbapi.models.ResultPage
@@ -29,7 +30,7 @@ interface TmdbKeywords {
 
     /**
      * Get the movies that belong to a keyword.
-     * We highly recommend using [TmdbDiscover.movieDiscover] instead of this method as it is
+     * DEPRECATED in API, use [TmdbDiscover.movieDiscover] instead of this method as it is
      * much more flexible.
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @param includeAdults choose whether to include adult (pornography) content in the results.
@@ -42,7 +43,7 @@ interface TmdbKeywords {
     )
     fun getMovies(
             @Path(KEYWORD_ID)                       id: String,
-            @Query("language")              language: String? = TmdbApiConfig.language,
+            @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_adult")         includeAdults: Boolean? = TmdbApiConfig.includeAdults
     ): Single<ResultPage<Movie>>
 
