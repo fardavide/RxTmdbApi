@@ -18,7 +18,7 @@ class TmdbInstrumentedTest {
 
     private val context: Context = InstrumentationRegistry.getTargetContext()
     private val tmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN, USER_SESSION_ID )
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
     }
     private val tmdbAuth            get() = tmdbApi.auth
     private val tmdbAuthV4          get() = tmdbApi.authV4

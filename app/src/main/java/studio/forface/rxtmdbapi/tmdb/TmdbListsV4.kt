@@ -59,9 +59,13 @@ interface TmdbListsV4 {
      * @return a [Single] of [ResponseBody].
      */
     @PUT("$BASE_PATH/{$LIST_ID}")
+    @FormUrlEncoded
     fun updateList(
-            @Path(LIST_ID) id: Int,
-            @Body list: ListV4UpdateRequest
+            @Path(LIST_ID)               id: Int,
+            @Field("name")         name: String,
+            @Field("description")  description: String? = null,
+            @Field("public")       public: Boolean? = null,
+            @Field("sort_by")      sortBy: Sorting.ListMovieSorting? = null
     ) : Single<ResponseBody>
 
     /**

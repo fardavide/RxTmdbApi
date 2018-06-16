@@ -114,7 +114,7 @@ class TmdbAuth(
      * @return a [Single] of [Session.Guest]
      */
     fun createGuessSession() : Single<Session.Guest> = iTmdbAuth.createGuestSession()
-            .doOnSuccess { onSessionListener(it) }
+            .doOnSuccess { onSessionListener( it ) }
 
     /**
      * It will notify [TmdbApi] to remove the [Session] from the [TmdbApi.interceptor] creating a

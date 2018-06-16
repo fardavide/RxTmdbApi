@@ -4,15 +4,16 @@ package studio.forface.rxtmdbapi
 
 import io.reactivex.Single
 import okhttp3.ResponseBody
+import org.junit.Rule
 import org.junit.Test
+import retrofit2.HttpException
 import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
 import studio.forface.rxtmdbapi.models.ImageType
 import studio.forface.rxtmdbapi.models.mapToSizedUrls
-import studio.forface.rxtmdbapi.models.requests.ListV4CreateRequest
 import studio.forface.rxtmdbapi.tmdb.*
 import studio.forface.rxtmdbapi.utils.Sorting
-
+import java.util.*
 
 
 private const val ACCOUNT_ID_4FACE = "6574440"
@@ -32,12 +33,24 @@ private const val TV_SHOW_ID_SIMPSON = 456
  */
 class TmdbApiUnitTest {
 
+    /*@Rule
+    @JvmField
+    val rule = MockitoJUnit.rule()!!*/
+
+    @Rule @JvmField var testSchedulerRule = RxImmediateSchedulerRule()
+
+
     private val tmdbApi: TmdbApi by lazy {
-        TmdbApi(
-                TMDB_API_KEY,
-                TMDB_API_ACCESS_TOKEN,
-                USER_SESSION_ID
-        )
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
+                .apply { setSession( USER_SESSION_ID ) }
+    }
+    private val tmdbApiGuest: TmdbApi by lazy {
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
+                .also { tmdbAuth.createGuessSession().blockingGet() }
+    }
+    private val tmdbApiV4: TmdbApi by lazy {
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
+                .apply { setAccessToken( tokenV4 ) }
     }
 
     private val tokenV4 by lazy {
@@ -46,25 +59,25 @@ class TmdbApiUnitTest {
 
     private val tmdbAuth            get() = tmdbApi.auth
     private val tmdbAuthV4          get() = tmdbApi.authV4
-    private val tmdbAccount         get() = tmdbApi.account.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
-    private val tmdbAccountV4       get() = tmdbApi.accountV4.also { tmdbAuthV4.authenticate( tokenV4 ).blockingGet() }
+    private val tmdbAccount         get() = tmdbApi.account
+    private val tmdbAccountV4       get() = tmdbApiV4.accountV4
     private val tmdbCertifications  get() = tmdbApi.certifications
     private val tmdbChanges         get() = tmdbApi.changes
     private val tmdbCollections     get() = tmdbApi.collections
     private val tmdbCompanies       get() = tmdbApi.companies
     private val tmdbConfig          get() = tmdbApi.config
     private val tmdbDiscover        get() = tmdbApi.discover
-    private val tmdbGuest           get() = tmdbApi.guest
+    private val tmdbGuest           get() = tmdbApiGuest.guest
     private val tmdbLists           get() = tmdbApi.lists
-    private val tmdbListsV4         get() = tmdbApi.listsV4.also { tmdbAuthV4.authenticate( tokenV4 ).blockingGet() }
-    private val tmdbMovies          get() = tmdbApi.movies.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
+    private val tmdbListsV4         get() = tmdbApiV4.listsV4
+    private val tmdbMovies          get() = tmdbApi.movies
     private val tmdbNetworks        get() = tmdbApi.networks
     private val tmdbPeople          get() = tmdbApi.people
     private val tmdbReviews         get() = tmdbApi.reviews
     private val tmdbSearch          get() = tmdbApi.search
-    private val tmdbTvShows         get() = tmdbApi.tvShows.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
+    private val tmdbTvShows         get() = tmdbApi.tvShows
     private val tmdbTvSeasons       get() = tmdbApi.tvSeasons
-    private val tmdbTvEpisodes      get() = tmdbApi.tvEpisodes.also { tmdbAuth.createUserSessionWithLogin( USERNAME, PASSWORD ).blockingGet() }
+    private val tmdbTvEpisodes      get() = tmdbApi.tvEpisodes
 
 
     // Auth.
@@ -190,7 +203,7 @@ class TmdbApiUnitTest {
 
     // Guest.
     @Test fun guest() {
-        //tmdbAuth.createGuessSession()
+        println( tmdbApiGuest.auth.createGuessSession().blockingGet().guest )
         tmdbGuest.run { testSinglesStream(
                 getRatedMovies(),
                 getRatedTvShows(),
@@ -203,7 +216,8 @@ class TmdbApiUnitTest {
         tmdbListsV4.run { testSinglesStream(
                 getDetails( LIST_ID_MY_LIST ),
                 //createList("API test list","desc" ), // TESTED, do not run too many times.
-                updateList(  )
+                updateList( LIST_ID_MY_LIST, "name ${Random().nextInt()}" ),
+                deleteList( 80229 )
                 // deleteList(80192 ), // TESTED, do not run too many times.
         ) }
     }
@@ -366,6 +380,6 @@ private fun testSinglesStream (vararg singles: Single<*>) {
 }
 
 private val <T> Single<T>.test get() = doOnSuccess {
-    val string = if ( it is ResponseBody ) it.string() else it.toString()
-    println( "$string\n" )
-}
+    val string = if (it is ResponseBody) it.string() else it.toString()
+    println("$string\n")
+}.retry( Long.MAX_VALUE ) { t -> ( t as HttpException ).code() == 429 }
