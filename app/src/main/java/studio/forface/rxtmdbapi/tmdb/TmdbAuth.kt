@@ -106,7 +106,7 @@ class TmdbAuth(
     }
 
     /**
-     * Create a new Guest Session.
+     * Create a new [Session.Guest].
      * It will be automatically set in [TmdbApi].
      *
      * WARNING: The session will expire if not used in one day and it will last forever when used,
@@ -115,10 +115,14 @@ class TmdbAuth(
      * only if the old one is expired.
      * EXAMPLE USAGE:
      * val tmdbApi = TmdbApi( TOKEN_V3, TOKEN_V4 ).apply {
+     *     setSession( loadSessionFromDatabase() )
      *     onNewGuestSession = { session -> storeGuestSessionToDatabase ( session ) }
      * }
      *
-     * It creates a guest [Session]
+     * WARNING: This method is public so you can force the creation of a new Guest Session, but if
+     * you don't strictly need that (es: for handle multiple guests) let the [TmdbApi] creates it
+     * automatically when needed.
+     *
      * @see ITmdbAuth.createGuestSession .
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which
      * will add it as [TmdbInterceptor.params].

@@ -1,7 +1,13 @@
 package studio.forface.rxtmdbapi.room
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.persistence.room.Database
+import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.content.Context
 import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.tmdb.Session
 
@@ -24,5 +30,61 @@ abstract class TmdbDatabase : RoomDatabase() {
     abstract val peopleDao:             PeopleDao
     abstract val sessionsDao:           SessionsDao
     abstract val tvShowsDao:            TvShowsDao
+
+    companion object {
+
+        private var database: TmdbDatabase? = null
+        private val callers = mutableSetOf<Any>()
+
+        private val observer = object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
+            fun onLifecycleChange() {
+                callers.mapNotNull { it as? LifecycleOwner }
+                        .filter { it.lifecycle.currentState == Lifecycle.State.DESTROYED }
+                        .forEach {
+                            it.lifecycle.removeObserver(this  )
+                            closeHere( it )
+                        }
+            }
+        }
+
+        fun get( lifecycleOwner: LifecycleOwner ): TmdbDatabase {
+            lifecycleOwner.lifecycle.addObserver( observer )
+            callers.add( lifecycleOwner )
+            return openIfNeeded( lifecycleOwner as Context )
+        }
+
+        fun get( caller: Any, context: Context, forceNoLifecycle: Boolean = false ): TmdbDatabase {
+            if ( caller is LifecycleOwner && ! forceNoLifecycle )
+                throw Exception( "the caller param has a Lifecycle, use get( lifecycleOwner:" +
+                        " LifecycleOwner ) or set forceNoLifecycle as true" )
+            
+            callers.add( caller )
+            return openIfNeeded( context )
+        }
+
+        private fun openIfNeeded( context: Context ): TmdbDatabase {
+            if ( database?.isOpen != true ) database = build( context )
+            return database!!
+        }
+
+        fun closeHere( caller: Any ) {
+            callers.remove( caller )
+            closeIfNeeded()
+        }
+
+        private fun closeIfNeeded() {
+            if ( callers.isEmpty() ) {
+                database?.close()
+                database = null
+            }
+        }
+
+        private fun build( context: Context ) = Room.databaseBuilder(
+                context.applicationContext,
+                TmdbDatabase::class.java,
+                "Tmdb_database"
+        ).build()
+    }
 
 }

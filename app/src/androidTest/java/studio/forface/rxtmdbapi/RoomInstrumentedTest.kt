@@ -30,7 +30,6 @@ class RoomInstrumentedTest {
     private val sessionsDao by lazy { localDb.sessionsDao }
     private val tvShowsDao  by lazy { localDb.tvShowsDao }
 
-
     @After
     fun closeDb() {
         localDb.close()

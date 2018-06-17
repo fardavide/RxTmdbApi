@@ -163,44 +163,40 @@ private class TmdbInterceptor : Interceptor {
     }
 
     override fun intercept( chain: Interceptor.Chain ): Response {
+        val request = chain.request()
+        val url = request.url()
 
-        return chain.request().let { request ->
-
-            val url = request.url()
-
-            var sessionId: String = EMPTY_STRING
-            var sessionIndex = -1
-            params[PARAM_GUEST_SESSION_ID]?.let {
-                sessionId = it
-                sessionIndex = url.pathSegments().indexOfFirst { it == PATH_GUEST_SESSION_ID }
-            }
-
-            var accountId: String = EMPTY_STRING
-            var accountIndex = -1
-            params[PARAM_ACCOUNT_ID]?.let {
-                accountId = it
-                accountIndex = url.pathSegments().indexOfFirst { it == PATH_ACCOUNT_ID }
-            }
-
-            val finalUrl = url.newBuilder().apply {
-                params.forEach { addQueryParameter( it.key, it.value ) }
-                if ( sessionIndex > -1 ) setPathSegment( sessionIndex, sessionId )
-                if ( accountIndex > -1 ) setPathSegment( accountIndex, accountId )
-            }.build()
-
-            println( finalUrl.toString() )
-
-            val newRequest = request.newBuilder()
-                    .url( finalUrl )
-                    .headers( Headers.of( headers ) )
-                    .method( request.method(), request.body() )
-                    .build()
-
-            chain.proceed( newRequest )
+        var sessionId: String = EMPTY_STRING
+        var sessionIndex = -1
+        params[PARAM_GUEST_SESSION_ID]?.let {
+            sessionId = it
+            sessionIndex = url.pathSegments().indexOfFirst { it == PATH_GUEST_SESSION_ID }
         }
+
+        var accountId: String = EMPTY_STRING
+        var accountIndex = -1
+        params[PARAM_ACCOUNT_ID]?.let {
+            accountId = it
+            accountIndex = url.pathSegments().indexOfFirst { it == PATH_ACCOUNT_ID }
+        }
+
+        val finalUrl = url.newBuilder().apply {
+            params.forEach { addQueryParameter( it.key, it.value ) }
+            if ( sessionIndex > -1 ) setPathSegment( sessionIndex, sessionId )
+            if ( accountIndex > -1 ) setPathSegment( accountIndex, accountId )
+        }.build()
+
+        println( finalUrl.toString() )
+
+        val newRequest = request.newBuilder()
+                .url( finalUrl )
+                .headers( Headers.of( headers ) )
+                .method( request.method(), request.body() )
+                .build()
+
+        return  chain.proceed( newRequest )
     }
 }
-
 
 private const val PATH_GUEST_SESSION = "guest_session"
 private const val PATH_ACCOUNT = "account"
@@ -243,5 +239,4 @@ private class TmdbAuthenticator( val api: TmdbApi ): Authenticator {
 
     private fun authenticateV4() = api.tokenV4
             ?.let { api.authV4.authenticate( it ).blockingGet() }
-
 }
