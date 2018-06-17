@@ -2,13 +2,7 @@
 
 package studio.forface.rxtmdbapi.room
 
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Update
-import android.arch.persistence.room.Delete
-
+import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import studio.forface.rxtmdbapi.models.Fields

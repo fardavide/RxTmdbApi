@@ -6,7 +6,6 @@ import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import studio.forface.rxtmdbapi.models.Fields
-import studio.forface.rxtmdbapi.models.Movie
 import studio.forface.rxtmdbapi.models.Person
 
 /**

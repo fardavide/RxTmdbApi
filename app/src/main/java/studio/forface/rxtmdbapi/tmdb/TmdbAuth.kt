@@ -15,7 +15,10 @@ import io.reactivex.subjects.PublishSubject
 import retrofit2.http.GET
 import retrofit2.http.Query
 import studio.forface.rxtmdbapi.models.Fields
-import studio.forface.rxtmdbapi.utils.*
+import studio.forface.rxtmdbapi.utils.AuthActivity
+import studio.forface.rxtmdbapi.utils.EMPTY_STRING
+import studio.forface.rxtmdbapi.utils.now
+import studio.forface.rxtmdbapi.utils.timeInMillis
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -54,7 +57,7 @@ class TmdbAuth(
      * Then creates a [Session] with the created [Token]
      * @see ITmdbAuth.createUserSession .
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
-     * add it as [QueryInterceptor.params].
+     * add it as [TmdbInterceptor.params].
      *
      * @param username the username of the User.
      * @param password the password of the User.
@@ -81,7 +84,7 @@ class TmdbAuth(
      * Then creates a [Session] with the created [Token]
      * @see ITmdbAuth.createUserSession .
      * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
-     * add it as [QueryInterceptor.params].
+     * add it as [TmdbInterceptor.params].
      *
      * @param context the Android [Context] required for the [Intent].
      * @return a [Single] of [Session.User]
@@ -103,13 +106,22 @@ class TmdbAuth(
     }
 
     /**
-     * The return value is used just for store the session in the device and use it for next
-     * application session. It will be automatically set in [TmdbApi].
+     * Create a new Guest Session.
+     * It will be automatically set in [TmdbApi].
+     *
+     * WARNING: The session will expire if not used in one day and it will last forever when used,
+     * so we strongly recommend to do not store the return value, but instead to use
+     * [TmdbApi.onNewGuestSession] and store that value, since a new [Session] will be created
+     * only if the old one is expired.
+     * EXAMPLE USAGE:
+     * val tmdbApi = TmdbApi( TOKEN_V3, TOKEN_V4 ).apply {
+     *     onNewGuestSession = { session -> storeGuestSessionToDatabase ( session ) }
+     * }
      *
      * It creates a guest [Session]
      * @see ITmdbAuth.createGuestSession .
-     * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
-     * add it as [QueryInterceptor.params].
+     * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which
+     * will add it as [TmdbInterceptor.params].
      *
      * @return a [Single] of [Session.Guest]
      */

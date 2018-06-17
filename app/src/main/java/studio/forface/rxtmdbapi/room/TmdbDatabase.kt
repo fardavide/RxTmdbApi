@@ -15,7 +15,7 @@ import studio.forface.rxtmdbapi.tmdb.Session
     Session::class,
     TvShow::class
 ], version = 1)
-abstract class LocalDatabase : RoomDatabase() {
+abstract class TmdbDatabase : RoomDatabase() {
 
     abstract val companiesDao:          CompaniesDao
     abstract val imagesConfigsDao:      ImagesConfigsDao

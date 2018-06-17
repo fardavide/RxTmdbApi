@@ -5,8 +5,7 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
-import studio.forface.rxtmdbapi.models.*
+import studio.forface.rxtmdbapi.models.Credits
 
 
 /**

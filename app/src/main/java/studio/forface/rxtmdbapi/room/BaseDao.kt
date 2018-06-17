@@ -2,7 +2,6 @@
 
 package studio.forface.rxtmdbapi.room
 
-import android.arch.persistence.room.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

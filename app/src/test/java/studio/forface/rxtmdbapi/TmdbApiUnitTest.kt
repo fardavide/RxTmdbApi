@@ -16,7 +16,6 @@ import studio.forface.rxtmdbapi.models.requests.ItemRequest
 import studio.forface.rxtmdbapi.models.requests.ItemsRequest
 import studio.forface.rxtmdbapi.tmdb.*
 import studio.forface.rxtmdbapi.utils.Sorting
-import studio.forface.rxtmdbapi.utils.equalsNoCase
 import java.util.*
 
 
@@ -49,12 +48,14 @@ class TmdbApiUnitTest {
                 .apply { setSession( USER_SESSION_ID ) }
     }
     private val tmdbApiGuest: TmdbApi by lazy {
-        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
-                .also { tmdbAuth.createGuessSession().blockingGet() }
+        TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN ).apply {
+            //setSession( GUEST_SESSION_ID, true )
+            onNewGuestSession = { println( "new guest session" ) }
+        }
     }
     private val tmdbApiV4: TmdbApi by lazy {
         TmdbApi( TMDB_API_KEY, TMDB_API_ACCESS_TOKEN )
-                .apply { setAccessToken( tokenV4 ) }
+                .apply { setAccessToken( this@TmdbApiUnitTest.tokenV4 ) }
     }
 
     private val tokenV4 by lazy {
@@ -207,7 +208,6 @@ class TmdbApiUnitTest {
 
     // Guest.
     @Test fun guest() {
-        println( tmdbApiGuest.auth.createGuessSession().blockingGet().guest )
         tmdbGuest.run { testSinglesStream(
                 getRatedMovies(),
                 getRatedTvShows(),

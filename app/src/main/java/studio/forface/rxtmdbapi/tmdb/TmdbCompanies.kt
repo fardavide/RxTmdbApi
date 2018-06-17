@@ -5,11 +5,9 @@ package studio.forface.rxtmdbapi.tmdb
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 import studio.forface.rxtmdbapi.models.AlternativeNames
 import studio.forface.rxtmdbapi.models.Company
 import studio.forface.rxtmdbapi.models.Images
-import studio.forface.rxtmdbapi.models.MovieCollection
 
 
 /**

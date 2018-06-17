@@ -9,7 +9,10 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import okhttp3.ResponseBody
-import retrofit2.http.*
+import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 import studio.forface.rxtmdbapi.utils.AuthActivity
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.now
@@ -52,7 +55,7 @@ class TmdbAuthV4(
      * @see authenticate .
      * @see ITmdbAuthV4.createAccessToken .
      * Then notify the [TmdbApi] with the just created session thought [OnTokenListener], which will
-     * add it as [QueryInterceptor.headers].
+     * add it as [TmdbInterceptor.headers].
      *
      * @param context the Android [Context] required for the [Intent].
      * @return a [Single] of [TokenV4]
@@ -77,7 +80,7 @@ class TmdbAuthV4(
      * @see authenticate .
      * @see ITmdbAuthV4.createAccessToken .
      * Then notify the [TmdbApi] with the just created session thought [OnTokenListener], which will
-     * add it as [QueryInterceptor.headers].
+     * add it as [TmdbInterceptor.headers].
      *
      * @param token the [TokenV4] to authenticate.
      * @return a [Single] of [TokenV4]

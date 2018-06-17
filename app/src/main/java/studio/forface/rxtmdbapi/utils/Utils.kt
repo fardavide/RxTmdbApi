@@ -2,8 +2,6 @@
 
 package studio.forface.rxtmdbapi.utils
 
-import android.util.Log
-
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */

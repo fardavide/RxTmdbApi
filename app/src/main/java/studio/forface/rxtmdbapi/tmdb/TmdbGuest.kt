@@ -3,16 +3,16 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Query
 import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.utils.Sorting
 
+internal const val PATH_GUEST_SESSION_ID = "\$id"
+private const val BASE_PATH = "guest_session"
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
-
-internal const val PATH_GUEST_SESSION_ID = "\$id"
-private const val BASE_PATH = "guest_session"
 interface TmdbGuest {
 
     /**

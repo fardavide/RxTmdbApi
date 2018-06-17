@@ -7,9 +7,9 @@ import android.util.Log
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import studio.forface.rxtmdbapi.tmdb.Session
-import studio.forface.rxtmdbapi.room.LocalDatabase
+import studio.forface.rxtmdbapi.room.TmdbDatabase
 import studio.forface.rxtmdbapi.room.updateOrInsertAsync
+import studio.forface.rxtmdbapi.tmdb.Session
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 
 /**
@@ -23,7 +23,7 @@ class RoomInstrumentedTest {
 
     private val tmdbApi = TmdbApi( TMDB_API_KEY, USER_SESSION_ID )
     private val localDb = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getTargetContext(), LocalDatabase::class.java ).build()
+            InstrumentationRegistry.getTargetContext(), TmdbDatabase::class.java ).build()
 
     private val moviesDao   by lazy { localDb.moviesDao }
     private val peopleDao   by lazy { localDb.peopleDao }
