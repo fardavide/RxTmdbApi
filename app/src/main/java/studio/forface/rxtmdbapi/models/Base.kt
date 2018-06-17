@@ -2,6 +2,7 @@ package studio.forface.rxtmdbapi.models
 
 import android.arch.persistence.room.Ignore
 import com.google.gson.annotations.SerializedName
+import studio.forface.rxtmdbapi.utils.equalsNoCase
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
@@ -25,8 +26,15 @@ interface NamedStringIdElement: StringIdElement, NamedElement
 
 interface Pageable
 
-enum class MediaType {
-    MOVIE, TV, PERSON
+enum class MediaType( val string: String ) {
+    MOVIE(      "movie"),
+    TV_SHOW(    "tv"),
+    PERSON(     "person" );
+    override fun toString() = string
+    companion object {
+        operator fun get( string: String ) =
+                MediaType.values().find { it.string equalsNoCase string }
+    }
 }
 open class Media (
 

@@ -140,7 +140,7 @@ data class TvShow(
     var _videos: Videos = Videos()
 
 
-) : Media( MediaType.TV.name ), NamedIdElement, Pageable {
+) : Media( MediaType.TV_SHOW.string ), NamedIdElement, Pageable {
 
     companion object {
         internal const val TABLE_NAME = "tv_shows"

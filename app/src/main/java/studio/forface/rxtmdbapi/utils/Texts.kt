@@ -1,8 +1,23 @@
+@file:Suppress("unused")
+
 package studio.forface.rxtmdbapi.utils
 
-
+/**
+ * a const for reference to an empty [String].
+ */
 const val EMPTY_STRING = ""
 
+/**
+ * A simple infix function for check [String.equals] ignoring the case, just writing:
+ * string1 equalsNoCase string2
+ * @return a [Boolean].
+ */
+infix fun String.equalsNoCase( other: String? ) = this.equals( other, true )
+
+/**
+ * @see [String.toIntOrNull].
+ * @return the [Int] value or "0" instead on 'null'.
+ */
 fun String.toIntOrZero() = toIntOrNull() ?: 0
 
 /**

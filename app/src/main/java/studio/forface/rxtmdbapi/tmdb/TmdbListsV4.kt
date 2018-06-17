@@ -2,17 +2,17 @@
 
 package studio.forface.rxtmdbapi.tmdb
 
-import com.google.gson.annotations.SerializedName
 import io.reactivex.Single
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import retrofit2.http.*
 import studio.forface.rxtmdbapi.models.Language
 import studio.forface.rxtmdbapi.models.ListPage
-import studio.forface.rxtmdbapi.models.requests.ListV4CreateRequest
-import studio.forface.rxtmdbapi.models.requests.ListV4UpdateRequest
+import studio.forface.rxtmdbapi.models.MediaType
+import studio.forface.rxtmdbapi.models.requests.ItemRequest
+import studio.forface.rxtmdbapi.models.requests.ItemsRequest
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.Sorting
-
 
 private const val BASE_PATH = "/4/list"
 private const val LIST_ID = "list_id"
@@ -61,7 +61,7 @@ interface TmdbListsV4 {
     @PUT("$BASE_PATH/{$LIST_ID}")
     @FormUrlEncoded
     fun updateList(
-            @Path(LIST_ID)               id: Int,
+            @Path(LIST_ID)                 id: Int,
             @Field("name")         name: String,
             @Field("description")  description: String? = null,
             @Field("public")       public: Boolean? = null,
@@ -89,4 +89,87 @@ interface TmdbListsV4 {
             @Path(LIST_ID) id: Int
     ) : Single<ResponseBody>
 
+    /**
+     * Add items to a list. We support essentially an unlimited number of items to be posted at a
+     * time. Both movie and TV series are support.
+     * The results of this query will return a results array. Each result includes a success field.
+     * If a result is false this will usually indicate that the item already exists on the list.
+     * It may also indicate that the item could not be found.
+     * You will need to have valid user access token in order to do that.
+     * @return a [Single] of [ResponseBody].
+     */
+    @POST("$BASE_PATH/{$LIST_ID}/items")
+    fun addItems(
+            @Path(LIST_ID)  listId: Int,
+            @Body           items: ItemsRequest
+    ) : Single<ResponseBody>
+
+    /**
+     * Remove items from a list. You can remove multiple items at a time.
+     * You will need to have valid user access token in order to do that.
+     * @return a [Single] of [ResponseBody].
+     */
+    @HTTP(method = "DELETE", path = "$BASE_PATH/{$LIST_ID}/items", hasBody = true)
+    fun removeItems(
+            @Path(LIST_ID)  listId: Int,
+            @Body           items: ItemsRequest
+    ) : Single<ResponseBody>
+
+    /**
+     * Add/update comment to items into a list. You can comment multiple items at a time.
+     * You will need to have valid user access token in order to do that.
+     * @return a [Single] of [ResponseBody].
+     */
+    @PUT("$BASE_PATH/{$LIST_ID}/items")
+    fun commentItems(
+            @Path(LIST_ID)  listId: Int,
+            @Body           items: ItemsRequest
+    ) : Single<ResponseBody>
+
+    /**
+     * Check if the item is already added to the list.
+     * You will need to have valid user access token in order to do that.
+     * @return a [Single] of [ResponseBody] if available, else error 404.
+     */
+    @Deprecated("It is required since is a base API method, " +
+            "throw error 404 if item is not available, " +
+            "Use hasItem() for have a Boolean instead",
+            ReplaceWith("hasItem()"))
+    @GET("$BASE_PATH/{$LIST_ID}/item_status")
+    fun checkItemStatus(
+            @Path(LIST_ID)                  listId: Int,
+            @Query("media_type")    mediaType: MediaType,
+            @Query("media_id")      mediaId: Int
+    ) : Single<ResponseBody>
 }
+
+/**
+ * Remove comment to items into a list. You can comment multiple items at a time.
+ * You will need to have valid user access token in order to do that.
+ * @return a [Single] of [ResponseBody].
+ */
+fun TmdbListsV4.removeComments( listId: Int, itemsRequest: ItemsRequest ) =
+        commentItems( listId, itemsRequest.addEmptyComments() )
+
+/**
+ * Create a new [ItemsRequest] with same params but with [EMPTY_STRING] as [ItemRequest.comment],
+ * instead of 'null'.
+ * @return an [ItemsRequest].
+ */
+private fun ItemsRequest.addEmptyComments() = ItemsRequest (
+        * items.map { ItemRequest( it.mediaType, it.id, EMPTY_STRING ) }.toTypedArray()
+)
+
+/**
+ * @see TmdbListsV4.checkItemStatus , this is a wrapper for return 'false' instead of error 404.
+ * @return a [Single] of [Boolean].
+ */
+@Suppress("DEPRECATION")
+fun TmdbListsV4.hasItem( listId: Int, mediaType: MediaType, mediaId: Int ): Single<Boolean> =
+        checkItemStatus( listId, mediaType, mediaId )
+                .map { true }
+                .onErrorResumeNext {
+                    val errorCode = ( it as? HttpException )?.code()
+                    if ( errorCode == 404 )Single.just(false )
+                    else Single.error( it )
+                }

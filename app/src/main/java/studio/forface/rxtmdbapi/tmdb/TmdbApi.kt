@@ -7,6 +7,7 @@ import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,10 +15,6 @@ import studio.forface.rxtmdbapi.models.Media
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 import studio.forface.rxtmdbapi.utils.MediaDeserializer
 import studio.forface.rxtmdbapi.utils.MediaSerializer
-
-/**
- * @author 4face Studio (Davide Giuseppe Farella).
- */
 
 private const val TMDB_API_URL = "https://api.themoviedb.org/"
 private const val TMDB_API_URL_V3 = "${TMDB_API_URL}3/"
@@ -31,11 +28,13 @@ private const val PARAM_GUEST_SESSION_ID = "guest_session_id"
 
 internal const val HEADER_JSON = "Content-Type: application/json;charset=utf-8"
 
-
-
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
 class TmdbApi(
         apiV3Key: String,
-        apiV4accessToken: String? = null
+        apiV4accessToken: String? = null,
+        enableLogging: Boolean = false
 ) {
 
     var settings = TmdbApiConfig
@@ -84,8 +83,12 @@ class TmdbApi(
         }
     }
 
+    private val loggingInterceptor = HttpLoggingInterceptor()
+            .apply { level = HttpLoggingInterceptor.Level.BODY }
+
     private val httpClientBuilder = OkHttpClient.Builder()
             .addInterceptor( interceptor )
+            .apply { if ( enableLogging ) addInterceptor( loggingInterceptor ) }
 
     private val gson get() = GsonBuilder()
             .registerTypeAdapter( Media::class.java, MediaSerializer() )

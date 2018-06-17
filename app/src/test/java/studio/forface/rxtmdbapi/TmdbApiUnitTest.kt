@@ -10,9 +10,13 @@ import retrofit2.HttpException
 import studio.forface.rxtmdbapi.models.Extra.*
 import studio.forface.rxtmdbapi.models.Extras
 import studio.forface.rxtmdbapi.models.ImageType
+import studio.forface.rxtmdbapi.models.MediaType
 import studio.forface.rxtmdbapi.models.mapToSizedUrls
+import studio.forface.rxtmdbapi.models.requests.ItemRequest
+import studio.forface.rxtmdbapi.models.requests.ItemsRequest
 import studio.forface.rxtmdbapi.tmdb.*
 import studio.forface.rxtmdbapi.utils.Sorting
+import studio.forface.rxtmdbapi.utils.equalsNoCase
 import java.util.*
 
 
@@ -216,11 +220,70 @@ class TmdbApiUnitTest {
         tmdbListsV4.run { testSinglesStream(
                 getDetails( LIST_ID_MY_LIST ),
                 //createList("API test list","desc" ), // TESTED, do not run too many times.
-                updateList( LIST_ID_MY_LIST, "name ${Random().nextInt()}" ),
-                deleteList( 80229 )
+                updateList( LIST_ID_MY_LIST, "name ${Random().nextInt()}" )
+                //deleteList( 80229 )
                 // deleteList(80192 ), // TESTED, do not run too many times.
+                // addItems(), // TESTED, do not run too many times.
         ) }
     }
+
+    @Test fun listsV4AddItems() {
+        val response = tmdbListsV4.addItems().blockingGet()
+        println( response.string() )
+    }
+
+    private fun TmdbListsV4.addItems() = addItems( LIST_ID_MY_LIST, ItemsRequest(
+            MediaType.MOVIE to MOVIE_ID_BLADE ,
+            MediaType.TV_SHOW to TV_SHOW_ID_SIMPSON
+    ) )
+
+    @Test fun listsV4RemoveItems() {
+        val response = tmdbListsV4.removeItems().blockingGet()
+        println( response.string() )
+    }
+
+    private fun TmdbListsV4.removeItems() = removeItems( LIST_ID_MY_LIST, ItemsRequest(
+            MediaType.MOVIE to MOVIE_ID_BLADE ,
+            MediaType.TV_SHOW to TV_SHOW_ID_SIMPSON
+    ) )
+
+    @Test fun listsV4CommentItems() {
+        val response = tmdbListsV4.commentItems().blockingGet()
+        println( response.string() )
+    }
+
+    private fun TmdbListsV4.commentItems() = commentItems( LIST_ID_MY_LIST, ItemsRequest(
+            ItemRequest( MediaType.MOVIE, MOVIE_ID_BLADE,"awesome!!"),
+            ItemRequest( MediaType.TV_SHOW, TV_SHOW_ID_SIMPSON,"wooow" )
+    ) )
+
+    @Test fun listsV4RemoveComments() {
+        val response = tmdbListsV4.removeComments().blockingGet()
+        println( response.string() )
+    }
+
+    private fun TmdbListsV4.removeComments() = removeComments( LIST_ID_MY_LIST, ItemsRequest(
+            MediaType.MOVIE to MOVIE_ID_BLADE,
+            MediaType.TV_SHOW to TV_SHOW_ID_SIMPSON
+    ) )
+
+    /*@Test fun listsV4CheckItemStatus() {
+        val response = tmdbListsV4.checkItemStatus().blockingGet()
+        println( response.string() )
+    }
+
+    private fun TmdbListsV4.checkItemStatus() = checkItemStatus(
+            LIST_ID_MY_LIST, MediaType.TV_SHOW, TV_SHOW_ID_SIMPSON
+    )*/
+
+    @Test fun listsV4HasItem() {
+        val response = tmdbListsV4.hasItem().blockingGet()
+        println( response )
+    }
+
+    private fun TmdbListsV4.hasItem() = hasItem(
+            LIST_ID_MY_LIST, MediaType.TV_SHOW, TV_SHOW_ID_SIMPSON
+    )
 
     // Movies.
     @Test fun movies() {
@@ -382,4 +445,4 @@ private fun testSinglesStream (vararg singles: Single<*>) {
 private val <T> Single<T>.test get() = doOnSuccess {
     val string = if (it is ResponseBody) it.string() else it.toString()
     println("$string\n")
-}.retry( Long.MAX_VALUE ) { t -> ( t as HttpException ).code() == 429 }
+}.retry( Long.MAX_VALUE ) { t -> ( t as? HttpException )?.code() == 429 }

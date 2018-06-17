@@ -29,16 +29,18 @@ internal class MediaDeserializer : JsonDeserializer<Media> {
             context: JsonDeserializationContext
     ): Media {
 
-        val mediaType = json.asJsonObject
+        val mediaTypeString = json.asJsonObject
                 .get( Fields.MEDIA_TYPE )
                 .toString()
                 .trim( '"' )
                 .toUpperCase()
 
+        val mediaType = MediaType[mediaTypeString]
+
         val clazz = when ( mediaType ) {
-            MediaType.MOVIE.name ->     Movie::class.java
-            MediaType.TV.name ->        TvShow::class.java
-            MediaType.PERSON.name ->    Person::class.java
+            MediaType.MOVIE ->   Movie::class.java
+            MediaType.TV_SHOW -> TvShow::class.java
+            MediaType.PERSON ->  Person::class.java
             else -> throw IllegalArgumentException()
         }
 
