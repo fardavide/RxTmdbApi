@@ -1,17 +1,18 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
-
 enum class ImageType {
     BACKDROP, POSTER, PROFILE, LOGO, STILL
 }
 
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Images (
 
     @SerializedName(Fields.BACKDROPS)   @ColumnInfo(name = Fields.BACKDROPS)
@@ -43,7 +44,7 @@ fun List<Image>.mapToSizedUrls(
         secureConnection: Boolean = false
 ) = map { it.getSizedUrl( imagesConfig, imageType, requestedWidth, secureConnection ) }
 
-
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Image(
 
     @SerializedName(Fields.ASPECT_RATIO)    @ColumnInfo(name = Fields.ASPECT_RATIO)

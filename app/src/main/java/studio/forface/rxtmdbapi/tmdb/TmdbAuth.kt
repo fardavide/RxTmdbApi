@@ -2,12 +2,12 @@
 
 package studio.forface.rxtmdbapi.tmdb
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.PrimaryKey
 import android.content.Context
 import android.content.Intent
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -83,8 +83,8 @@ class TmdbAuth(
      * @see ITmdbAuth.getTokenValidationUrl .
      * Then creates a [Session] with the created [Token]
      * @see ITmdbAuth.createUserSession .
-     * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which will
-     * add it as [TmdbInterceptor.params].
+     * Then notify the [TmdbApi] with the just created session thought [onSessionListener], which
+     * will add it as [TmdbInterceptor.params].
      *
      * @param context the Android [Context] required for the [Intent].
      * @return a [Single] of [Session.User]

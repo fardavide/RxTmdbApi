@@ -1,13 +1,13 @@
 package studio.forface.rxtmdbapi.room
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.OnLifecycleEvent
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.tmdb.Session
 

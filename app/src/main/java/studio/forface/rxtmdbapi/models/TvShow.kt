@@ -2,7 +2,7 @@
 
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.*
 

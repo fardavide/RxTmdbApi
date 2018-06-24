@@ -1,7 +1,7 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Ignore
+import androidx.room.ColumnInfo
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.timeInMillis
 

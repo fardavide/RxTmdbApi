@@ -1,9 +1,7 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.TypeConverters
+import androidx.room.*
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.models.Person.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
@@ -13,9 +11,9 @@ import studio.forface.rxtmdbapi.utils.timeInMillis
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
-
 @Entity(tableName = TABLE_NAME)
 @TypeConverters( ModelTypeConverters::class )
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Person(
 
     @SerializedName(Fields.ID)                  @ColumnInfo(name = Fields.ID)

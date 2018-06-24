@@ -1,8 +1,9 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.models.Company.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
@@ -10,7 +11,7 @@ import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
-
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 @Entity(tableName = TABLE_NAME)
 data class Company(
 

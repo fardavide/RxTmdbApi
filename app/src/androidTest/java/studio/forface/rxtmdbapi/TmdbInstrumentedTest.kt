@@ -1,8 +1,8 @@
 package studio.forface.rxtmdbapi
 
 import android.content.Context
-import android.support.test.InstrumentationRegistry
 import android.util.Log
+import androidx.test.InstrumentationRegistry
 import org.junit.Test
 import studio.forface.rxtmdbapi.tmdb.TmdbApi
 import studio.forface.rxtmdbapi.utils.Sorting

@@ -1,14 +1,16 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 
-
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Videos (
-
     @SerializedName(Fields.RESULTS) @ColumnInfo(name = Fields.RESULTS)
     var results: List<Video> = listOf()
-
 )
 
 

@@ -1,9 +1,14 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
+import androidx.room.RoomWarnings
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 
-
+/**
+ * @author 4face Studio (Davide Giuseppe Farella).
+ */
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Keywords(
 
     @SerializedName(Fields.KEYWORDS)    @ColumnInfo(name = Fields.KEYWORDS)

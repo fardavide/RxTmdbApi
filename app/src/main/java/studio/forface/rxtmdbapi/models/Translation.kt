@@ -1,6 +1,6 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
 import com.google.gson.annotations.SerializedName
 
 

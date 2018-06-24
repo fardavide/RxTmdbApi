@@ -1,9 +1,10 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 
-
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Credits(
 
     @SerializedName(Fields.CAST)    @ColumnInfo(name = Fields.CAST)

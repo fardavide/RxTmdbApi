@@ -2,7 +2,7 @@
 
 package studio.forface.rxtmdbapi.room
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import studio.forface.rxtmdbapi.models.Fields

@@ -2,7 +2,8 @@
 
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.*
+import androidx.room.*
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.models.Movie.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.*
@@ -10,13 +11,13 @@ import studio.forface.rxtmdbapi.utils.*
 /**
  * @author 4face Studio (Davide Giuseppe Farella).
  */
-
 @Entity(tableName = TABLE_NAME)
 @TypeConverters( ModelTypeConverters::class )
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class Movie (
 
     @SerializedName(Fields.ID)                      @ColumnInfo(name = Fields.ID)
-    @PrimaryKey
+    @PrimaryKey //@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
     override var id: Int = 0,
 
     /* Local value */                               @ColumnInfo(name = Fields.TIMESTAMP)

@@ -1,10 +1,12 @@
 package studio.forface.rxtmdbapi.models
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
+import androidx.room.RoomWarnings
+import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.utils.EMPTY_STRING
 
-
+@SuppressWarnings(DEFAULT_CONSTRUCTOR)
 data class ExternalIds (
 
         @SerializedName(Fields.ID)              @ColumnInfo(name = Fields.ID)
