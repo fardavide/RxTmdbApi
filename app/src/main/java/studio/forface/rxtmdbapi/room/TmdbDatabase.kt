@@ -20,7 +20,7 @@ import studio.forface.rxtmdbapi.tmdb.Session
     Person::class,
     Session::class,
     TvShow::class
-], version = 1)
+], version = 1, exportSchema = false)
 abstract class TmdbDatabase : RoomDatabase() {
 
     abstract val companiesDao:          CompaniesDao

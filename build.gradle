@@ -12,7 +12,7 @@ buildscript {
             'versionName':      "$build.major.$build.minor.$build.patch",
             'versionCode':      build.major * 1_00_00 + build.minor * 1_00 + build.patch * 1,
 
-            'minSdk':           20,
+            'minSdk':           15,
             'targetSdk':        28,
 
             'sourceCompat':     JavaVersion.VERSION_1_8,

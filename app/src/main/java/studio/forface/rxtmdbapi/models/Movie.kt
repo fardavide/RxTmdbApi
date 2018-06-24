@@ -4,6 +4,7 @@ package studio.forface.rxtmdbapi.models
 
 import androidx.room.*
 import androidx.room.RoomWarnings.DEFAULT_CONSTRUCTOR
+import androidx.room.RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED
 import com.google.gson.annotations.SerializedName
 import studio.forface.rxtmdbapi.models.Movie.Companion.TABLE_NAME
 import studio.forface.rxtmdbapi.utils.*
@@ -30,6 +31,7 @@ data class Movie (
     var backdropPath: String = EMPTY_STRING,
 
     @SerializedName(Fields.BELONGS_TO_COLLECTION)   @Embedded(prefix = Fields.BELONGS_TO_COLLECTION)
+    @field:SuppressWarnings(PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
     var belongsToCollection: MovieCollection = MovieCollection(),
 
     @SerializedName(Fields.BUDGET)                  @ColumnInfo(name = Fields.BUDGET)

@@ -18,7 +18,7 @@ import studio.forface.rxtmdbapi.utils.timeInMillis
 data class MovieCollection(
 
     @SerializedName(Fields.ID)              @ColumnInfo(name = Fields.ID)
-    @PrimaryKey     @SuppressWarnings(PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
+    @PrimaryKey
     override var id: Int = 0,
 
     @SerializedName(Fields.NAME)            @ColumnInfo(name = Fields.NAME)
