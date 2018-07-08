@@ -219,6 +219,7 @@ class TmdbApiUnitTest {
     @Test fun listsV4() {
         tmdbListsV4.run { testSinglesStream(
                 getDetails( LIST_ID_MY_LIST ),
+                clearList( LIST_ID_MY_LIST ),
                 //createList("API test list","desc" ), // TESTED, do not run too many times.
                 updateList( LIST_ID_MY_LIST, "name ${Random().nextInt()}" )
                 //deleteList( 80229 )

@@ -1,12 +1,10 @@
 package studio.forface.rxtmdbapi
 
+import android.support.test.InstrumentationRegistry
 import android.util.Log
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
 import org.junit.After
 import org.junit.Test
-import org.junit.runner.RunWith
 import studio.forface.rxtmdbapi.room.TmdbDatabase
 import studio.forface.rxtmdbapi.room.updateOrInsertAsync
 import studio.forface.rxtmdbapi.tmdb.Session
@@ -18,7 +16,6 @@ import studio.forface.rxtmdbapi.tmdb.TmdbApi
 
 private const val TAG = "RoomInstrumentedTest"
 
-@RunWith(AndroidJUnit4::class)
 class RoomInstrumentedTest {
 
     private val tmdbApi = TmdbApi( TMDB_API_KEY, USER_SESSION_ID )

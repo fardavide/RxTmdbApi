@@ -17,8 +17,8 @@ buildscript {
 
             'sourceCompat':     JavaVersion.VERSION_1_8,
             'targetCompat':     JavaVersion.VERSION_1_8,
-            'buildTools':       '3.2.0-alpha18',
-            'kotlin':           '1.2.50',
+            'buildTools':       '3.2.0-beta02',
+            'kotlin':           '1.2.51',
 
             'gson':             '2.8.0',
             'junit':            '4.12',
