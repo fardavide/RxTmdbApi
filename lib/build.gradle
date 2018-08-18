@@ -57,3 +57,5 @@ dependencies {
     implementation deps.utils.timber
 
 }
+
+apply from: 'publish.gradle'
