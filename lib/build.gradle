@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+ext.applicationName = "RxTmdbApi"
 
 android {
     compileSdkVersion versions.targetSdk
@@ -19,20 +20,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def versionName = "${buildVersion.major}_${buildVersion.minor}_${buildVersion.patch}"
+            outputFileName = "${applicationName}_${versionName}.apk" // /{variant.productFlavors[0].name}_
+        }
+    }
     compileOptions {
-        sourceCompatibility versions.sourceCompat
-        targetCompatibility versions.targetCompat
+        sourceCompatibility versions.jdk
+        targetCompatibility versions.jdk
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation deps.androidX.material
-    implementation deps.androidX.room.common
-    kapt           deps.androidX.room.compiler
-    implementation deps.androidX.room.rxJava
-    implementation deps.androidX.room.testing
+    implementation deps.android.material
+    implementation deps.android.room.common
+    kapt           deps.android.room.compiler
+    implementation deps.android.room.rxJava
+    implementation deps.android.room.testing
 
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.reflection
@@ -40,6 +47,7 @@ dependencies {
     implementation deps.okhttp.logging
 
     implementation deps.retrofit.core
+    implementation deps.retrofit.coroutinesAdapter
     implementation deps.retrofit.gson
     implementation deps.retrofit.rxAdapter
 
@@ -55,7 +63,6 @@ dependencies {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     implementation deps.utils.timber
-
 }
 
 apply from: 'publish.gradle'
