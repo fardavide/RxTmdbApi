@@ -3,6 +3,7 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import com.google.gson.GsonBuilder
+import io.reactivex.Single
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

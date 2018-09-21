@@ -3,22 +3,34 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
+import io.reactivex.SingleSource
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.http.*
+import studio.forface.annotations.Adaptable
+import studio.forface.annotations.AdaptableClass
 import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.utils.DateQuery
 
 /**
- * @author 4face Studio (Davide Giuseppe Farella).
+ * The base path for movie endpoint.
  */
-
 private const val BASE_PATH = "movie"
+/**
+ * The identifier of the path of the id of the movie.
+ */
 private const val MOVIE_ID = "movie_id"
+
+@AdaptableClass( [Single::class, Deferred::class] )
+/**
+ * @author 4face Studio ( Davide Giuseppe Farella ).
+ */
 interface TmdbMovies {
 
     /**
      * Get the primary information about a movie.
-     * Supports append_to_response. Read more about this: https://developers.themoviedb.org/3/getting-started/append-to-response .
+     * Supports append_to_response. Read more about
+     * this: https://developers.themoviedb.org/3/getting-started/append-to-response .
      * @param language a ISO 639-1 value to display translated data for the fields that support it.
      * @param extras all the extra information we want to get for the queried [Movie].
      * @see Extras
@@ -29,7 +41,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
-    ) : Single<Movie>
+    ) : Adaptable<Movie>
 
     /**
      * Get all of the alternative titles for a movie.
@@ -40,7 +52,7 @@ interface TmdbMovies {
     fun getAlternativeTitles(
             @Path(MOVIE_ID)                      id: Int,
             @Query("country")               country: String? = null
-    ) : Single<AlternativeTitles>
+    ) : Adaptable<AlternativeTitles>
 
     /**
      * Get the changes for a movie. By default only the last 24 hours are returned.
@@ -57,7 +69,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("start_date")            startDate: DateQuery? = null,
             @Query("end_date")              endDate: DateQuery? = null
-    ) : Single<ChangeList>
+    ) : Adaptable<ChangeList>
 
     /**
      * Get the cast and crew for a movie.
@@ -66,7 +78,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/credits")
     fun getCredits(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<Credits>
+    ) : Adaptable<Credits>
 
     /**
      * Get the external ids for a movie. We currently support the following external sources:
@@ -79,7 +91,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/external_ids")
     fun getExternalIds(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<ExternalIds>
+    ) : Adaptable<ExternalIds>
 
     /**
      * Get the images that belong to a movie.
@@ -95,7 +107,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
-    ) : Single<Images>
+    ) : Adaptable<Images>
 
     /**
      * Get the keywords that have been added to a movie.
@@ -104,7 +116,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/keywords")
     fun getKeywords(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<Keywords>
+    ) : Adaptable<Keywords>
 
     /**
      * Get the release date along with the certification for a movie.
@@ -113,7 +125,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/release_dates")
     fun getReleaseDates(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<ReleaseDates>
+    ) : Adaptable<ReleaseDates>
 
     /**
      * Get the videos that have been added to a movie.
@@ -124,7 +136,7 @@ interface TmdbMovies {
     fun getVideos(
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<Videos>
+    ) : Adaptable<Videos>
 
     /**
      * Get a list of translations that have been created for a movie.
@@ -133,7 +145,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/translations")
     fun getTranslations(
             @Path(MOVIE_ID)                      id: Int
-    ) : Single<Translations<Movie>>
+    ) : Adaptable<Translations<Movie>>
 
     /**
      * Get a list of recommended movies for a movie.
@@ -146,7 +158,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of similar movies. This is not the same as the "Recommendation" system you see on
@@ -161,7 +173,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Get the user reviews for a movie.
@@ -174,7 +186,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<ResultPage<Review>>
+    ) : Adaptable<ResultPage<Review>>
 
     /**
      * Get a list of lists that this movie belongs to.
@@ -187,7 +199,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<ResultPage<MovieList>>
+    ) : Adaptable<ResultPage<MovieList>>
 
     /**
      * Get the most newly created movie. This is a live response and will continuously change.
@@ -197,7 +209,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/latest")
     fun getLatest(
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Single<Movie>
+    ) : Adaptable<Movie>
 
     /**
      * Get a list of movies in theatres. This is a release type query that looks for all movies that
@@ -213,7 +225,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of the current popular movies on TMDb. This list updates daily.
@@ -227,7 +239,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Get the top rated movies on TMDb.
@@ -241,7 +253,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of upcoming movies in theatres. This is a release type query that looks for all
@@ -257,7 +269,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Single<ResultPage<Movie>>
+    ) : Adaptable<ResultPage<Movie>>
 
     /**
      * Rate a movie.
@@ -272,7 +284,7 @@ interface TmdbMovies {
     fun rateMovie(
             @Path(MOVIE_ID)                         id: Int,
             @Field("value")                 value: Number
-    ) : Single<ResponseBody>
+    ) : Adaptable<ResponseBody>
 
     /**
      * Remove your rating for a movie.
@@ -283,6 +295,6 @@ interface TmdbMovies {
     @DELETE("$BASE_PATH/{$MOVIE_ID}/rating")
     fun removeMovieRating(
             @Path(MOVIE_ID)                         id: Int
-    ) : Single<ResponseBody>
+    ) : Adaptable<ResponseBody>
 
 }

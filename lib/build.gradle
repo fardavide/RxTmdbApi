@@ -13,6 +13,7 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -33,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':annotations')
 
     implementation deps.android.material
     implementation deps.android.room.common
@@ -55,9 +56,10 @@ dependencies {
     implementation deps.rx.java
     implementation deps.rx.kotlin
 
-    implementation deps.test.atslRunner
-    implementation deps.test.atslRules
-    implementation deps.test.junit
+    androidTestImplementation deps.test.atslRunner
+    androidTestImplementation deps.test.atslRules
+    testImplementation deps.test.junit
+
     implementation deps.utils.threetenAbp
     testImplementation(deps.utils.threetenbp) {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
