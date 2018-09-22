@@ -3,11 +3,8 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
-import io.reactivex.SingleSource
-import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import studio.forface.annotations.Adaptable
 import studio.forface.annotations.AdaptableClass
 import studio.forface.rxtmdbapi.models.*
 import studio.forface.rxtmdbapi.utils.DateQuery
@@ -21,7 +18,7 @@ private const val BASE_PATH = "movie"
  */
 private const val MOVIE_ID = "movie_id"
 
-@AdaptableClass( [Single::class, Deferred::class] )
+@AdaptableClass( ["Rx", "K"], ["Single"/*::class*//*, Deferred::class*/] )
 /**
  * @author 4face Studio ( Davide Giuseppe Farella ).
  */
@@ -41,7 +38,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("append_to_response")    extras: Extras? = null
-    ) : Adaptable<Movie>
+    ) : studio.forface.annotations.Adaptable<Movie>
 
     /**
      * Get all of the alternative titles for a movie.
@@ -52,7 +49,7 @@ interface TmdbMovies {
     fun getAlternativeTitles(
             @Path(MOVIE_ID)                      id: Int,
             @Query("country")               country: String? = null
-    ) : Adaptable<AlternativeTitles>
+    ) : studio.forface.annotations.Adaptable<AlternativeTitles>
 
     /**
      * Get the changes for a movie. By default only the last 24 hours are returned.
@@ -69,7 +66,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("start_date")            startDate: DateQuery? = null,
             @Query("end_date")              endDate: DateQuery? = null
-    ) : Adaptable<ChangeList>
+    ) : studio.forface.annotations.Adaptable<ChangeList>
 
     /**
      * Get the cast and crew for a movie.
@@ -78,7 +75,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/credits")
     fun getCredits(
             @Path(MOVIE_ID)                      id: Int
-    ) : Adaptable<Credits>
+    ) : studio.forface.annotations.Adaptable<Credits>
 
     /**
      * Get the external ids for a movie. We currently support the following external sources:
@@ -91,7 +88,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/external_ids")
     fun getExternalIds(
             @Path(MOVIE_ID)                      id: Int
-    ) : Adaptable<ExternalIds>
+    ) : studio.forface.annotations.Adaptable<ExternalIds>
 
     /**
      * Get the images that belong to a movie.
@@ -107,7 +104,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("include_image_language")includeImageLanguages: String? = null
-    ) : Adaptable<Images>
+    ) : studio.forface.annotations.Adaptable<Images>
 
     /**
      * Get the keywords that have been added to a movie.
@@ -116,7 +113,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/keywords")
     fun getKeywords(
             @Path(MOVIE_ID)                      id: Int
-    ) : Adaptable<Keywords>
+    ) : studio.forface.annotations.Adaptable<Keywords>
 
     /**
      * Get the release date along with the certification for a movie.
@@ -125,7 +122,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/release_dates")
     fun getReleaseDates(
             @Path(MOVIE_ID)                      id: Int
-    ) : Adaptable<ReleaseDates>
+    ) : studio.forface.annotations.Adaptable<ReleaseDates>
 
     /**
      * Get the videos that have been added to a movie.
@@ -136,7 +133,7 @@ interface TmdbMovies {
     fun getVideos(
             @Path(MOVIE_ID)                      id: Int,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<Videos>
+    ) : studio.forface.annotations.Adaptable<Videos>
 
     /**
      * Get a list of translations that have been created for a movie.
@@ -145,7 +142,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/{$MOVIE_ID}/translations")
     fun getTranslations(
             @Path(MOVIE_ID)                      id: Int
-    ) : Adaptable<Translations<Movie>>
+    ) : studio.forface.annotations.Adaptable<Translations<Movie>>
 
     /**
      * Get a list of recommended movies for a movie.
@@ -158,7 +155,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of similar movies. This is not the same as the "Recommendation" system you see on
@@ -173,7 +170,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Get the user reviews for a movie.
@@ -186,7 +183,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<ResultPage<Review>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Review>>
 
     /**
      * Get a list of lists that this movie belongs to.
@@ -199,7 +196,7 @@ interface TmdbMovies {
             @Path(MOVIE_ID)                      id: Int,
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<ResultPage<MovieList>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<MovieList>>
 
     /**
      * Get the most newly created movie. This is a live response and will continuously change.
@@ -209,7 +206,7 @@ interface TmdbMovies {
     @GET("$BASE_PATH/latest")
     fun getLatest(
             @Query("language")              language: Language? = TmdbApiConfig.language
-    ) : Adaptable<Movie>
+    ) : studio.forface.annotations.Adaptable<Movie>
 
     /**
      * Get a list of movies in theatres. This is a release type query that looks for all movies that
@@ -225,7 +222,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of the current popular movies on TMDb. This list updates daily.
@@ -239,7 +236,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Get the top rated movies on TMDb.
@@ -253,7 +250,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Get a list of upcoming movies in theatres. This is a release type query that looks for all
@@ -269,7 +266,7 @@ interface TmdbMovies {
             @Query("page")                  page: Int? = 1,
             @Query("language")              language: Language? = TmdbApiConfig.language,
             @Query("region")                region: String? = null
-    ) : Adaptable<ResultPage<Movie>>
+    ) : studio.forface.annotations.Adaptable<ResultPage<Movie>>
 
     /**
      * Rate a movie.
@@ -284,7 +281,7 @@ interface TmdbMovies {
     fun rateMovie(
             @Path(MOVIE_ID)                         id: Int,
             @Field("value")                 value: Number
-    ) : Adaptable<ResponseBody>
+    ) : studio.forface.annotations.Adaptable<ResponseBody>
 
     /**
      * Remove your rating for a movie.
@@ -295,6 +292,6 @@ interface TmdbMovies {
     @DELETE("$BASE_PATH/{$MOVIE_ID}/rating")
     fun removeMovieRating(
             @Path(MOVIE_ID)                         id: Int
-    ) : Adaptable<ResponseBody>
+    ) : studio.forface.annotations.Adaptable<ResponseBody>
 
 }

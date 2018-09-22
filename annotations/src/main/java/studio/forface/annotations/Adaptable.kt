@@ -2,7 +2,7 @@ package studio.forface.annotations
 
 /**
  * An interface that works as a wrapper for the values returned by an [AdaptableClass].
- * @see AdaptableClass.classes
+ * @see AdaptableClass.generatedTypes
  * Eg:
  *      > fun getMovie(): Adaptable<Movie>
  *
