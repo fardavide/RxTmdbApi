@@ -20,6 +20,7 @@ internal val retrofitAnnotations = setOf(
         OPTIONS::class,
         Part::class,
         PartMap::class,
+        Path::class,
         PATCH::class,
         POST::class,
         PUT::class,

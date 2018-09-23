@@ -1,8 +1,8 @@
 package studio.forface.rxtmdbapi
 
-import android.support.test.InstrumentationRegistry
 import android.util.Log
 import androidx.room.Room
+import androidx.test.InstrumentationRegistry
 import org.junit.After
 import org.junit.Test
 import studio.forface.rxtmdbapi.room.TmdbDatabase

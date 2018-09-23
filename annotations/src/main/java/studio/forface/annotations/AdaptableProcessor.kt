@@ -2,16 +2,18 @@ package studio.forface.annotations
 
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
+import com.sun.tools.javac.code.Attribute
+import com.sun.tools.javac.code.Type
 import studio.forface.annotations.utils.*
 import java.io.File
-import java.util.*
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
-import kotlin.reflect.KClass
-import kotlin.reflect.full.declaredMembers
+
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+
 
 private const val PATH_GENERATED = "kapt.kotlin.generated"
 
@@ -44,9 +46,14 @@ class AdaptableProcessor: AbstractProcessor() {
 
             // Get the values of the Annotation.
             val prefixes = annotation.generatedClassesPrefix
-            @Suppress("UNCHECKED_CAST") val types = annotatedClass.getvalue(
+
+            /*val a =annotatedClass.getValue<Int>(
                     processingEnv, AdaptableClass::class,"generatedTypes"
-            ) as? Array<KClass<*>> ?: arrayOf( Observable::class )
+            )!!*/
+
+            val types = annotatedClass.getValue<List<Attribute.Class>>(
+                    processingEnv, AdaptableClass::class,"generatedTypes"
+            )!!.map { it.value as Type.ClassType }
 
             // Take the size of the smaller Array in Annotation.
             val reducedCount = Math.min( prefixes.size, types.size )
@@ -57,10 +64,11 @@ class AdaptableProcessor: AbstractProcessor() {
             }.forEach { fileSpec ->
                 val options = processingEnv.options
                 val generatedPath = options[PATH_GENERATED]
-                val path = generatedPath?.replace(
-                        "(.*)tmp(/kapt/debug/)kotlinGenerated".toRegex(),
-                        "$1generated/source$2"
-                )
+                val path = generatedPath
+                        ?.replace("kaptKotlin","kapt" )
+                        ?.replace( fileSpec.name,"" )
+                        ?.replace(".kt","" )
+
                 fileSpec.writeTo( File( path, "${fileSpec.name}.kt" ) )
             }
         }
@@ -68,22 +76,28 @@ class AdaptableProcessor: AbstractProcessor() {
         return true
     }
 
-    private fun generateClass( sourceClass: TypeElement, prefix: String, type: KClass<*> ): FileSpec {
+    private fun generateClass( sourceClass: TypeElement, prefix: String, type: Type.ClassType ): FileSpec {
         // Generate the final interface name with prefix.
         val className = prefix + sourceClass.simpleName
         // Initialize the builder with the className.
         val builder = TypeSpec.interfaceBuilder( className )
 
         sourceClass.enclosedElements.mapNotNull { it as? ExecutableElement }.forEach { method ->
+            // Get the return Type name.
+            val typeName = method.returnType.asTypeName()
+            // Wrap the original return type into type.
+            val returnType = type.asClassSymbol( processingEnv ).asClassName()
+                    .parameterizedBy( typeName )
 
-            // Get method annotations.
+            // Build method annotations.
             val annotations = method.buildAnnotationsCode()
 
             // Get method params.
             val params = method.parameters.map { param ->
                 val paramAnnotations = param.buildAnnotationsCode()
-                ParameterSpec.builder( param.simpleName.toString(), Any::class ) // TODO: replace Any::class // Todo: set modifiers
+                ParameterSpec.builder( param.simpleName.toString(), param.asType().asTypeName().asNullable() )
                         .addAnnotations( paramAnnotations )
+                        .defaultValue( "null" )
                         .build()
             }
 
@@ -93,7 +107,7 @@ class AdaptableProcessor: AbstractProcessor() {
                             .addModifiers( KModifier.ABSTRACT )
                             .addAnnotations( annotations )
                             .addParameters( params )
-                            .returns( type )
+                            .returns( returnType )
                             .build()
             )
         }

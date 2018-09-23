@@ -131,7 +131,7 @@ class TmdbApi(
     val keywords        by lazy { getService<TmdbKeywords>() }
     val lists           by lazy { getService<TmdbLists>() }
     val listsV4         by lazy { getService<TmdbListsV4>() }
-    val movies          by lazy { getService<TmdbMovies>() }
+    val movies          by lazy { getService<RxTmdbMovies>() }
     val networks        by lazy { getService<TmdbNetworks>() }
     val people          by lazy { getService<TmdbPeople>() }
     val reviews         by lazy { getService<TmdbReviews>() }

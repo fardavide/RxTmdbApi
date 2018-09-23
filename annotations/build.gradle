@@ -3,6 +3,8 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
+    compileOnly files("${System.properties['java.home']}/../lib/tools.jar")
+
     implementation deps.kotlin.stdlib
 
     implementation deps.google.autoService

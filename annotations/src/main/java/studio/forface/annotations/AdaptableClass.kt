@@ -39,5 +39,5 @@ import kotlin.reflect.KClass
  */
 annotation class AdaptableClass(
         val generatedClassesPrefix: Array<String>,
-        val generatedTypes: Array<String>
+        val generatedTypes: Array<KClass<*>>
 )
