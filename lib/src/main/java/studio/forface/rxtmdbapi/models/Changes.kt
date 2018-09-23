@@ -30,7 +30,7 @@ data class Item (
     @SerializedName("time") private     val _time: String,
     @SerializedName("iso_639_1")        val iso6391: String,
     @SerializedName("value")            val value: Any?,
-    @SerializedName("original_value")   val originalValue: String
+    @SerializedName("original_value")   val originalValue: Any?
 
 ) : StringIdElement {
 

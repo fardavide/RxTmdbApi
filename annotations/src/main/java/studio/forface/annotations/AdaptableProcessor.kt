@@ -13,6 +13,7 @@ import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import javax.lang.model.element.VariableElement
 
 
 private const val PATH_GENERATED = "kapt.kotlin.generated"
@@ -95,7 +96,8 @@ class AdaptableProcessor: AbstractProcessor() {
             // Get method params.
             val params = method.parameters.map { param ->
                 val paramAnnotations = param.buildAnnotationsCode()
-                ParameterSpec.builder( param.simpleName.toString(), param.asType().asTypeName().asNullable() )
+                val type = parseType( param.asType().asTypeName() )
+                ParameterSpec.builder( param.simpleName.toString(), type.asNullable() )
                         .addAnnotations( paramAnnotations )
                         .defaultValue( "null" )
                         .build()
@@ -117,6 +119,14 @@ class AdaptableProcessor: AbstractProcessor() {
                 .addType( builder.build() )
                 .build()
     }
+
+    private fun parseType( typeName: TypeName ) = when( typeName.toString() ) {
+        "java.lang.Integer" -> Int::class.asTypeName()
+        "java.lang.Number" -> Number::class.asTypeName()
+        "java.lang.String" -> String::class.asTypeName()
+        else -> typeName
+    }
+
 
     override fun getSupportedAnnotationTypes() =
             setOf( AdaptableClass::class.java.canonicalName )

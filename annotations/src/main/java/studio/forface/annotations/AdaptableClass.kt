@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 /** TODO: set proper type for [generatedTypes].
  * An [Annotation] for mark classes or interfaces that are adaptable.
  * Mark a class or interface with this [Annotation] for let the compiler create different
- * classes / interfaces, replacing [Adaptable] with [generatedTypes].
+ * classes / interfaces, wrapping return type in [generatedTypes].
  *
  * @param generatedClassesPrefix is and [Array] of [String] representing the prefixes that will be
  * applied to the generated classes / interfaces. Eg:
@@ -17,10 +17,10 @@ import kotlin.reflect.KClass
  *      interface TmdbMovies
  *
  * Will generate RxTmdbMovies and KTmdbMovies.
- * @param generatedTypes is an [Array] of [KClass] that will replace [Adaptable] types. Eg:
+ * @param generatedTypes is an [Array] of [KClass] that will wrap return types. Eg:
  *      > @AdaptableClass( ["Rx", "K"], [Single::class, Deferred::class] )
  *      interface TmdbMovies {
- *          fun getMovie(): Adaptable<Movie>
+ *          fun getMovie(): Movie
  *      }
  *
  * Will generate the following interfaces:

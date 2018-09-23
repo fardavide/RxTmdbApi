@@ -309,7 +309,7 @@ class TmdbApiUnitTest {
                 getPopular(),
                 getTopRated(),
                 getUpcoming(),
-                //rateMovie(          MOVIE_ID_BLADE, 6 ),
+                rateMovie(          MOVIE_ID_BLADE, 6 ),
                 removeMovieRating(  MOVIE_ID_BLADE )
         ) }
     }

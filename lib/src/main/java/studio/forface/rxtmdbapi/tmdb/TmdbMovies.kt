@@ -3,6 +3,7 @@
 package studio.forface.rxtmdbapi.tmdb
 
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.http.*
 import studio.forface.annotations.AdaptableClass
@@ -18,7 +19,7 @@ private const val BASE_PATH = "movie"
  */
 private const val MOVIE_ID = "movie_id"
 
-@AdaptableClass( ["Rx", "K"], [Single::class/*, Deferred::class*/] )
+@AdaptableClass( ["Rx", "K"], [Single::class, Deferred::class] )
 /**
  * @author 4face Studio ( Davide Giuseppe Farella ).
  */
